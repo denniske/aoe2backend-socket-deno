@@ -13,14 +13,6 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 
 /**
- * Model api_key
- * 
- */
-export type api_key = {
-  api_key: string
-}
-
-/**
  * Model leaderboard_row
  * 
  */
@@ -80,26 +72,6 @@ export type match = {
 }
 
 /**
- * Model match_pending
- * 
- */
-export type match_pending = {
-  profile_id: number
-  priority: number
-}
-
-/**
- * Model match_raw
- * 
- */
-export type match_raw = {
-  match_id: number
-  json: string
-  version: number | null
-  error: boolean | null
-}
-
-/**
  * Model player
  * 
  */
@@ -133,16 +105,20 @@ export type profile = {
 }
 
 /**
- * Model rating
+ * Model match_pending
  * 
  */
-export type rating = {
+export type match_pending = {
   profile_id: number
-  games: number
-  rating: number
-  date: Date
-  leaderboard_id: number
-  rating_diff: number | null
+  priority: number
+}
+
+/**
+ * Model api_key
+ * 
+ */
+export type api_key = {
+  api_key: string
 }
 
 /**
@@ -153,6 +129,30 @@ export type setting = {
   component: string
   key: string
   value: string
+}
+
+/**
+ * Model match_raw
+ * 
+ */
+export type match_raw = {
+  match_id: number
+  json: string
+  version: number | null
+  error: boolean | null
+}
+
+/**
+ * Model rating
+ * 
+ */
+export type rating = {
+  profile_id: number
+  games: number
+  rating: number
+  date: Date
+  leaderboard_id: number
+  rating_diff: number | null
 }
 
 /**
@@ -236,8 +236,8 @@ export type smaller_profile = {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Api_keys
- * const api_keys = await prisma.api_key.findMany()
+ * // Fetch zero or more Leaderboard_rows
+ * const leaderboard_rows = await prisma.leaderboard_row.findMany()
  * ```
  *
  * 
@@ -282,8 +282,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Api_keys
-   * const api_keys = await prisma.api_key.findMany()
+   * // Fetch zero or more Leaderboard_rows
+   * const leaderboard_rows = await prisma.leaderboard_row.findMany()
    * ```
    *
    * 
@@ -370,16 +370,6 @@ export class PrismaClient<
   $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>;
 
       /**
-   * `prisma.api_key`: Exposes CRUD operations for the **api_key** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Api_keys
-    * const api_keys = await prisma.api_key.findMany()
-    * ```
-    */
-  get api_key(): Prisma.api_keyDelegate<GlobalReject>;
-
-  /**
    * `prisma.leaderboard_row`: Exposes CRUD operations for the **leaderboard_row** model.
     * Example usage:
     * ```ts
@@ -398,26 +388,6 @@ export class PrismaClient<
     * ```
     */
   get match(): Prisma.matchDelegate<GlobalReject>;
-
-  /**
-   * `prisma.match_pending`: Exposes CRUD operations for the **match_pending** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Match_pendings
-    * const match_pendings = await prisma.match_pending.findMany()
-    * ```
-    */
-  get match_pending(): Prisma.match_pendingDelegate<GlobalReject>;
-
-  /**
-   * `prisma.match_raw`: Exposes CRUD operations for the **match_raw** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Match_raws
-    * const match_raws = await prisma.match_raw.findMany()
-    * ```
-    */
-  get match_raw(): Prisma.match_rawDelegate<GlobalReject>;
 
   /**
    * `prisma.player`: Exposes CRUD operations for the **player** model.
@@ -440,14 +410,24 @@ export class PrismaClient<
   get profile(): Prisma.profileDelegate<GlobalReject>;
 
   /**
-   * `prisma.rating`: Exposes CRUD operations for the **rating** model.
+   * `prisma.match_pending`: Exposes CRUD operations for the **match_pending** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Ratings
-    * const ratings = await prisma.rating.findMany()
+    * // Fetch zero or more Match_pendings
+    * const match_pendings = await prisma.match_pending.findMany()
     * ```
     */
-  get rating(): Prisma.ratingDelegate<GlobalReject>;
+  get match_pending(): Prisma.match_pendingDelegate<GlobalReject>;
+
+  /**
+   * `prisma.api_key`: Exposes CRUD operations for the **api_key** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Api_keys
+    * const api_keys = await prisma.api_key.findMany()
+    * ```
+    */
+  get api_key(): Prisma.api_keyDelegate<GlobalReject>;
 
   /**
    * `prisma.setting`: Exposes CRUD operations for the **setting** model.
@@ -458,6 +438,26 @@ export class PrismaClient<
     * ```
     */
   get setting(): Prisma.settingDelegate<GlobalReject>;
+
+  /**
+   * `prisma.match_raw`: Exposes CRUD operations for the **match_raw** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Match_raws
+    * const match_raws = await prisma.match_raw.findMany()
+    * ```
+    */
+  get match_raw(): Prisma.match_rawDelegate<GlobalReject>;
+
+  /**
+   * `prisma.rating`: Exposes CRUD operations for the **rating** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Ratings
+    * const ratings = await prisma.rating.findMany()
+    * ```
+    */
+  get rating(): Prisma.ratingDelegate<GlobalReject>;
 
   /**
    * `prisma.smaller_match`: Exposes CRUD operations for the **smaller_match** model.
@@ -976,15 +976,15 @@ export namespace Prisma {
   }
 
   export const ModelName: {
-    api_key: 'api_key',
     leaderboard_row: 'leaderboard_row',
     match: 'match',
-    match_pending: 'match_pending',
-    match_raw: 'match_raw',
     player: 'player',
     profile: 'profile',
-    rating: 'rating',
+    match_pending: 'match_pending',
+    api_key: 'api_key',
     setting: 'setting',
+    match_raw: 'match_raw',
+    rating: 'rating',
     smaller_match: 'smaller_match',
     smaller_player: 'smaller_player',
     smaller_profile: 'smaller_profile'
@@ -1152,11 +1152,11 @@ export namespace Prisma {
 
 
   export type MatchCountOutputType = {
-    player: number
+    players: number
   }
 
   export type MatchCountOutputTypeSelect = {
-    player?: boolean
+    players?: boolean
   }
 
   export type MatchCountOutputTypeGetPayload<
@@ -1202,14 +1202,14 @@ export namespace Prisma {
 
   export type ProfileCountOutputType = {
     leaderboard_row: number
-    match: number
-    player: number
+    created_matches: number
+    players: number
   }
 
   export type ProfileCountOutputTypeSelect = {
     leaderboard_row?: boolean
-    match?: boolean
-    player?: boolean
+    created_matches?: boolean
+    players?: boolean
   }
 
   export type ProfileCountOutputTypeGetPayload<
@@ -1254,11 +1254,11 @@ export namespace Prisma {
 
 
   export type Smaller_matchCountOutputType = {
-    smaller_player: number
+    players: number
   }
 
   export type Smaller_matchCountOutputTypeSelect = {
-    smaller_player?: boolean
+    players?: boolean
   }
 
   export type Smaller_matchCountOutputTypeGetPayload<
@@ -1303,11 +1303,11 @@ export namespace Prisma {
 
 
   export type Smaller_profileCountOutputType = {
-    smaller_player: number
+    players: number
   }
 
   export type Smaller_profileCountOutputTypeSelect = {
-    smaller_player?: boolean
+    players?: boolean
   }
 
   export type Smaller_profileCountOutputTypeGetPayload<
@@ -1349,850 +1349,6 @@ export namespace Prisma {
   /**
    * Models
    */
-
-  /**
-   * Model api_key
-   */
-
-
-  export type AggregateApi_key = {
-    _count: Api_keyCountAggregateOutputType | null
-    _min: Api_keyMinAggregateOutputType | null
-    _max: Api_keyMaxAggregateOutputType | null
-  }
-
-  export type Api_keyMinAggregateOutputType = {
-    api_key: string | null
-  }
-
-  export type Api_keyMaxAggregateOutputType = {
-    api_key: string | null
-  }
-
-  export type Api_keyCountAggregateOutputType = {
-    api_key: number
-    _all: number
-  }
-
-
-  export type Api_keyMinAggregateInputType = {
-    api_key?: true
-  }
-
-  export type Api_keyMaxAggregateInputType = {
-    api_key?: true
-  }
-
-  export type Api_keyCountAggregateInputType = {
-    api_key?: true
-    _all?: true
-  }
-
-  export type Api_keyAggregateArgs = {
-    /**
-     * Filter which api_key to aggregate.
-     * 
-    **/
-    where?: api_keyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of api_keys to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<api_keyOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: api_keyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` api_keys from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` api_keys.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned api_keys
-    **/
-    _count?: true | Api_keyCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Api_keyMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Api_keyMaxAggregateInputType
-  }
-
-  export type GetApi_keyAggregateType<T extends Api_keyAggregateArgs> = {
-        [P in keyof T & keyof AggregateApi_key]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateApi_key[P]>
-      : GetScalarType<T[P], AggregateApi_key[P]>
-  }
-
-
-
-
-  export type Api_keyGroupByArgs = {
-    where?: api_keyWhereInput
-    orderBy?: Enumerable<api_keyOrderByWithAggregationInput>
-    by: Array<Api_keyScalarFieldEnum>
-    having?: api_keyScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Api_keyCountAggregateInputType | true
-    _min?: Api_keyMinAggregateInputType
-    _max?: Api_keyMaxAggregateInputType
-  }
-
-
-  export type Api_keyGroupByOutputType = {
-    api_key: string
-    _count: Api_keyCountAggregateOutputType | null
-    _min: Api_keyMinAggregateOutputType | null
-    _max: Api_keyMaxAggregateOutputType | null
-  }
-
-  type GetApi_keyGroupByPayload<T extends Api_keyGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<Api_keyGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Api_keyGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Api_keyGroupByOutputType[P]>
-            : GetScalarType<T[P], Api_keyGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type api_keySelect = {
-    api_key?: boolean
-  }
-
-  export type api_keyGetPayload<
-    S extends boolean | null | undefined | api_keyArgs,
-    U = keyof S
-      > = S extends true
-        ? api_key
-    : S extends undefined
-    ? never
-    : S extends api_keyArgs | api_keyFindManyArgs
-    ?'include' extends U
-    ? api_key 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-    P extends keyof api_key ? api_key[P] : never
-  } 
-    : api_key
-  : api_key
-
-
-  type api_keyCountArgs = Merge<
-    Omit<api_keyFindManyArgs, 'select' | 'include'> & {
-      select?: Api_keyCountAggregateInputType | true
-    }
-  >
-
-  export interface api_keyDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one Api_key that matches the filter.
-     * @param {api_keyFindUniqueArgs} args - Arguments to find a Api_key
-     * @example
-     * // Get one Api_key
-     * const api_key = await prisma.api_key.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends api_keyFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, api_keyFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'api_key'> extends True ? CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>> : CheckSelect<T, Prisma__api_keyClient<api_key | null, null>, Prisma__api_keyClient<api_keyGetPayload<T> | null, null>>
-
-    /**
-     * Find the first Api_key that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {api_keyFindFirstArgs} args - Arguments to find a Api_key
-     * @example
-     * // Get one Api_key
-     * const api_key = await prisma.api_key.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends api_keyFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, api_keyFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'api_key'> extends True ? CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>> : CheckSelect<T, Prisma__api_keyClient<api_key | null, null>, Prisma__api_keyClient<api_keyGetPayload<T> | null, null>>
-
-    /**
-     * Find zero or more Api_keys that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {api_keyFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Api_keys
-     * const api_keys = await prisma.api_key.findMany()
-     * 
-     * // Get first 10 Api_keys
-     * const api_keys = await prisma.api_key.findMany({ take: 10 })
-     * 
-     * // Only select the `api_key`
-     * const api_keyWithApi_keyOnly = await prisma.api_key.findMany({ select: { api_key: true } })
-     * 
-    **/
-    findMany<T extends api_keyFindManyArgs>(
-      args?: SelectSubset<T, api_keyFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<api_key>>, PrismaPromise<Array<api_keyGetPayload<T>>>>
-
-    /**
-     * Create a Api_key.
-     * @param {api_keyCreateArgs} args - Arguments to create a Api_key.
-     * @example
-     * // Create one Api_key
-     * const Api_key = await prisma.api_key.create({
-     *   data: {
-     *     // ... data to create a Api_key
-     *   }
-     * })
-     * 
-    **/
-    create<T extends api_keyCreateArgs>(
-      args: SelectSubset<T, api_keyCreateArgs>
-    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
-
-    /**
-     * Create many Api_keys.
-     *     @param {api_keyCreateManyArgs} args - Arguments to create many Api_keys.
-     *     @example
-     *     // Create many Api_keys
-     *     const api_key = await prisma.api_key.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends api_keyCreateManyArgs>(
-      args?: SelectSubset<T, api_keyCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Api_key.
-     * @param {api_keyDeleteArgs} args - Arguments to delete one Api_key.
-     * @example
-     * // Delete one Api_key
-     * const Api_key = await prisma.api_key.delete({
-     *   where: {
-     *     // ... filter to delete one Api_key
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends api_keyDeleteArgs>(
-      args: SelectSubset<T, api_keyDeleteArgs>
-    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
-
-    /**
-     * Update one Api_key.
-     * @param {api_keyUpdateArgs} args - Arguments to update one Api_key.
-     * @example
-     * // Update one Api_key
-     * const api_key = await prisma.api_key.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends api_keyUpdateArgs>(
-      args: SelectSubset<T, api_keyUpdateArgs>
-    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
-
-    /**
-     * Delete zero or more Api_keys.
-     * @param {api_keyDeleteManyArgs} args - Arguments to filter Api_keys to delete.
-     * @example
-     * // Delete a few Api_keys
-     * const { count } = await prisma.api_key.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends api_keyDeleteManyArgs>(
-      args?: SelectSubset<T, api_keyDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Api_keys.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {api_keyUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Api_keys
-     * const api_key = await prisma.api_key.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends api_keyUpdateManyArgs>(
-      args: SelectSubset<T, api_keyUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Api_key.
-     * @param {api_keyUpsertArgs} args - Arguments to update or create a Api_key.
-     * @example
-     * // Update or create a Api_key
-     * const api_key = await prisma.api_key.upsert({
-     *   create: {
-     *     // ... data to create a Api_key
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Api_key we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends api_keyUpsertArgs>(
-      args: SelectSubset<T, api_keyUpsertArgs>
-    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
-
-    /**
-     * Find one Api_key that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {api_keyFindUniqueOrThrowArgs} args - Arguments to find a Api_key
-     * @example
-     * // Get one Api_key
-     * const api_key = await prisma.api_key.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends api_keyFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, api_keyFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
-
-    /**
-     * Find the first Api_key that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {api_keyFindFirstOrThrowArgs} args - Arguments to find a Api_key
-     * @example
-     * // Get one Api_key
-     * const api_key = await prisma.api_key.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends api_keyFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, api_keyFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
-
-    /**
-     * Count the number of Api_keys.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {api_keyCountArgs} args - Arguments to filter Api_keys to count.
-     * @example
-     * // Count the number of Api_keys
-     * const count = await prisma.api_key.count({
-     *   where: {
-     *     // ... the filter for the Api_keys we want to count
-     *   }
-     * })
-    **/
-    count<T extends api_keyCountArgs>(
-      args?: Subset<T, api_keyCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Api_keyCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Api_key.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Api_keyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Api_keyAggregateArgs>(args: Subset<T, Api_keyAggregateArgs>): PrismaPromise<GetApi_keyAggregateType<T>>
-
-    /**
-     * Group by Api_key.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Api_keyGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends Api_keyGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: Api_keyGroupByArgs['orderBy'] }
-        : { orderBy?: Api_keyGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, Api_keyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApi_keyGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for api_key.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__api_keyClient<T, Null = never> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * api_key base type for findUnique actions
-   */
-  export type api_keyFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * Filter, which api_key to fetch.
-     * 
-    **/
-    where: api_keyWhereUniqueInput
-  }
-
-  /**
-   * api_key: findUnique
-   */
-  export interface api_keyFindUniqueArgs extends api_keyFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * api_key base type for findFirst actions
-   */
-  export type api_keyFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * Filter, which api_key to fetch.
-     * 
-    **/
-    where?: api_keyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of api_keys to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<api_keyOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for api_keys.
-     * 
-    **/
-    cursor?: api_keyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` api_keys from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` api_keys.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of api_keys.
-     * 
-    **/
-    distinct?: Enumerable<Api_keyScalarFieldEnum>
-  }
-
-  /**
-   * api_key: findFirst
-   */
-  export interface api_keyFindFirstArgs extends api_keyFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * api_key findMany
-   */
-  export type api_keyFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * Filter, which api_keys to fetch.
-     * 
-    **/
-    where?: api_keyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of api_keys to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<api_keyOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing api_keys.
-     * 
-    **/
-    cursor?: api_keyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` api_keys from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` api_keys.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<Api_keyScalarFieldEnum>
-  }
-
-
-  /**
-   * api_key create
-   */
-  export type api_keyCreateArgs = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * The data needed to create a api_key.
-     * 
-    **/
-    data: XOR<api_keyCreateInput, api_keyUncheckedCreateInput>
-  }
-
-
-  /**
-   * api_key createMany
-   */
-  export type api_keyCreateManyArgs = {
-    /**
-     * The data used to create many api_keys.
-     * 
-    **/
-    data: Enumerable<api_keyCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * api_key update
-   */
-  export type api_keyUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * The data needed to update a api_key.
-     * 
-    **/
-    data: XOR<api_keyUpdateInput, api_keyUncheckedUpdateInput>
-    /**
-     * Choose, which api_key to update.
-     * 
-    **/
-    where: api_keyWhereUniqueInput
-  }
-
-
-  /**
-   * api_key updateMany
-   */
-  export type api_keyUpdateManyArgs = {
-    /**
-     * The data used to update api_keys.
-     * 
-    **/
-    data: XOR<api_keyUpdateManyMutationInput, api_keyUncheckedUpdateManyInput>
-    /**
-     * Filter which api_keys to update
-     * 
-    **/
-    where?: api_keyWhereInput
-  }
-
-
-  /**
-   * api_key upsert
-   */
-  export type api_keyUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * The filter to search for the api_key to update in case it exists.
-     * 
-    **/
-    where: api_keyWhereUniqueInput
-    /**
-     * In case the api_key found by the `where` argument doesn't exist, create a new api_key with this data.
-     * 
-    **/
-    create: XOR<api_keyCreateInput, api_keyUncheckedCreateInput>
-    /**
-     * In case the api_key was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<api_keyUpdateInput, api_keyUncheckedUpdateInput>
-  }
-
-
-  /**
-   * api_key delete
-   */
-  export type api_keyDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-    /**
-     * Filter which api_key to delete.
-     * 
-    **/
-    where: api_keyWhereUniqueInput
-  }
-
-
-  /**
-   * api_key deleteMany
-   */
-  export type api_keyDeleteManyArgs = {
-    /**
-     * Filter which api_keys to delete
-     * 
-    **/
-    where?: api_keyWhereInput
-  }
-
-
-  /**
-   * api_key: findUniqueOrThrow
-   */
-  export type api_keyFindUniqueOrThrowArgs = api_keyFindUniqueArgsBase
-      
-
-  /**
-   * api_key: findFirstOrThrow
-   */
-  export type api_keyFindFirstOrThrowArgs = api_keyFindFirstArgsBase
-      
-
-  /**
-   * api_key without action
-   */
-  export type api_keyArgs = {
-    /**
-     * Select specific fields to fetch from the api_key
-     * 
-    **/
-    select?: api_keySelect | null
-  }
-
-
 
   /**
    * Model leaderboard_row
@@ -3734,14 +2890,14 @@ export namespace Prisma {
     leaderboard_id?: boolean
     privacy?: boolean
     creator_profile_id?: boolean
-    profile?: boolean | profileArgs
-    player?: boolean | playerFindManyArgs
+    creator_profile?: boolean | profileArgs
+    players?: boolean | playerFindManyArgs
     _count?: boolean | MatchCountOutputTypeArgs
   }
 
   export type matchInclude = {
-    profile?: boolean | profileArgs
-    player?: boolean | playerFindManyArgs
+    creator_profile?: boolean | profileArgs
+    players?: boolean | playerFindManyArgs
     _count?: boolean | MatchCountOutputTypeArgs
   }
 
@@ -3756,15 +2912,15 @@ export namespace Prisma {
     ?'include' extends U
     ? match  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'profile' ? profileGetPayload<Exclude<S['include'], undefined | null>[P]> | null :
-        P extends 'player' ? Array < playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'creator_profile' ? profileGetPayload<Exclude<S['include'], undefined | null>[P]> | null :
+        P extends 'players' ? Array < playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
         P extends '_count' ? MatchCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'profile' ? profileGetPayload<Exclude<S['select'], undefined | null>[P]> | null :
-        P extends 'player' ? Array < playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'creator_profile' ? profileGetPayload<Exclude<S['select'], undefined | null>[P]> | null :
+        P extends 'players' ? Array < playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
         P extends '_count' ? MatchCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof match ? match[P] : never
   } 
     : match
@@ -4140,9 +3296,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    profile<T extends profileArgs = {}>(args?: Subset<T, profileArgs>): CheckSelect<T, Prisma__profileClient<profile | Null>, Prisma__profileClient<profileGetPayload<T> | Null>>;
+    creator_profile<T extends profileArgs = {}>(args?: Subset<T, profileArgs>): CheckSelect<T, Prisma__profileClient<profile | Null>, Prisma__profileClient<profileGetPayload<T> | Null>>;
 
-    player<T extends playerFindManyArgs = {}>(args?: Subset<T, playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<player>| Null>, PrismaPromise<Array<playerGetPayload<T>>| Null>>;
+    players<T extends playerFindManyArgs = {}>(args?: Subset<T, playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<player>| Null>, PrismaPromise<Array<playerGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -4494,1802 +3650,6 @@ export namespace Prisma {
      * 
     **/
     include?: matchInclude | null
-  }
-
-
-
-  /**
-   * Model match_pending
-   */
-
-
-  export type AggregateMatch_pending = {
-    _count: Match_pendingCountAggregateOutputType | null
-    _avg: Match_pendingAvgAggregateOutputType | null
-    _sum: Match_pendingSumAggregateOutputType | null
-    _min: Match_pendingMinAggregateOutputType | null
-    _max: Match_pendingMaxAggregateOutputType | null
-  }
-
-  export type Match_pendingAvgAggregateOutputType = {
-    profile_id: number | null
-    priority: number | null
-  }
-
-  export type Match_pendingSumAggregateOutputType = {
-    profile_id: number | null
-    priority: number | null
-  }
-
-  export type Match_pendingMinAggregateOutputType = {
-    profile_id: number | null
-    priority: number | null
-  }
-
-  export type Match_pendingMaxAggregateOutputType = {
-    profile_id: number | null
-    priority: number | null
-  }
-
-  export type Match_pendingCountAggregateOutputType = {
-    profile_id: number
-    priority: number
-    _all: number
-  }
-
-
-  export type Match_pendingAvgAggregateInputType = {
-    profile_id?: true
-    priority?: true
-  }
-
-  export type Match_pendingSumAggregateInputType = {
-    profile_id?: true
-    priority?: true
-  }
-
-  export type Match_pendingMinAggregateInputType = {
-    profile_id?: true
-    priority?: true
-  }
-
-  export type Match_pendingMaxAggregateInputType = {
-    profile_id?: true
-    priority?: true
-  }
-
-  export type Match_pendingCountAggregateInputType = {
-    profile_id?: true
-    priority?: true
-    _all?: true
-  }
-
-  export type Match_pendingAggregateArgs = {
-    /**
-     * Filter which match_pending to aggregate.
-     * 
-    **/
-    where?: match_pendingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of match_pendings to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<match_pendingOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: match_pendingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` match_pendings from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` match_pendings.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned match_pendings
-    **/
-    _count?: true | Match_pendingCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: Match_pendingAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: Match_pendingSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Match_pendingMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Match_pendingMaxAggregateInputType
-  }
-
-  export type GetMatch_pendingAggregateType<T extends Match_pendingAggregateArgs> = {
-        [P in keyof T & keyof AggregateMatch_pending]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateMatch_pending[P]>
-      : GetScalarType<T[P], AggregateMatch_pending[P]>
-  }
-
-
-
-
-  export type Match_pendingGroupByArgs = {
-    where?: match_pendingWhereInput
-    orderBy?: Enumerable<match_pendingOrderByWithAggregationInput>
-    by: Array<Match_pendingScalarFieldEnum>
-    having?: match_pendingScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Match_pendingCountAggregateInputType | true
-    _avg?: Match_pendingAvgAggregateInputType
-    _sum?: Match_pendingSumAggregateInputType
-    _min?: Match_pendingMinAggregateInputType
-    _max?: Match_pendingMaxAggregateInputType
-  }
-
-
-  export type Match_pendingGroupByOutputType = {
-    profile_id: number
-    priority: number
-    _count: Match_pendingCountAggregateOutputType | null
-    _avg: Match_pendingAvgAggregateOutputType | null
-    _sum: Match_pendingSumAggregateOutputType | null
-    _min: Match_pendingMinAggregateOutputType | null
-    _max: Match_pendingMaxAggregateOutputType | null
-  }
-
-  type GetMatch_pendingGroupByPayload<T extends Match_pendingGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<Match_pendingGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Match_pendingGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Match_pendingGroupByOutputType[P]>
-            : GetScalarType<T[P], Match_pendingGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type match_pendingSelect = {
-    profile_id?: boolean
-    priority?: boolean
-  }
-
-  export type match_pendingGetPayload<
-    S extends boolean | null | undefined | match_pendingArgs,
-    U = keyof S
-      > = S extends true
-        ? match_pending
-    : S extends undefined
-    ? never
-    : S extends match_pendingArgs | match_pendingFindManyArgs
-    ?'include' extends U
-    ? match_pending 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-    P extends keyof match_pending ? match_pending[P] : never
-  } 
-    : match_pending
-  : match_pending
-
-
-  type match_pendingCountArgs = Merge<
-    Omit<match_pendingFindManyArgs, 'select' | 'include'> & {
-      select?: Match_pendingCountAggregateInputType | true
-    }
-  >
-
-  export interface match_pendingDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one Match_pending that matches the filter.
-     * @param {match_pendingFindUniqueArgs} args - Arguments to find a Match_pending
-     * @example
-     * // Get one Match_pending
-     * const match_pending = await prisma.match_pending.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends match_pendingFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, match_pendingFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'match_pending'> extends True ? CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>> : CheckSelect<T, Prisma__match_pendingClient<match_pending | null, null>, Prisma__match_pendingClient<match_pendingGetPayload<T> | null, null>>
-
-    /**
-     * Find the first Match_pending that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_pendingFindFirstArgs} args - Arguments to find a Match_pending
-     * @example
-     * // Get one Match_pending
-     * const match_pending = await prisma.match_pending.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends match_pendingFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, match_pendingFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'match_pending'> extends True ? CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>> : CheckSelect<T, Prisma__match_pendingClient<match_pending | null, null>, Prisma__match_pendingClient<match_pendingGetPayload<T> | null, null>>
-
-    /**
-     * Find zero or more Match_pendings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_pendingFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Match_pendings
-     * const match_pendings = await prisma.match_pending.findMany()
-     * 
-     * // Get first 10 Match_pendings
-     * const match_pendings = await prisma.match_pending.findMany({ take: 10 })
-     * 
-     * // Only select the `profile_id`
-     * const match_pendingWithProfile_idOnly = await prisma.match_pending.findMany({ select: { profile_id: true } })
-     * 
-    **/
-    findMany<T extends match_pendingFindManyArgs>(
-      args?: SelectSubset<T, match_pendingFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<match_pending>>, PrismaPromise<Array<match_pendingGetPayload<T>>>>
-
-    /**
-     * Create a Match_pending.
-     * @param {match_pendingCreateArgs} args - Arguments to create a Match_pending.
-     * @example
-     * // Create one Match_pending
-     * const Match_pending = await prisma.match_pending.create({
-     *   data: {
-     *     // ... data to create a Match_pending
-     *   }
-     * })
-     * 
-    **/
-    create<T extends match_pendingCreateArgs>(
-      args: SelectSubset<T, match_pendingCreateArgs>
-    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
-
-    /**
-     * Create many Match_pendings.
-     *     @param {match_pendingCreateManyArgs} args - Arguments to create many Match_pendings.
-     *     @example
-     *     // Create many Match_pendings
-     *     const match_pending = await prisma.match_pending.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends match_pendingCreateManyArgs>(
-      args?: SelectSubset<T, match_pendingCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Match_pending.
-     * @param {match_pendingDeleteArgs} args - Arguments to delete one Match_pending.
-     * @example
-     * // Delete one Match_pending
-     * const Match_pending = await prisma.match_pending.delete({
-     *   where: {
-     *     // ... filter to delete one Match_pending
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends match_pendingDeleteArgs>(
-      args: SelectSubset<T, match_pendingDeleteArgs>
-    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
-
-    /**
-     * Update one Match_pending.
-     * @param {match_pendingUpdateArgs} args - Arguments to update one Match_pending.
-     * @example
-     * // Update one Match_pending
-     * const match_pending = await prisma.match_pending.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends match_pendingUpdateArgs>(
-      args: SelectSubset<T, match_pendingUpdateArgs>
-    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
-
-    /**
-     * Delete zero or more Match_pendings.
-     * @param {match_pendingDeleteManyArgs} args - Arguments to filter Match_pendings to delete.
-     * @example
-     * // Delete a few Match_pendings
-     * const { count } = await prisma.match_pending.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends match_pendingDeleteManyArgs>(
-      args?: SelectSubset<T, match_pendingDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Match_pendings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_pendingUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Match_pendings
-     * const match_pending = await prisma.match_pending.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends match_pendingUpdateManyArgs>(
-      args: SelectSubset<T, match_pendingUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Match_pending.
-     * @param {match_pendingUpsertArgs} args - Arguments to update or create a Match_pending.
-     * @example
-     * // Update or create a Match_pending
-     * const match_pending = await prisma.match_pending.upsert({
-     *   create: {
-     *     // ... data to create a Match_pending
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Match_pending we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends match_pendingUpsertArgs>(
-      args: SelectSubset<T, match_pendingUpsertArgs>
-    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
-
-    /**
-     * Find one Match_pending that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {match_pendingFindUniqueOrThrowArgs} args - Arguments to find a Match_pending
-     * @example
-     * // Get one Match_pending
-     * const match_pending = await prisma.match_pending.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends match_pendingFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, match_pendingFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
-
-    /**
-     * Find the first Match_pending that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_pendingFindFirstOrThrowArgs} args - Arguments to find a Match_pending
-     * @example
-     * // Get one Match_pending
-     * const match_pending = await prisma.match_pending.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends match_pendingFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, match_pendingFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
-
-    /**
-     * Count the number of Match_pendings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_pendingCountArgs} args - Arguments to filter Match_pendings to count.
-     * @example
-     * // Count the number of Match_pendings
-     * const count = await prisma.match_pending.count({
-     *   where: {
-     *     // ... the filter for the Match_pendings we want to count
-     *   }
-     * })
-    **/
-    count<T extends match_pendingCountArgs>(
-      args?: Subset<T, match_pendingCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Match_pendingCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Match_pending.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Match_pendingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Match_pendingAggregateArgs>(args: Subset<T, Match_pendingAggregateArgs>): PrismaPromise<GetMatch_pendingAggregateType<T>>
-
-    /**
-     * Group by Match_pending.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Match_pendingGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends Match_pendingGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: Match_pendingGroupByArgs['orderBy'] }
-        : { orderBy?: Match_pendingGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, Match_pendingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMatch_pendingGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for match_pending.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__match_pendingClient<T, Null = never> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * match_pending base type for findUnique actions
-   */
-  export type match_pendingFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * Filter, which match_pending to fetch.
-     * 
-    **/
-    where: match_pendingWhereUniqueInput
-  }
-
-  /**
-   * match_pending: findUnique
-   */
-  export interface match_pendingFindUniqueArgs extends match_pendingFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * match_pending base type for findFirst actions
-   */
-  export type match_pendingFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * Filter, which match_pending to fetch.
-     * 
-    **/
-    where?: match_pendingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of match_pendings to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<match_pendingOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for match_pendings.
-     * 
-    **/
-    cursor?: match_pendingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` match_pendings from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` match_pendings.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of match_pendings.
-     * 
-    **/
-    distinct?: Enumerable<Match_pendingScalarFieldEnum>
-  }
-
-  /**
-   * match_pending: findFirst
-   */
-  export interface match_pendingFindFirstArgs extends match_pendingFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * match_pending findMany
-   */
-  export type match_pendingFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * Filter, which match_pendings to fetch.
-     * 
-    **/
-    where?: match_pendingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of match_pendings to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<match_pendingOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing match_pendings.
-     * 
-    **/
-    cursor?: match_pendingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` match_pendings from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` match_pendings.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<Match_pendingScalarFieldEnum>
-  }
-
-
-  /**
-   * match_pending create
-   */
-  export type match_pendingCreateArgs = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * The data needed to create a match_pending.
-     * 
-    **/
-    data: XOR<match_pendingCreateInput, match_pendingUncheckedCreateInput>
-  }
-
-
-  /**
-   * match_pending createMany
-   */
-  export type match_pendingCreateManyArgs = {
-    /**
-     * The data used to create many match_pendings.
-     * 
-    **/
-    data: Enumerable<match_pendingCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * match_pending update
-   */
-  export type match_pendingUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * The data needed to update a match_pending.
-     * 
-    **/
-    data: XOR<match_pendingUpdateInput, match_pendingUncheckedUpdateInput>
-    /**
-     * Choose, which match_pending to update.
-     * 
-    **/
-    where: match_pendingWhereUniqueInput
-  }
-
-
-  /**
-   * match_pending updateMany
-   */
-  export type match_pendingUpdateManyArgs = {
-    /**
-     * The data used to update match_pendings.
-     * 
-    **/
-    data: XOR<match_pendingUpdateManyMutationInput, match_pendingUncheckedUpdateManyInput>
-    /**
-     * Filter which match_pendings to update
-     * 
-    **/
-    where?: match_pendingWhereInput
-  }
-
-
-  /**
-   * match_pending upsert
-   */
-  export type match_pendingUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * The filter to search for the match_pending to update in case it exists.
-     * 
-    **/
-    where: match_pendingWhereUniqueInput
-    /**
-     * In case the match_pending found by the `where` argument doesn't exist, create a new match_pending with this data.
-     * 
-    **/
-    create: XOR<match_pendingCreateInput, match_pendingUncheckedCreateInput>
-    /**
-     * In case the match_pending was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<match_pendingUpdateInput, match_pendingUncheckedUpdateInput>
-  }
-
-
-  /**
-   * match_pending delete
-   */
-  export type match_pendingDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-    /**
-     * Filter which match_pending to delete.
-     * 
-    **/
-    where: match_pendingWhereUniqueInput
-  }
-
-
-  /**
-   * match_pending deleteMany
-   */
-  export type match_pendingDeleteManyArgs = {
-    /**
-     * Filter which match_pendings to delete
-     * 
-    **/
-    where?: match_pendingWhereInput
-  }
-
-
-  /**
-   * match_pending: findUniqueOrThrow
-   */
-  export type match_pendingFindUniqueOrThrowArgs = match_pendingFindUniqueArgsBase
-      
-
-  /**
-   * match_pending: findFirstOrThrow
-   */
-  export type match_pendingFindFirstOrThrowArgs = match_pendingFindFirstArgsBase
-      
-
-  /**
-   * match_pending without action
-   */
-  export type match_pendingArgs = {
-    /**
-     * Select specific fields to fetch from the match_pending
-     * 
-    **/
-    select?: match_pendingSelect | null
-  }
-
-
-
-  /**
-   * Model match_raw
-   */
-
-
-  export type AggregateMatch_raw = {
-    _count: Match_rawCountAggregateOutputType | null
-    _avg: Match_rawAvgAggregateOutputType | null
-    _sum: Match_rawSumAggregateOutputType | null
-    _min: Match_rawMinAggregateOutputType | null
-    _max: Match_rawMaxAggregateOutputType | null
-  }
-
-  export type Match_rawAvgAggregateOutputType = {
-    match_id: number | null
-    version: number | null
-  }
-
-  export type Match_rawSumAggregateOutputType = {
-    match_id: number | null
-    version: number | null
-  }
-
-  export type Match_rawMinAggregateOutputType = {
-    match_id: number | null
-    json: string | null
-    version: number | null
-    error: boolean | null
-  }
-
-  export type Match_rawMaxAggregateOutputType = {
-    match_id: number | null
-    json: string | null
-    version: number | null
-    error: boolean | null
-  }
-
-  export type Match_rawCountAggregateOutputType = {
-    match_id: number
-    json: number
-    version: number
-    error: number
-    _all: number
-  }
-
-
-  export type Match_rawAvgAggregateInputType = {
-    match_id?: true
-    version?: true
-  }
-
-  export type Match_rawSumAggregateInputType = {
-    match_id?: true
-    version?: true
-  }
-
-  export type Match_rawMinAggregateInputType = {
-    match_id?: true
-    json?: true
-    version?: true
-    error?: true
-  }
-
-  export type Match_rawMaxAggregateInputType = {
-    match_id?: true
-    json?: true
-    version?: true
-    error?: true
-  }
-
-  export type Match_rawCountAggregateInputType = {
-    match_id?: true
-    json?: true
-    version?: true
-    error?: true
-    _all?: true
-  }
-
-  export type Match_rawAggregateArgs = {
-    /**
-     * Filter which match_raw to aggregate.
-     * 
-    **/
-    where?: match_rawWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of match_raws to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<match_rawOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: match_rawWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` match_raws from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` match_raws.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned match_raws
-    **/
-    _count?: true | Match_rawCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: Match_rawAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: Match_rawSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Match_rawMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Match_rawMaxAggregateInputType
-  }
-
-  export type GetMatch_rawAggregateType<T extends Match_rawAggregateArgs> = {
-        [P in keyof T & keyof AggregateMatch_raw]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateMatch_raw[P]>
-      : GetScalarType<T[P], AggregateMatch_raw[P]>
-  }
-
-
-
-
-  export type Match_rawGroupByArgs = {
-    where?: match_rawWhereInput
-    orderBy?: Enumerable<match_rawOrderByWithAggregationInput>
-    by: Array<Match_rawScalarFieldEnum>
-    having?: match_rawScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Match_rawCountAggregateInputType | true
-    _avg?: Match_rawAvgAggregateInputType
-    _sum?: Match_rawSumAggregateInputType
-    _min?: Match_rawMinAggregateInputType
-    _max?: Match_rawMaxAggregateInputType
-  }
-
-
-  export type Match_rawGroupByOutputType = {
-    match_id: number
-    json: string
-    version: number | null
-    error: boolean | null
-    _count: Match_rawCountAggregateOutputType | null
-    _avg: Match_rawAvgAggregateOutputType | null
-    _sum: Match_rawSumAggregateOutputType | null
-    _min: Match_rawMinAggregateOutputType | null
-    _max: Match_rawMaxAggregateOutputType | null
-  }
-
-  type GetMatch_rawGroupByPayload<T extends Match_rawGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<Match_rawGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Match_rawGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Match_rawGroupByOutputType[P]>
-            : GetScalarType<T[P], Match_rawGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type match_rawSelect = {
-    match_id?: boolean
-    json?: boolean
-    version?: boolean
-    error?: boolean
-  }
-
-  export type match_rawGetPayload<
-    S extends boolean | null | undefined | match_rawArgs,
-    U = keyof S
-      > = S extends true
-        ? match_raw
-    : S extends undefined
-    ? never
-    : S extends match_rawArgs | match_rawFindManyArgs
-    ?'include' extends U
-    ? match_raw 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-    P extends keyof match_raw ? match_raw[P] : never
-  } 
-    : match_raw
-  : match_raw
-
-
-  type match_rawCountArgs = Merge<
-    Omit<match_rawFindManyArgs, 'select' | 'include'> & {
-      select?: Match_rawCountAggregateInputType | true
-    }
-  >
-
-  export interface match_rawDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one Match_raw that matches the filter.
-     * @param {match_rawFindUniqueArgs} args - Arguments to find a Match_raw
-     * @example
-     * // Get one Match_raw
-     * const match_raw = await prisma.match_raw.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends match_rawFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, match_rawFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'match_raw'> extends True ? CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>> : CheckSelect<T, Prisma__match_rawClient<match_raw | null, null>, Prisma__match_rawClient<match_rawGetPayload<T> | null, null>>
-
-    /**
-     * Find the first Match_raw that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_rawFindFirstArgs} args - Arguments to find a Match_raw
-     * @example
-     * // Get one Match_raw
-     * const match_raw = await prisma.match_raw.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends match_rawFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, match_rawFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'match_raw'> extends True ? CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>> : CheckSelect<T, Prisma__match_rawClient<match_raw | null, null>, Prisma__match_rawClient<match_rawGetPayload<T> | null, null>>
-
-    /**
-     * Find zero or more Match_raws that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_rawFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Match_raws
-     * const match_raws = await prisma.match_raw.findMany()
-     * 
-     * // Get first 10 Match_raws
-     * const match_raws = await prisma.match_raw.findMany({ take: 10 })
-     * 
-     * // Only select the `match_id`
-     * const match_rawWithMatch_idOnly = await prisma.match_raw.findMany({ select: { match_id: true } })
-     * 
-    **/
-    findMany<T extends match_rawFindManyArgs>(
-      args?: SelectSubset<T, match_rawFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<match_raw>>, PrismaPromise<Array<match_rawGetPayload<T>>>>
-
-    /**
-     * Create a Match_raw.
-     * @param {match_rawCreateArgs} args - Arguments to create a Match_raw.
-     * @example
-     * // Create one Match_raw
-     * const Match_raw = await prisma.match_raw.create({
-     *   data: {
-     *     // ... data to create a Match_raw
-     *   }
-     * })
-     * 
-    **/
-    create<T extends match_rawCreateArgs>(
-      args: SelectSubset<T, match_rawCreateArgs>
-    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
-
-    /**
-     * Create many Match_raws.
-     *     @param {match_rawCreateManyArgs} args - Arguments to create many Match_raws.
-     *     @example
-     *     // Create many Match_raws
-     *     const match_raw = await prisma.match_raw.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends match_rawCreateManyArgs>(
-      args?: SelectSubset<T, match_rawCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Match_raw.
-     * @param {match_rawDeleteArgs} args - Arguments to delete one Match_raw.
-     * @example
-     * // Delete one Match_raw
-     * const Match_raw = await prisma.match_raw.delete({
-     *   where: {
-     *     // ... filter to delete one Match_raw
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends match_rawDeleteArgs>(
-      args: SelectSubset<T, match_rawDeleteArgs>
-    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
-
-    /**
-     * Update one Match_raw.
-     * @param {match_rawUpdateArgs} args - Arguments to update one Match_raw.
-     * @example
-     * // Update one Match_raw
-     * const match_raw = await prisma.match_raw.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends match_rawUpdateArgs>(
-      args: SelectSubset<T, match_rawUpdateArgs>
-    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
-
-    /**
-     * Delete zero or more Match_raws.
-     * @param {match_rawDeleteManyArgs} args - Arguments to filter Match_raws to delete.
-     * @example
-     * // Delete a few Match_raws
-     * const { count } = await prisma.match_raw.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends match_rawDeleteManyArgs>(
-      args?: SelectSubset<T, match_rawDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Match_raws.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_rawUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Match_raws
-     * const match_raw = await prisma.match_raw.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends match_rawUpdateManyArgs>(
-      args: SelectSubset<T, match_rawUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Match_raw.
-     * @param {match_rawUpsertArgs} args - Arguments to update or create a Match_raw.
-     * @example
-     * // Update or create a Match_raw
-     * const match_raw = await prisma.match_raw.upsert({
-     *   create: {
-     *     // ... data to create a Match_raw
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Match_raw we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends match_rawUpsertArgs>(
-      args: SelectSubset<T, match_rawUpsertArgs>
-    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
-
-    /**
-     * Find one Match_raw that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {match_rawFindUniqueOrThrowArgs} args - Arguments to find a Match_raw
-     * @example
-     * // Get one Match_raw
-     * const match_raw = await prisma.match_raw.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends match_rawFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, match_rawFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
-
-    /**
-     * Find the first Match_raw that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_rawFindFirstOrThrowArgs} args - Arguments to find a Match_raw
-     * @example
-     * // Get one Match_raw
-     * const match_raw = await prisma.match_raw.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends match_rawFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, match_rawFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
-
-    /**
-     * Count the number of Match_raws.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {match_rawCountArgs} args - Arguments to filter Match_raws to count.
-     * @example
-     * // Count the number of Match_raws
-     * const count = await prisma.match_raw.count({
-     *   where: {
-     *     // ... the filter for the Match_raws we want to count
-     *   }
-     * })
-    **/
-    count<T extends match_rawCountArgs>(
-      args?: Subset<T, match_rawCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Match_rawCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Match_raw.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Match_rawAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Match_rawAggregateArgs>(args: Subset<T, Match_rawAggregateArgs>): PrismaPromise<GetMatch_rawAggregateType<T>>
-
-    /**
-     * Group by Match_raw.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Match_rawGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends Match_rawGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: Match_rawGroupByArgs['orderBy'] }
-        : { orderBy?: Match_rawGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, Match_rawGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMatch_rawGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for match_raw.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__match_rawClient<T, Null = never> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * match_raw base type for findUnique actions
-   */
-  export type match_rawFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * Filter, which match_raw to fetch.
-     * 
-    **/
-    where: match_rawWhereUniqueInput
-  }
-
-  /**
-   * match_raw: findUnique
-   */
-  export interface match_rawFindUniqueArgs extends match_rawFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * match_raw base type for findFirst actions
-   */
-  export type match_rawFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * Filter, which match_raw to fetch.
-     * 
-    **/
-    where?: match_rawWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of match_raws to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<match_rawOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for match_raws.
-     * 
-    **/
-    cursor?: match_rawWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` match_raws from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` match_raws.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of match_raws.
-     * 
-    **/
-    distinct?: Enumerable<Match_rawScalarFieldEnum>
-  }
-
-  /**
-   * match_raw: findFirst
-   */
-  export interface match_rawFindFirstArgs extends match_rawFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * match_raw findMany
-   */
-  export type match_rawFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * Filter, which match_raws to fetch.
-     * 
-    **/
-    where?: match_rawWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of match_raws to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<match_rawOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing match_raws.
-     * 
-    **/
-    cursor?: match_rawWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` match_raws from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` match_raws.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<Match_rawScalarFieldEnum>
-  }
-
-
-  /**
-   * match_raw create
-   */
-  export type match_rawCreateArgs = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * The data needed to create a match_raw.
-     * 
-    **/
-    data: XOR<match_rawCreateInput, match_rawUncheckedCreateInput>
-  }
-
-
-  /**
-   * match_raw createMany
-   */
-  export type match_rawCreateManyArgs = {
-    /**
-     * The data used to create many match_raws.
-     * 
-    **/
-    data: Enumerable<match_rawCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * match_raw update
-   */
-  export type match_rawUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * The data needed to update a match_raw.
-     * 
-    **/
-    data: XOR<match_rawUpdateInput, match_rawUncheckedUpdateInput>
-    /**
-     * Choose, which match_raw to update.
-     * 
-    **/
-    where: match_rawWhereUniqueInput
-  }
-
-
-  /**
-   * match_raw updateMany
-   */
-  export type match_rawUpdateManyArgs = {
-    /**
-     * The data used to update match_raws.
-     * 
-    **/
-    data: XOR<match_rawUpdateManyMutationInput, match_rawUncheckedUpdateManyInput>
-    /**
-     * Filter which match_raws to update
-     * 
-    **/
-    where?: match_rawWhereInput
-  }
-
-
-  /**
-   * match_raw upsert
-   */
-  export type match_rawUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * The filter to search for the match_raw to update in case it exists.
-     * 
-    **/
-    where: match_rawWhereUniqueInput
-    /**
-     * In case the match_raw found by the `where` argument doesn't exist, create a new match_raw with this data.
-     * 
-    **/
-    create: XOR<match_rawCreateInput, match_rawUncheckedCreateInput>
-    /**
-     * In case the match_raw was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<match_rawUpdateInput, match_rawUncheckedUpdateInput>
-  }
-
-
-  /**
-   * match_raw delete
-   */
-  export type match_rawDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
-    /**
-     * Filter which match_raw to delete.
-     * 
-    **/
-    where: match_rawWhereUniqueInput
-  }
-
-
-  /**
-   * match_raw deleteMany
-   */
-  export type match_rawDeleteManyArgs = {
-    /**
-     * Filter which match_raws to delete
-     * 
-    **/
-    where?: match_rawWhereInput
-  }
-
-
-  /**
-   * match_raw: findUniqueOrThrow
-   */
-  export type match_rawFindUniqueOrThrowArgs = match_rawFindUniqueArgsBase
-      
-
-  /**
-   * match_raw: findFirstOrThrow
-   */
-  export type match_rawFindFirstOrThrowArgs = match_rawFindFirstArgsBase
-      
-
-  /**
-   * match_raw without action
-   */
-  export type match_rawArgs = {
-    /**
-     * Select specific fields to fetch from the match_raw
-     * 
-    **/
-    select?: match_rawSelect | null
   }
 
 
@@ -7565,15 +4925,15 @@ export namespace Prisma {
     last_match_fetched_time?: boolean
     last_refresh?: boolean
     leaderboard_row?: boolean | leaderboard_rowFindManyArgs
-    match?: boolean | matchFindManyArgs
-    player?: boolean | playerFindManyArgs
+    created_matches?: boolean | matchFindManyArgs
+    players?: boolean | playerFindManyArgs
     _count?: boolean | ProfileCountOutputTypeArgs
   }
 
   export type profileInclude = {
     leaderboard_row?: boolean | leaderboard_rowFindManyArgs
-    match?: boolean | matchFindManyArgs
-    player?: boolean | playerFindManyArgs
+    created_matches?: boolean | matchFindManyArgs
+    players?: boolean | playerFindManyArgs
     _count?: boolean | ProfileCountOutputTypeArgs
   }
 
@@ -7589,16 +4949,16 @@ export namespace Prisma {
     ? profile  & {
     [P in TrueKeys<S['include']>]:
         P extends 'leaderboard_row' ? Array < leaderboard_rowGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
-        P extends 'match' ? Array < matchGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
-        P extends 'player' ? Array < playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'created_matches' ? Array < matchGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'players' ? Array < playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
         P extends '_count' ? ProfileCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
         P extends 'leaderboard_row' ? Array < leaderboard_rowGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
-        P extends 'match' ? Array < matchGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
-        P extends 'player' ? Array < playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'created_matches' ? Array < matchGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'players' ? Array < playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
         P extends '_count' ? ProfileCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof profile ? profile[P] : never
   } 
     : profile
@@ -7976,9 +5336,9 @@ export namespace Prisma {
 
     leaderboard_row<T extends leaderboard_rowFindManyArgs = {}>(args?: Subset<T, leaderboard_rowFindManyArgs>): CheckSelect<T, PrismaPromise<Array<leaderboard_row>| Null>, PrismaPromise<Array<leaderboard_rowGetPayload<T>>| Null>>;
 
-    match<T extends matchFindManyArgs = {}>(args?: Subset<T, matchFindManyArgs>): CheckSelect<T, PrismaPromise<Array<match>| Null>, PrismaPromise<Array<matchGetPayload<T>>| Null>>;
+    created_matches<T extends matchFindManyArgs = {}>(args?: Subset<T, matchFindManyArgs>): CheckSelect<T, PrismaPromise<Array<match>| Null>, PrismaPromise<Array<matchGetPayload<T>>| Null>>;
 
-    player<T extends playerFindManyArgs = {}>(args?: Subset<T, playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<player>| Null>, PrismaPromise<Array<playerGetPayload<T>>| Null>>;
+    players<T extends playerFindManyArgs = {}>(args?: Subset<T, playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<player>| Null>, PrismaPromise<Array<playerGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -8330,6 +5690,3506 @@ export namespace Prisma {
      * 
     **/
     include?: profileInclude | null
+  }
+
+
+
+  /**
+   * Model match_pending
+   */
+
+
+  export type AggregateMatch_pending = {
+    _count: Match_pendingCountAggregateOutputType | null
+    _avg: Match_pendingAvgAggregateOutputType | null
+    _sum: Match_pendingSumAggregateOutputType | null
+    _min: Match_pendingMinAggregateOutputType | null
+    _max: Match_pendingMaxAggregateOutputType | null
+  }
+
+  export type Match_pendingAvgAggregateOutputType = {
+    profile_id: number | null
+    priority: number | null
+  }
+
+  export type Match_pendingSumAggregateOutputType = {
+    profile_id: number | null
+    priority: number | null
+  }
+
+  export type Match_pendingMinAggregateOutputType = {
+    profile_id: number | null
+    priority: number | null
+  }
+
+  export type Match_pendingMaxAggregateOutputType = {
+    profile_id: number | null
+    priority: number | null
+  }
+
+  export type Match_pendingCountAggregateOutputType = {
+    profile_id: number
+    priority: number
+    _all: number
+  }
+
+
+  export type Match_pendingAvgAggregateInputType = {
+    profile_id?: true
+    priority?: true
+  }
+
+  export type Match_pendingSumAggregateInputType = {
+    profile_id?: true
+    priority?: true
+  }
+
+  export type Match_pendingMinAggregateInputType = {
+    profile_id?: true
+    priority?: true
+  }
+
+  export type Match_pendingMaxAggregateInputType = {
+    profile_id?: true
+    priority?: true
+  }
+
+  export type Match_pendingCountAggregateInputType = {
+    profile_id?: true
+    priority?: true
+    _all?: true
+  }
+
+  export type Match_pendingAggregateArgs = {
+    /**
+     * Filter which match_pending to aggregate.
+     * 
+    **/
+    where?: match_pendingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of match_pendings to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<match_pendingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: match_pendingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` match_pendings from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` match_pendings.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned match_pendings
+    **/
+    _count?: true | Match_pendingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Match_pendingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Match_pendingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Match_pendingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Match_pendingMaxAggregateInputType
+  }
+
+  export type GetMatch_pendingAggregateType<T extends Match_pendingAggregateArgs> = {
+        [P in keyof T & keyof AggregateMatch_pending]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMatch_pending[P]>
+      : GetScalarType<T[P], AggregateMatch_pending[P]>
+  }
+
+
+
+
+  export type Match_pendingGroupByArgs = {
+    where?: match_pendingWhereInput
+    orderBy?: Enumerable<match_pendingOrderByWithAggregationInput>
+    by: Array<Match_pendingScalarFieldEnum>
+    having?: match_pendingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Match_pendingCountAggregateInputType | true
+    _avg?: Match_pendingAvgAggregateInputType
+    _sum?: Match_pendingSumAggregateInputType
+    _min?: Match_pendingMinAggregateInputType
+    _max?: Match_pendingMaxAggregateInputType
+  }
+
+
+  export type Match_pendingGroupByOutputType = {
+    profile_id: number
+    priority: number
+    _count: Match_pendingCountAggregateOutputType | null
+    _avg: Match_pendingAvgAggregateOutputType | null
+    _sum: Match_pendingSumAggregateOutputType | null
+    _min: Match_pendingMinAggregateOutputType | null
+    _max: Match_pendingMaxAggregateOutputType | null
+  }
+
+  type GetMatch_pendingGroupByPayload<T extends Match_pendingGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<Match_pendingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Match_pendingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Match_pendingGroupByOutputType[P]>
+            : GetScalarType<T[P], Match_pendingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type match_pendingSelect = {
+    profile_id?: boolean
+    priority?: boolean
+  }
+
+  export type match_pendingGetPayload<
+    S extends boolean | null | undefined | match_pendingArgs,
+    U = keyof S
+      > = S extends true
+        ? match_pending
+    : S extends undefined
+    ? never
+    : S extends match_pendingArgs | match_pendingFindManyArgs
+    ?'include' extends U
+    ? match_pending 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof match_pending ? match_pending[P] : never
+  } 
+    : match_pending
+  : match_pending
+
+
+  type match_pendingCountArgs = Merge<
+    Omit<match_pendingFindManyArgs, 'select' | 'include'> & {
+      select?: Match_pendingCountAggregateInputType | true
+    }
+  >
+
+  export interface match_pendingDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+    /**
+     * Find zero or one Match_pending that matches the filter.
+     * @param {match_pendingFindUniqueArgs} args - Arguments to find a Match_pending
+     * @example
+     * // Get one Match_pending
+     * const match_pending = await prisma.match_pending.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends match_pendingFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, match_pendingFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'match_pending'> extends True ? CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>> : CheckSelect<T, Prisma__match_pendingClient<match_pending | null, null>, Prisma__match_pendingClient<match_pendingGetPayload<T> | null, null>>
+
+    /**
+     * Find the first Match_pending that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_pendingFindFirstArgs} args - Arguments to find a Match_pending
+     * @example
+     * // Get one Match_pending
+     * const match_pending = await prisma.match_pending.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends match_pendingFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, match_pendingFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'match_pending'> extends True ? CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>> : CheckSelect<T, Prisma__match_pendingClient<match_pending | null, null>, Prisma__match_pendingClient<match_pendingGetPayload<T> | null, null>>
+
+    /**
+     * Find zero or more Match_pendings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_pendingFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Match_pendings
+     * const match_pendings = await prisma.match_pending.findMany()
+     * 
+     * // Get first 10 Match_pendings
+     * const match_pendings = await prisma.match_pending.findMany({ take: 10 })
+     * 
+     * // Only select the `profile_id`
+     * const match_pendingWithProfile_idOnly = await prisma.match_pending.findMany({ select: { profile_id: true } })
+     * 
+    **/
+    findMany<T extends match_pendingFindManyArgs>(
+      args?: SelectSubset<T, match_pendingFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<match_pending>>, PrismaPromise<Array<match_pendingGetPayload<T>>>>
+
+    /**
+     * Create a Match_pending.
+     * @param {match_pendingCreateArgs} args - Arguments to create a Match_pending.
+     * @example
+     * // Create one Match_pending
+     * const Match_pending = await prisma.match_pending.create({
+     *   data: {
+     *     // ... data to create a Match_pending
+     *   }
+     * })
+     * 
+    **/
+    create<T extends match_pendingCreateArgs>(
+      args: SelectSubset<T, match_pendingCreateArgs>
+    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
+
+    /**
+     * Create many Match_pendings.
+     *     @param {match_pendingCreateManyArgs} args - Arguments to create many Match_pendings.
+     *     @example
+     *     // Create many Match_pendings
+     *     const match_pending = await prisma.match_pending.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends match_pendingCreateManyArgs>(
+      args?: SelectSubset<T, match_pendingCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Match_pending.
+     * @param {match_pendingDeleteArgs} args - Arguments to delete one Match_pending.
+     * @example
+     * // Delete one Match_pending
+     * const Match_pending = await prisma.match_pending.delete({
+     *   where: {
+     *     // ... filter to delete one Match_pending
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends match_pendingDeleteArgs>(
+      args: SelectSubset<T, match_pendingDeleteArgs>
+    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
+
+    /**
+     * Update one Match_pending.
+     * @param {match_pendingUpdateArgs} args - Arguments to update one Match_pending.
+     * @example
+     * // Update one Match_pending
+     * const match_pending = await prisma.match_pending.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends match_pendingUpdateArgs>(
+      args: SelectSubset<T, match_pendingUpdateArgs>
+    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
+
+    /**
+     * Delete zero or more Match_pendings.
+     * @param {match_pendingDeleteManyArgs} args - Arguments to filter Match_pendings to delete.
+     * @example
+     * // Delete a few Match_pendings
+     * const { count } = await prisma.match_pending.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends match_pendingDeleteManyArgs>(
+      args?: SelectSubset<T, match_pendingDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Match_pendings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_pendingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Match_pendings
+     * const match_pending = await prisma.match_pending.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends match_pendingUpdateManyArgs>(
+      args: SelectSubset<T, match_pendingUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Match_pending.
+     * @param {match_pendingUpsertArgs} args - Arguments to update or create a Match_pending.
+     * @example
+     * // Update or create a Match_pending
+     * const match_pending = await prisma.match_pending.upsert({
+     *   create: {
+     *     // ... data to create a Match_pending
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Match_pending we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends match_pendingUpsertArgs>(
+      args: SelectSubset<T, match_pendingUpsertArgs>
+    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
+
+    /**
+     * Find one Match_pending that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {match_pendingFindUniqueOrThrowArgs} args - Arguments to find a Match_pending
+     * @example
+     * // Get one Match_pending
+     * const match_pending = await prisma.match_pending.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends match_pendingFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, match_pendingFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
+
+    /**
+     * Find the first Match_pending that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_pendingFindFirstOrThrowArgs} args - Arguments to find a Match_pending
+     * @example
+     * // Get one Match_pending
+     * const match_pending = await prisma.match_pending.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends match_pendingFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, match_pendingFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__match_pendingClient<match_pending>, Prisma__match_pendingClient<match_pendingGetPayload<T>>>
+
+    /**
+     * Count the number of Match_pendings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_pendingCountArgs} args - Arguments to filter Match_pendings to count.
+     * @example
+     * // Count the number of Match_pendings
+     * const count = await prisma.match_pending.count({
+     *   where: {
+     *     // ... the filter for the Match_pendings we want to count
+     *   }
+     * })
+    **/
+    count<T extends match_pendingCountArgs>(
+      args?: Subset<T, match_pendingCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Match_pendingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Match_pending.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Match_pendingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Match_pendingAggregateArgs>(args: Subset<T, Match_pendingAggregateArgs>): PrismaPromise<GetMatch_pendingAggregateType<T>>
+
+    /**
+     * Group by Match_pending.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Match_pendingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Match_pendingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Match_pendingGroupByArgs['orderBy'] }
+        : { orderBy?: Match_pendingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Match_pendingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMatch_pendingGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for match_pending.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__match_pendingClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * match_pending base type for findUnique actions
+   */
+  export type match_pendingFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * Filter, which match_pending to fetch.
+     * 
+    **/
+    where: match_pendingWhereUniqueInput
+  }
+
+  /**
+   * match_pending: findUnique
+   */
+  export interface match_pendingFindUniqueArgs extends match_pendingFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * match_pending base type for findFirst actions
+   */
+  export type match_pendingFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * Filter, which match_pending to fetch.
+     * 
+    **/
+    where?: match_pendingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of match_pendings to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<match_pendingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for match_pendings.
+     * 
+    **/
+    cursor?: match_pendingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` match_pendings from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` match_pendings.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of match_pendings.
+     * 
+    **/
+    distinct?: Enumerable<Match_pendingScalarFieldEnum>
+  }
+
+  /**
+   * match_pending: findFirst
+   */
+  export interface match_pendingFindFirstArgs extends match_pendingFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * match_pending findMany
+   */
+  export type match_pendingFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * Filter, which match_pendings to fetch.
+     * 
+    **/
+    where?: match_pendingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of match_pendings to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<match_pendingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing match_pendings.
+     * 
+    **/
+    cursor?: match_pendingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` match_pendings from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` match_pendings.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<Match_pendingScalarFieldEnum>
+  }
+
+
+  /**
+   * match_pending create
+   */
+  export type match_pendingCreateArgs = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * The data needed to create a match_pending.
+     * 
+    **/
+    data: XOR<match_pendingCreateInput, match_pendingUncheckedCreateInput>
+  }
+
+
+  /**
+   * match_pending createMany
+   */
+  export type match_pendingCreateManyArgs = {
+    /**
+     * The data used to create many match_pendings.
+     * 
+    **/
+    data: Enumerable<match_pendingCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * match_pending update
+   */
+  export type match_pendingUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * The data needed to update a match_pending.
+     * 
+    **/
+    data: XOR<match_pendingUpdateInput, match_pendingUncheckedUpdateInput>
+    /**
+     * Choose, which match_pending to update.
+     * 
+    **/
+    where: match_pendingWhereUniqueInput
+  }
+
+
+  /**
+   * match_pending updateMany
+   */
+  export type match_pendingUpdateManyArgs = {
+    /**
+     * The data used to update match_pendings.
+     * 
+    **/
+    data: XOR<match_pendingUpdateManyMutationInput, match_pendingUncheckedUpdateManyInput>
+    /**
+     * Filter which match_pendings to update
+     * 
+    **/
+    where?: match_pendingWhereInput
+  }
+
+
+  /**
+   * match_pending upsert
+   */
+  export type match_pendingUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * The filter to search for the match_pending to update in case it exists.
+     * 
+    **/
+    where: match_pendingWhereUniqueInput
+    /**
+     * In case the match_pending found by the `where` argument doesn't exist, create a new match_pending with this data.
+     * 
+    **/
+    create: XOR<match_pendingCreateInput, match_pendingUncheckedCreateInput>
+    /**
+     * In case the match_pending was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<match_pendingUpdateInput, match_pendingUncheckedUpdateInput>
+  }
+
+
+  /**
+   * match_pending delete
+   */
+  export type match_pendingDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+    /**
+     * Filter which match_pending to delete.
+     * 
+    **/
+    where: match_pendingWhereUniqueInput
+  }
+
+
+  /**
+   * match_pending deleteMany
+   */
+  export type match_pendingDeleteManyArgs = {
+    /**
+     * Filter which match_pendings to delete
+     * 
+    **/
+    where?: match_pendingWhereInput
+  }
+
+
+  /**
+   * match_pending: findUniqueOrThrow
+   */
+  export type match_pendingFindUniqueOrThrowArgs = match_pendingFindUniqueArgsBase
+      
+
+  /**
+   * match_pending: findFirstOrThrow
+   */
+  export type match_pendingFindFirstOrThrowArgs = match_pendingFindFirstArgsBase
+      
+
+  /**
+   * match_pending without action
+   */
+  export type match_pendingArgs = {
+    /**
+     * Select specific fields to fetch from the match_pending
+     * 
+    **/
+    select?: match_pendingSelect | null
+  }
+
+
+
+  /**
+   * Model api_key
+   */
+
+
+  export type AggregateApi_key = {
+    _count: Api_keyCountAggregateOutputType | null
+    _min: Api_keyMinAggregateOutputType | null
+    _max: Api_keyMaxAggregateOutputType | null
+  }
+
+  export type Api_keyMinAggregateOutputType = {
+    api_key: string | null
+  }
+
+  export type Api_keyMaxAggregateOutputType = {
+    api_key: string | null
+  }
+
+  export type Api_keyCountAggregateOutputType = {
+    api_key: number
+    _all: number
+  }
+
+
+  export type Api_keyMinAggregateInputType = {
+    api_key?: true
+  }
+
+  export type Api_keyMaxAggregateInputType = {
+    api_key?: true
+  }
+
+  export type Api_keyCountAggregateInputType = {
+    api_key?: true
+    _all?: true
+  }
+
+  export type Api_keyAggregateArgs = {
+    /**
+     * Filter which api_key to aggregate.
+     * 
+    **/
+    where?: api_keyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of api_keys to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<api_keyOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: api_keyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` api_keys from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` api_keys.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned api_keys
+    **/
+    _count?: true | Api_keyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Api_keyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Api_keyMaxAggregateInputType
+  }
+
+  export type GetApi_keyAggregateType<T extends Api_keyAggregateArgs> = {
+        [P in keyof T & keyof AggregateApi_key]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateApi_key[P]>
+      : GetScalarType<T[P], AggregateApi_key[P]>
+  }
+
+
+
+
+  export type Api_keyGroupByArgs = {
+    where?: api_keyWhereInput
+    orderBy?: Enumerable<api_keyOrderByWithAggregationInput>
+    by: Array<Api_keyScalarFieldEnum>
+    having?: api_keyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Api_keyCountAggregateInputType | true
+    _min?: Api_keyMinAggregateInputType
+    _max?: Api_keyMaxAggregateInputType
+  }
+
+
+  export type Api_keyGroupByOutputType = {
+    api_key: string
+    _count: Api_keyCountAggregateOutputType | null
+    _min: Api_keyMinAggregateOutputType | null
+    _max: Api_keyMaxAggregateOutputType | null
+  }
+
+  type GetApi_keyGroupByPayload<T extends Api_keyGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<Api_keyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Api_keyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Api_keyGroupByOutputType[P]>
+            : GetScalarType<T[P], Api_keyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type api_keySelect = {
+    api_key?: boolean
+  }
+
+  export type api_keyGetPayload<
+    S extends boolean | null | undefined | api_keyArgs,
+    U = keyof S
+      > = S extends true
+        ? api_key
+    : S extends undefined
+    ? never
+    : S extends api_keyArgs | api_keyFindManyArgs
+    ?'include' extends U
+    ? api_key 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof api_key ? api_key[P] : never
+  } 
+    : api_key
+  : api_key
+
+
+  type api_keyCountArgs = Merge<
+    Omit<api_keyFindManyArgs, 'select' | 'include'> & {
+      select?: Api_keyCountAggregateInputType | true
+    }
+  >
+
+  export interface api_keyDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+    /**
+     * Find zero or one Api_key that matches the filter.
+     * @param {api_keyFindUniqueArgs} args - Arguments to find a Api_key
+     * @example
+     * // Get one Api_key
+     * const api_key = await prisma.api_key.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends api_keyFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, api_keyFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'api_key'> extends True ? CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>> : CheckSelect<T, Prisma__api_keyClient<api_key | null, null>, Prisma__api_keyClient<api_keyGetPayload<T> | null, null>>
+
+    /**
+     * Find the first Api_key that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {api_keyFindFirstArgs} args - Arguments to find a Api_key
+     * @example
+     * // Get one Api_key
+     * const api_key = await prisma.api_key.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends api_keyFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, api_keyFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'api_key'> extends True ? CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>> : CheckSelect<T, Prisma__api_keyClient<api_key | null, null>, Prisma__api_keyClient<api_keyGetPayload<T> | null, null>>
+
+    /**
+     * Find zero or more Api_keys that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {api_keyFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Api_keys
+     * const api_keys = await prisma.api_key.findMany()
+     * 
+     * // Get first 10 Api_keys
+     * const api_keys = await prisma.api_key.findMany({ take: 10 })
+     * 
+     * // Only select the `api_key`
+     * const api_keyWithApi_keyOnly = await prisma.api_key.findMany({ select: { api_key: true } })
+     * 
+    **/
+    findMany<T extends api_keyFindManyArgs>(
+      args?: SelectSubset<T, api_keyFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<api_key>>, PrismaPromise<Array<api_keyGetPayload<T>>>>
+
+    /**
+     * Create a Api_key.
+     * @param {api_keyCreateArgs} args - Arguments to create a Api_key.
+     * @example
+     * // Create one Api_key
+     * const Api_key = await prisma.api_key.create({
+     *   data: {
+     *     // ... data to create a Api_key
+     *   }
+     * })
+     * 
+    **/
+    create<T extends api_keyCreateArgs>(
+      args: SelectSubset<T, api_keyCreateArgs>
+    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
+
+    /**
+     * Create many Api_keys.
+     *     @param {api_keyCreateManyArgs} args - Arguments to create many Api_keys.
+     *     @example
+     *     // Create many Api_keys
+     *     const api_key = await prisma.api_key.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends api_keyCreateManyArgs>(
+      args?: SelectSubset<T, api_keyCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Api_key.
+     * @param {api_keyDeleteArgs} args - Arguments to delete one Api_key.
+     * @example
+     * // Delete one Api_key
+     * const Api_key = await prisma.api_key.delete({
+     *   where: {
+     *     // ... filter to delete one Api_key
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends api_keyDeleteArgs>(
+      args: SelectSubset<T, api_keyDeleteArgs>
+    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
+
+    /**
+     * Update one Api_key.
+     * @param {api_keyUpdateArgs} args - Arguments to update one Api_key.
+     * @example
+     * // Update one Api_key
+     * const api_key = await prisma.api_key.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends api_keyUpdateArgs>(
+      args: SelectSubset<T, api_keyUpdateArgs>
+    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
+
+    /**
+     * Delete zero or more Api_keys.
+     * @param {api_keyDeleteManyArgs} args - Arguments to filter Api_keys to delete.
+     * @example
+     * // Delete a few Api_keys
+     * const { count } = await prisma.api_key.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends api_keyDeleteManyArgs>(
+      args?: SelectSubset<T, api_keyDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Api_keys.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {api_keyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Api_keys
+     * const api_key = await prisma.api_key.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends api_keyUpdateManyArgs>(
+      args: SelectSubset<T, api_keyUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Api_key.
+     * @param {api_keyUpsertArgs} args - Arguments to update or create a Api_key.
+     * @example
+     * // Update or create a Api_key
+     * const api_key = await prisma.api_key.upsert({
+     *   create: {
+     *     // ... data to create a Api_key
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Api_key we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends api_keyUpsertArgs>(
+      args: SelectSubset<T, api_keyUpsertArgs>
+    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
+
+    /**
+     * Find one Api_key that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {api_keyFindUniqueOrThrowArgs} args - Arguments to find a Api_key
+     * @example
+     * // Get one Api_key
+     * const api_key = await prisma.api_key.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends api_keyFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, api_keyFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
+
+    /**
+     * Find the first Api_key that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {api_keyFindFirstOrThrowArgs} args - Arguments to find a Api_key
+     * @example
+     * // Get one Api_key
+     * const api_key = await prisma.api_key.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends api_keyFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, api_keyFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__api_keyClient<api_key>, Prisma__api_keyClient<api_keyGetPayload<T>>>
+
+    /**
+     * Count the number of Api_keys.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {api_keyCountArgs} args - Arguments to filter Api_keys to count.
+     * @example
+     * // Count the number of Api_keys
+     * const count = await prisma.api_key.count({
+     *   where: {
+     *     // ... the filter for the Api_keys we want to count
+     *   }
+     * })
+    **/
+    count<T extends api_keyCountArgs>(
+      args?: Subset<T, api_keyCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Api_keyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Api_key.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Api_keyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Api_keyAggregateArgs>(args: Subset<T, Api_keyAggregateArgs>): PrismaPromise<GetApi_keyAggregateType<T>>
+
+    /**
+     * Group by Api_key.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Api_keyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Api_keyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Api_keyGroupByArgs['orderBy'] }
+        : { orderBy?: Api_keyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Api_keyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApi_keyGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for api_key.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__api_keyClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * api_key base type for findUnique actions
+   */
+  export type api_keyFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * Filter, which api_key to fetch.
+     * 
+    **/
+    where: api_keyWhereUniqueInput
+  }
+
+  /**
+   * api_key: findUnique
+   */
+  export interface api_keyFindUniqueArgs extends api_keyFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * api_key base type for findFirst actions
+   */
+  export type api_keyFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * Filter, which api_key to fetch.
+     * 
+    **/
+    where?: api_keyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of api_keys to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<api_keyOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for api_keys.
+     * 
+    **/
+    cursor?: api_keyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` api_keys from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` api_keys.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of api_keys.
+     * 
+    **/
+    distinct?: Enumerable<Api_keyScalarFieldEnum>
+  }
+
+  /**
+   * api_key: findFirst
+   */
+  export interface api_keyFindFirstArgs extends api_keyFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * api_key findMany
+   */
+  export type api_keyFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * Filter, which api_keys to fetch.
+     * 
+    **/
+    where?: api_keyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of api_keys to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<api_keyOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing api_keys.
+     * 
+    **/
+    cursor?: api_keyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` api_keys from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` api_keys.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<Api_keyScalarFieldEnum>
+  }
+
+
+  /**
+   * api_key create
+   */
+  export type api_keyCreateArgs = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * The data needed to create a api_key.
+     * 
+    **/
+    data: XOR<api_keyCreateInput, api_keyUncheckedCreateInput>
+  }
+
+
+  /**
+   * api_key createMany
+   */
+  export type api_keyCreateManyArgs = {
+    /**
+     * The data used to create many api_keys.
+     * 
+    **/
+    data: Enumerable<api_keyCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * api_key update
+   */
+  export type api_keyUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * The data needed to update a api_key.
+     * 
+    **/
+    data: XOR<api_keyUpdateInput, api_keyUncheckedUpdateInput>
+    /**
+     * Choose, which api_key to update.
+     * 
+    **/
+    where: api_keyWhereUniqueInput
+  }
+
+
+  /**
+   * api_key updateMany
+   */
+  export type api_keyUpdateManyArgs = {
+    /**
+     * The data used to update api_keys.
+     * 
+    **/
+    data: XOR<api_keyUpdateManyMutationInput, api_keyUncheckedUpdateManyInput>
+    /**
+     * Filter which api_keys to update
+     * 
+    **/
+    where?: api_keyWhereInput
+  }
+
+
+  /**
+   * api_key upsert
+   */
+  export type api_keyUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * The filter to search for the api_key to update in case it exists.
+     * 
+    **/
+    where: api_keyWhereUniqueInput
+    /**
+     * In case the api_key found by the `where` argument doesn't exist, create a new api_key with this data.
+     * 
+    **/
+    create: XOR<api_keyCreateInput, api_keyUncheckedCreateInput>
+    /**
+     * In case the api_key was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<api_keyUpdateInput, api_keyUncheckedUpdateInput>
+  }
+
+
+  /**
+   * api_key delete
+   */
+  export type api_keyDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+    /**
+     * Filter which api_key to delete.
+     * 
+    **/
+    where: api_keyWhereUniqueInput
+  }
+
+
+  /**
+   * api_key deleteMany
+   */
+  export type api_keyDeleteManyArgs = {
+    /**
+     * Filter which api_keys to delete
+     * 
+    **/
+    where?: api_keyWhereInput
+  }
+
+
+  /**
+   * api_key: findUniqueOrThrow
+   */
+  export type api_keyFindUniqueOrThrowArgs = api_keyFindUniqueArgsBase
+      
+
+  /**
+   * api_key: findFirstOrThrow
+   */
+  export type api_keyFindFirstOrThrowArgs = api_keyFindFirstArgsBase
+      
+
+  /**
+   * api_key without action
+   */
+  export type api_keyArgs = {
+    /**
+     * Select specific fields to fetch from the api_key
+     * 
+    **/
+    select?: api_keySelect | null
+  }
+
+
+
+  /**
+   * Model setting
+   */
+
+
+  export type AggregateSetting = {
+    _count: SettingCountAggregateOutputType | null
+    _min: SettingMinAggregateOutputType | null
+    _max: SettingMaxAggregateOutputType | null
+  }
+
+  export type SettingMinAggregateOutputType = {
+    component: string | null
+    key: string | null
+    value: string | null
+  }
+
+  export type SettingMaxAggregateOutputType = {
+    component: string | null
+    key: string | null
+    value: string | null
+  }
+
+  export type SettingCountAggregateOutputType = {
+    component: number
+    key: number
+    value: number
+    _all: number
+  }
+
+
+  export type SettingMinAggregateInputType = {
+    component?: true
+    key?: true
+    value?: true
+  }
+
+  export type SettingMaxAggregateInputType = {
+    component?: true
+    key?: true
+    value?: true
+  }
+
+  export type SettingCountAggregateInputType = {
+    component?: true
+    key?: true
+    value?: true
+    _all?: true
+  }
+
+  export type SettingAggregateArgs = {
+    /**
+     * Filter which setting to aggregate.
+     * 
+    **/
+    where?: settingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of settings to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<settingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: settingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` settings from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` settings.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned settings
+    **/
+    _count?: true | SettingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SettingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SettingMaxAggregateInputType
+  }
+
+  export type GetSettingAggregateType<T extends SettingAggregateArgs> = {
+        [P in keyof T & keyof AggregateSetting]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSetting[P]>
+      : GetScalarType<T[P], AggregateSetting[P]>
+  }
+
+
+
+
+  export type SettingGroupByArgs = {
+    where?: settingWhereInput
+    orderBy?: Enumerable<settingOrderByWithAggregationInput>
+    by: Array<SettingScalarFieldEnum>
+    having?: settingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SettingCountAggregateInputType | true
+    _min?: SettingMinAggregateInputType
+    _max?: SettingMaxAggregateInputType
+  }
+
+
+  export type SettingGroupByOutputType = {
+    component: string
+    key: string
+    value: string
+    _count: SettingCountAggregateOutputType | null
+    _min: SettingMinAggregateOutputType | null
+    _max: SettingMaxAggregateOutputType | null
+  }
+
+  type GetSettingGroupByPayload<T extends SettingGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<SettingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SettingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SettingGroupByOutputType[P]>
+            : GetScalarType<T[P], SettingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type settingSelect = {
+    component?: boolean
+    key?: boolean
+    value?: boolean
+  }
+
+  export type settingGetPayload<
+    S extends boolean | null | undefined | settingArgs,
+    U = keyof S
+      > = S extends true
+        ? setting
+    : S extends undefined
+    ? never
+    : S extends settingArgs | settingFindManyArgs
+    ?'include' extends U
+    ? setting 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof setting ? setting[P] : never
+  } 
+    : setting
+  : setting
+
+
+  type settingCountArgs = Merge<
+    Omit<settingFindManyArgs, 'select' | 'include'> & {
+      select?: SettingCountAggregateInputType | true
+    }
+  >
+
+  export interface settingDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+    /**
+     * Find zero or one Setting that matches the filter.
+     * @param {settingFindUniqueArgs} args - Arguments to find a Setting
+     * @example
+     * // Get one Setting
+     * const setting = await prisma.setting.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends settingFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, settingFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'setting'> extends True ? CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>> : CheckSelect<T, Prisma__settingClient<setting | null, null>, Prisma__settingClient<settingGetPayload<T> | null, null>>
+
+    /**
+     * Find the first Setting that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {settingFindFirstArgs} args - Arguments to find a Setting
+     * @example
+     * // Get one Setting
+     * const setting = await prisma.setting.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends settingFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, settingFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'setting'> extends True ? CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>> : CheckSelect<T, Prisma__settingClient<setting | null, null>, Prisma__settingClient<settingGetPayload<T> | null, null>>
+
+    /**
+     * Find zero or more Settings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {settingFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Settings
+     * const settings = await prisma.setting.findMany()
+     * 
+     * // Get first 10 Settings
+     * const settings = await prisma.setting.findMany({ take: 10 })
+     * 
+     * // Only select the `component`
+     * const settingWithComponentOnly = await prisma.setting.findMany({ select: { component: true } })
+     * 
+    **/
+    findMany<T extends settingFindManyArgs>(
+      args?: SelectSubset<T, settingFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<setting>>, PrismaPromise<Array<settingGetPayload<T>>>>
+
+    /**
+     * Create a Setting.
+     * @param {settingCreateArgs} args - Arguments to create a Setting.
+     * @example
+     * // Create one Setting
+     * const Setting = await prisma.setting.create({
+     *   data: {
+     *     // ... data to create a Setting
+     *   }
+     * })
+     * 
+    **/
+    create<T extends settingCreateArgs>(
+      args: SelectSubset<T, settingCreateArgs>
+    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
+
+    /**
+     * Create many Settings.
+     *     @param {settingCreateManyArgs} args - Arguments to create many Settings.
+     *     @example
+     *     // Create many Settings
+     *     const setting = await prisma.setting.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends settingCreateManyArgs>(
+      args?: SelectSubset<T, settingCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Setting.
+     * @param {settingDeleteArgs} args - Arguments to delete one Setting.
+     * @example
+     * // Delete one Setting
+     * const Setting = await prisma.setting.delete({
+     *   where: {
+     *     // ... filter to delete one Setting
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends settingDeleteArgs>(
+      args: SelectSubset<T, settingDeleteArgs>
+    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
+
+    /**
+     * Update one Setting.
+     * @param {settingUpdateArgs} args - Arguments to update one Setting.
+     * @example
+     * // Update one Setting
+     * const setting = await prisma.setting.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends settingUpdateArgs>(
+      args: SelectSubset<T, settingUpdateArgs>
+    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
+
+    /**
+     * Delete zero or more Settings.
+     * @param {settingDeleteManyArgs} args - Arguments to filter Settings to delete.
+     * @example
+     * // Delete a few Settings
+     * const { count } = await prisma.setting.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends settingDeleteManyArgs>(
+      args?: SelectSubset<T, settingDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {settingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Settings
+     * const setting = await prisma.setting.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends settingUpdateManyArgs>(
+      args: SelectSubset<T, settingUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Setting.
+     * @param {settingUpsertArgs} args - Arguments to update or create a Setting.
+     * @example
+     * // Update or create a Setting
+     * const setting = await prisma.setting.upsert({
+     *   create: {
+     *     // ... data to create a Setting
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Setting we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends settingUpsertArgs>(
+      args: SelectSubset<T, settingUpsertArgs>
+    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
+
+    /**
+     * Find one Setting that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {settingFindUniqueOrThrowArgs} args - Arguments to find a Setting
+     * @example
+     * // Get one Setting
+     * const setting = await prisma.setting.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends settingFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, settingFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
+
+    /**
+     * Find the first Setting that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {settingFindFirstOrThrowArgs} args - Arguments to find a Setting
+     * @example
+     * // Get one Setting
+     * const setting = await prisma.setting.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends settingFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, settingFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
+
+    /**
+     * Count the number of Settings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {settingCountArgs} args - Arguments to filter Settings to count.
+     * @example
+     * // Count the number of Settings
+     * const count = await prisma.setting.count({
+     *   where: {
+     *     // ... the filter for the Settings we want to count
+     *   }
+     * })
+    **/
+    count<T extends settingCountArgs>(
+      args?: Subset<T, settingCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SettingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Setting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SettingAggregateArgs>(args: Subset<T, SettingAggregateArgs>): PrismaPromise<GetSettingAggregateType<T>>
+
+    /**
+     * Group by Setting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SettingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SettingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SettingGroupByArgs['orderBy'] }
+        : { orderBy?: SettingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SettingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSettingGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for setting.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__settingClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * setting base type for findUnique actions
+   */
+  export type settingFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * Filter, which setting to fetch.
+     * 
+    **/
+    where: settingWhereUniqueInput
+  }
+
+  /**
+   * setting: findUnique
+   */
+  export interface settingFindUniqueArgs extends settingFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * setting base type for findFirst actions
+   */
+  export type settingFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * Filter, which setting to fetch.
+     * 
+    **/
+    where?: settingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of settings to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<settingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for settings.
+     * 
+    **/
+    cursor?: settingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` settings from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` settings.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of settings.
+     * 
+    **/
+    distinct?: Enumerable<SettingScalarFieldEnum>
+  }
+
+  /**
+   * setting: findFirst
+   */
+  export interface settingFindFirstArgs extends settingFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * setting findMany
+   */
+  export type settingFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * Filter, which settings to fetch.
+     * 
+    **/
+    where?: settingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of settings to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<settingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing settings.
+     * 
+    **/
+    cursor?: settingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` settings from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` settings.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<SettingScalarFieldEnum>
+  }
+
+
+  /**
+   * setting create
+   */
+  export type settingCreateArgs = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * The data needed to create a setting.
+     * 
+    **/
+    data: XOR<settingCreateInput, settingUncheckedCreateInput>
+  }
+
+
+  /**
+   * setting createMany
+   */
+  export type settingCreateManyArgs = {
+    /**
+     * The data used to create many settings.
+     * 
+    **/
+    data: Enumerable<settingCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * setting update
+   */
+  export type settingUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * The data needed to update a setting.
+     * 
+    **/
+    data: XOR<settingUpdateInput, settingUncheckedUpdateInput>
+    /**
+     * Choose, which setting to update.
+     * 
+    **/
+    where: settingWhereUniqueInput
+  }
+
+
+  /**
+   * setting updateMany
+   */
+  export type settingUpdateManyArgs = {
+    /**
+     * The data used to update settings.
+     * 
+    **/
+    data: XOR<settingUpdateManyMutationInput, settingUncheckedUpdateManyInput>
+    /**
+     * Filter which settings to update
+     * 
+    **/
+    where?: settingWhereInput
+  }
+
+
+  /**
+   * setting upsert
+   */
+  export type settingUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * The filter to search for the setting to update in case it exists.
+     * 
+    **/
+    where: settingWhereUniqueInput
+    /**
+     * In case the setting found by the `where` argument doesn't exist, create a new setting with this data.
+     * 
+    **/
+    create: XOR<settingCreateInput, settingUncheckedCreateInput>
+    /**
+     * In case the setting was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<settingUpdateInput, settingUncheckedUpdateInput>
+  }
+
+
+  /**
+   * setting delete
+   */
+  export type settingDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+    /**
+     * Filter which setting to delete.
+     * 
+    **/
+    where: settingWhereUniqueInput
+  }
+
+
+  /**
+   * setting deleteMany
+   */
+  export type settingDeleteManyArgs = {
+    /**
+     * Filter which settings to delete
+     * 
+    **/
+    where?: settingWhereInput
+  }
+
+
+  /**
+   * setting: findUniqueOrThrow
+   */
+  export type settingFindUniqueOrThrowArgs = settingFindUniqueArgsBase
+      
+
+  /**
+   * setting: findFirstOrThrow
+   */
+  export type settingFindFirstOrThrowArgs = settingFindFirstArgsBase
+      
+
+  /**
+   * setting without action
+   */
+  export type settingArgs = {
+    /**
+     * Select specific fields to fetch from the setting
+     * 
+    **/
+    select?: settingSelect | null
+  }
+
+
+
+  /**
+   * Model match_raw
+   */
+
+
+  export type AggregateMatch_raw = {
+    _count: Match_rawCountAggregateOutputType | null
+    _avg: Match_rawAvgAggregateOutputType | null
+    _sum: Match_rawSumAggregateOutputType | null
+    _min: Match_rawMinAggregateOutputType | null
+    _max: Match_rawMaxAggregateOutputType | null
+  }
+
+  export type Match_rawAvgAggregateOutputType = {
+    match_id: number | null
+    version: number | null
+  }
+
+  export type Match_rawSumAggregateOutputType = {
+    match_id: number | null
+    version: number | null
+  }
+
+  export type Match_rawMinAggregateOutputType = {
+    match_id: number | null
+    json: string | null
+    version: number | null
+    error: boolean | null
+  }
+
+  export type Match_rawMaxAggregateOutputType = {
+    match_id: number | null
+    json: string | null
+    version: number | null
+    error: boolean | null
+  }
+
+  export type Match_rawCountAggregateOutputType = {
+    match_id: number
+    json: number
+    version: number
+    error: number
+    _all: number
+  }
+
+
+  export type Match_rawAvgAggregateInputType = {
+    match_id?: true
+    version?: true
+  }
+
+  export type Match_rawSumAggregateInputType = {
+    match_id?: true
+    version?: true
+  }
+
+  export type Match_rawMinAggregateInputType = {
+    match_id?: true
+    json?: true
+    version?: true
+    error?: true
+  }
+
+  export type Match_rawMaxAggregateInputType = {
+    match_id?: true
+    json?: true
+    version?: true
+    error?: true
+  }
+
+  export type Match_rawCountAggregateInputType = {
+    match_id?: true
+    json?: true
+    version?: true
+    error?: true
+    _all?: true
+  }
+
+  export type Match_rawAggregateArgs = {
+    /**
+     * Filter which match_raw to aggregate.
+     * 
+    **/
+    where?: match_rawWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of match_raws to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<match_rawOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: match_rawWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` match_raws from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` match_raws.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned match_raws
+    **/
+    _count?: true | Match_rawCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Match_rawAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Match_rawSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Match_rawMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Match_rawMaxAggregateInputType
+  }
+
+  export type GetMatch_rawAggregateType<T extends Match_rawAggregateArgs> = {
+        [P in keyof T & keyof AggregateMatch_raw]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMatch_raw[P]>
+      : GetScalarType<T[P], AggregateMatch_raw[P]>
+  }
+
+
+
+
+  export type Match_rawGroupByArgs = {
+    where?: match_rawWhereInput
+    orderBy?: Enumerable<match_rawOrderByWithAggregationInput>
+    by: Array<Match_rawScalarFieldEnum>
+    having?: match_rawScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Match_rawCountAggregateInputType | true
+    _avg?: Match_rawAvgAggregateInputType
+    _sum?: Match_rawSumAggregateInputType
+    _min?: Match_rawMinAggregateInputType
+    _max?: Match_rawMaxAggregateInputType
+  }
+
+
+  export type Match_rawGroupByOutputType = {
+    match_id: number
+    json: string
+    version: number | null
+    error: boolean | null
+    _count: Match_rawCountAggregateOutputType | null
+    _avg: Match_rawAvgAggregateOutputType | null
+    _sum: Match_rawSumAggregateOutputType | null
+    _min: Match_rawMinAggregateOutputType | null
+    _max: Match_rawMaxAggregateOutputType | null
+  }
+
+  type GetMatch_rawGroupByPayload<T extends Match_rawGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<Match_rawGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Match_rawGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Match_rawGroupByOutputType[P]>
+            : GetScalarType<T[P], Match_rawGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type match_rawSelect = {
+    match_id?: boolean
+    json?: boolean
+    version?: boolean
+    error?: boolean
+  }
+
+  export type match_rawGetPayload<
+    S extends boolean | null | undefined | match_rawArgs,
+    U = keyof S
+      > = S extends true
+        ? match_raw
+    : S extends undefined
+    ? never
+    : S extends match_rawArgs | match_rawFindManyArgs
+    ?'include' extends U
+    ? match_raw 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof match_raw ? match_raw[P] : never
+  } 
+    : match_raw
+  : match_raw
+
+
+  type match_rawCountArgs = Merge<
+    Omit<match_rawFindManyArgs, 'select' | 'include'> & {
+      select?: Match_rawCountAggregateInputType | true
+    }
+  >
+
+  export interface match_rawDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+    /**
+     * Find zero or one Match_raw that matches the filter.
+     * @param {match_rawFindUniqueArgs} args - Arguments to find a Match_raw
+     * @example
+     * // Get one Match_raw
+     * const match_raw = await prisma.match_raw.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends match_rawFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, match_rawFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'match_raw'> extends True ? CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>> : CheckSelect<T, Prisma__match_rawClient<match_raw | null, null>, Prisma__match_rawClient<match_rawGetPayload<T> | null, null>>
+
+    /**
+     * Find the first Match_raw that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_rawFindFirstArgs} args - Arguments to find a Match_raw
+     * @example
+     * // Get one Match_raw
+     * const match_raw = await prisma.match_raw.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends match_rawFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, match_rawFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'match_raw'> extends True ? CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>> : CheckSelect<T, Prisma__match_rawClient<match_raw | null, null>, Prisma__match_rawClient<match_rawGetPayload<T> | null, null>>
+
+    /**
+     * Find zero or more Match_raws that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_rawFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Match_raws
+     * const match_raws = await prisma.match_raw.findMany()
+     * 
+     * // Get first 10 Match_raws
+     * const match_raws = await prisma.match_raw.findMany({ take: 10 })
+     * 
+     * // Only select the `match_id`
+     * const match_rawWithMatch_idOnly = await prisma.match_raw.findMany({ select: { match_id: true } })
+     * 
+    **/
+    findMany<T extends match_rawFindManyArgs>(
+      args?: SelectSubset<T, match_rawFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<match_raw>>, PrismaPromise<Array<match_rawGetPayload<T>>>>
+
+    /**
+     * Create a Match_raw.
+     * @param {match_rawCreateArgs} args - Arguments to create a Match_raw.
+     * @example
+     * // Create one Match_raw
+     * const Match_raw = await prisma.match_raw.create({
+     *   data: {
+     *     // ... data to create a Match_raw
+     *   }
+     * })
+     * 
+    **/
+    create<T extends match_rawCreateArgs>(
+      args: SelectSubset<T, match_rawCreateArgs>
+    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
+
+    /**
+     * Create many Match_raws.
+     *     @param {match_rawCreateManyArgs} args - Arguments to create many Match_raws.
+     *     @example
+     *     // Create many Match_raws
+     *     const match_raw = await prisma.match_raw.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends match_rawCreateManyArgs>(
+      args?: SelectSubset<T, match_rawCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Match_raw.
+     * @param {match_rawDeleteArgs} args - Arguments to delete one Match_raw.
+     * @example
+     * // Delete one Match_raw
+     * const Match_raw = await prisma.match_raw.delete({
+     *   where: {
+     *     // ... filter to delete one Match_raw
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends match_rawDeleteArgs>(
+      args: SelectSubset<T, match_rawDeleteArgs>
+    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
+
+    /**
+     * Update one Match_raw.
+     * @param {match_rawUpdateArgs} args - Arguments to update one Match_raw.
+     * @example
+     * // Update one Match_raw
+     * const match_raw = await prisma.match_raw.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends match_rawUpdateArgs>(
+      args: SelectSubset<T, match_rawUpdateArgs>
+    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
+
+    /**
+     * Delete zero or more Match_raws.
+     * @param {match_rawDeleteManyArgs} args - Arguments to filter Match_raws to delete.
+     * @example
+     * // Delete a few Match_raws
+     * const { count } = await prisma.match_raw.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends match_rawDeleteManyArgs>(
+      args?: SelectSubset<T, match_rawDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Match_raws.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_rawUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Match_raws
+     * const match_raw = await prisma.match_raw.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends match_rawUpdateManyArgs>(
+      args: SelectSubset<T, match_rawUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Match_raw.
+     * @param {match_rawUpsertArgs} args - Arguments to update or create a Match_raw.
+     * @example
+     * // Update or create a Match_raw
+     * const match_raw = await prisma.match_raw.upsert({
+     *   create: {
+     *     // ... data to create a Match_raw
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Match_raw we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends match_rawUpsertArgs>(
+      args: SelectSubset<T, match_rawUpsertArgs>
+    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
+
+    /**
+     * Find one Match_raw that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {match_rawFindUniqueOrThrowArgs} args - Arguments to find a Match_raw
+     * @example
+     * // Get one Match_raw
+     * const match_raw = await prisma.match_raw.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends match_rawFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, match_rawFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
+
+    /**
+     * Find the first Match_raw that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_rawFindFirstOrThrowArgs} args - Arguments to find a Match_raw
+     * @example
+     * // Get one Match_raw
+     * const match_raw = await prisma.match_raw.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends match_rawFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, match_rawFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__match_rawClient<match_raw>, Prisma__match_rawClient<match_rawGetPayload<T>>>
+
+    /**
+     * Count the number of Match_raws.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {match_rawCountArgs} args - Arguments to filter Match_raws to count.
+     * @example
+     * // Count the number of Match_raws
+     * const count = await prisma.match_raw.count({
+     *   where: {
+     *     // ... the filter for the Match_raws we want to count
+     *   }
+     * })
+    **/
+    count<T extends match_rawCountArgs>(
+      args?: Subset<T, match_rawCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Match_rawCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Match_raw.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Match_rawAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Match_rawAggregateArgs>(args: Subset<T, Match_rawAggregateArgs>): PrismaPromise<GetMatch_rawAggregateType<T>>
+
+    /**
+     * Group by Match_raw.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Match_rawGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Match_rawGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Match_rawGroupByArgs['orderBy'] }
+        : { orderBy?: Match_rawGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Match_rawGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMatch_rawGroupByPayload<T> : PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for match_raw.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__match_rawClient<T, Null = never> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * match_raw base type for findUnique actions
+   */
+  export type match_rawFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * Filter, which match_raw to fetch.
+     * 
+    **/
+    where: match_rawWhereUniqueInput
+  }
+
+  /**
+   * match_raw: findUnique
+   */
+  export interface match_rawFindUniqueArgs extends match_rawFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * match_raw base type for findFirst actions
+   */
+  export type match_rawFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * Filter, which match_raw to fetch.
+     * 
+    **/
+    where?: match_rawWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of match_raws to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<match_rawOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for match_raws.
+     * 
+    **/
+    cursor?: match_rawWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` match_raws from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` match_raws.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of match_raws.
+     * 
+    **/
+    distinct?: Enumerable<Match_rawScalarFieldEnum>
+  }
+
+  /**
+   * match_raw: findFirst
+   */
+  export interface match_rawFindFirstArgs extends match_rawFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * match_raw findMany
+   */
+  export type match_rawFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * Filter, which match_raws to fetch.
+     * 
+    **/
+    where?: match_rawWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of match_raws to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<match_rawOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing match_raws.
+     * 
+    **/
+    cursor?: match_rawWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` match_raws from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` match_raws.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<Match_rawScalarFieldEnum>
+  }
+
+
+  /**
+   * match_raw create
+   */
+  export type match_rawCreateArgs = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * The data needed to create a match_raw.
+     * 
+    **/
+    data: XOR<match_rawCreateInput, match_rawUncheckedCreateInput>
+  }
+
+
+  /**
+   * match_raw createMany
+   */
+  export type match_rawCreateManyArgs = {
+    /**
+     * The data used to create many match_raws.
+     * 
+    **/
+    data: Enumerable<match_rawCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * match_raw update
+   */
+  export type match_rawUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * The data needed to update a match_raw.
+     * 
+    **/
+    data: XOR<match_rawUpdateInput, match_rawUncheckedUpdateInput>
+    /**
+     * Choose, which match_raw to update.
+     * 
+    **/
+    where: match_rawWhereUniqueInput
+  }
+
+
+  /**
+   * match_raw updateMany
+   */
+  export type match_rawUpdateManyArgs = {
+    /**
+     * The data used to update match_raws.
+     * 
+    **/
+    data: XOR<match_rawUpdateManyMutationInput, match_rawUncheckedUpdateManyInput>
+    /**
+     * Filter which match_raws to update
+     * 
+    **/
+    where?: match_rawWhereInput
+  }
+
+
+  /**
+   * match_raw upsert
+   */
+  export type match_rawUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * The filter to search for the match_raw to update in case it exists.
+     * 
+    **/
+    where: match_rawWhereUniqueInput
+    /**
+     * In case the match_raw found by the `where` argument doesn't exist, create a new match_raw with this data.
+     * 
+    **/
+    create: XOR<match_rawCreateInput, match_rawUncheckedCreateInput>
+    /**
+     * In case the match_raw was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<match_rawUpdateInput, match_rawUncheckedUpdateInput>
+  }
+
+
+  /**
+   * match_raw delete
+   */
+  export type match_rawDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
+    /**
+     * Filter which match_raw to delete.
+     * 
+    **/
+    where: match_rawWhereUniqueInput
+  }
+
+
+  /**
+   * match_raw deleteMany
+   */
+  export type match_rawDeleteManyArgs = {
+    /**
+     * Filter which match_raws to delete
+     * 
+    **/
+    where?: match_rawWhereInput
+  }
+
+
+  /**
+   * match_raw: findUniqueOrThrow
+   */
+  export type match_rawFindUniqueOrThrowArgs = match_rawFindUniqueArgsBase
+      
+
+  /**
+   * match_raw: findFirstOrThrow
+   */
+  export type match_rawFindFirstOrThrowArgs = match_rawFindFirstArgsBase
+      
+
+  /**
+   * match_raw without action
+   */
+  export type match_rawArgs = {
+    /**
+     * Select specific fields to fetch from the match_raw
+     * 
+    **/
+    select?: match_rawSelect | null
   }
 
 
@@ -9269,866 +10129,6 @@ export namespace Prisma {
 
 
   /**
-   * Model setting
-   */
-
-
-  export type AggregateSetting = {
-    _count: SettingCountAggregateOutputType | null
-    _min: SettingMinAggregateOutputType | null
-    _max: SettingMaxAggregateOutputType | null
-  }
-
-  export type SettingMinAggregateOutputType = {
-    component: string | null
-    key: string | null
-    value: string | null
-  }
-
-  export type SettingMaxAggregateOutputType = {
-    component: string | null
-    key: string | null
-    value: string | null
-  }
-
-  export type SettingCountAggregateOutputType = {
-    component: number
-    key: number
-    value: number
-    _all: number
-  }
-
-
-  export type SettingMinAggregateInputType = {
-    component?: true
-    key?: true
-    value?: true
-  }
-
-  export type SettingMaxAggregateInputType = {
-    component?: true
-    key?: true
-    value?: true
-  }
-
-  export type SettingCountAggregateInputType = {
-    component?: true
-    key?: true
-    value?: true
-    _all?: true
-  }
-
-  export type SettingAggregateArgs = {
-    /**
-     * Filter which setting to aggregate.
-     * 
-    **/
-    where?: settingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of settings to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<settingOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: settingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` settings from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` settings.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned settings
-    **/
-    _count?: true | SettingCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: SettingMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: SettingMaxAggregateInputType
-  }
-
-  export type GetSettingAggregateType<T extends SettingAggregateArgs> = {
-        [P in keyof T & keyof AggregateSetting]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSetting[P]>
-      : GetScalarType<T[P], AggregateSetting[P]>
-  }
-
-
-
-
-  export type SettingGroupByArgs = {
-    where?: settingWhereInput
-    orderBy?: Enumerable<settingOrderByWithAggregationInput>
-    by: Array<SettingScalarFieldEnum>
-    having?: settingScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: SettingCountAggregateInputType | true
-    _min?: SettingMinAggregateInputType
-    _max?: SettingMaxAggregateInputType
-  }
-
-
-  export type SettingGroupByOutputType = {
-    component: string
-    key: string
-    value: string
-    _count: SettingCountAggregateOutputType | null
-    _min: SettingMinAggregateOutputType | null
-    _max: SettingMaxAggregateOutputType | null
-  }
-
-  type GetSettingGroupByPayload<T extends SettingGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<SettingGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof SettingGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], SettingGroupByOutputType[P]>
-            : GetScalarType<T[P], SettingGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type settingSelect = {
-    component?: boolean
-    key?: boolean
-    value?: boolean
-  }
-
-  export type settingGetPayload<
-    S extends boolean | null | undefined | settingArgs,
-    U = keyof S
-      > = S extends true
-        ? setting
-    : S extends undefined
-    ? never
-    : S extends settingArgs | settingFindManyArgs
-    ?'include' extends U
-    ? setting 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-    P extends keyof setting ? setting[P] : never
-  } 
-    : setting
-  : setting
-
-
-  type settingCountArgs = Merge<
-    Omit<settingFindManyArgs, 'select' | 'include'> & {
-      select?: SettingCountAggregateInputType | true
-    }
-  >
-
-  export interface settingDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one Setting that matches the filter.
-     * @param {settingFindUniqueArgs} args - Arguments to find a Setting
-     * @example
-     * // Get one Setting
-     * const setting = await prisma.setting.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends settingFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, settingFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'setting'> extends True ? CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>> : CheckSelect<T, Prisma__settingClient<setting | null, null>, Prisma__settingClient<settingGetPayload<T> | null, null>>
-
-    /**
-     * Find the first Setting that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {settingFindFirstArgs} args - Arguments to find a Setting
-     * @example
-     * // Get one Setting
-     * const setting = await prisma.setting.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends settingFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, settingFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'setting'> extends True ? CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>> : CheckSelect<T, Prisma__settingClient<setting | null, null>, Prisma__settingClient<settingGetPayload<T> | null, null>>
-
-    /**
-     * Find zero or more Settings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {settingFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Settings
-     * const settings = await prisma.setting.findMany()
-     * 
-     * // Get first 10 Settings
-     * const settings = await prisma.setting.findMany({ take: 10 })
-     * 
-     * // Only select the `component`
-     * const settingWithComponentOnly = await prisma.setting.findMany({ select: { component: true } })
-     * 
-    **/
-    findMany<T extends settingFindManyArgs>(
-      args?: SelectSubset<T, settingFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<setting>>, PrismaPromise<Array<settingGetPayload<T>>>>
-
-    /**
-     * Create a Setting.
-     * @param {settingCreateArgs} args - Arguments to create a Setting.
-     * @example
-     * // Create one Setting
-     * const Setting = await prisma.setting.create({
-     *   data: {
-     *     // ... data to create a Setting
-     *   }
-     * })
-     * 
-    **/
-    create<T extends settingCreateArgs>(
-      args: SelectSubset<T, settingCreateArgs>
-    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
-
-    /**
-     * Create many Settings.
-     *     @param {settingCreateManyArgs} args - Arguments to create many Settings.
-     *     @example
-     *     // Create many Settings
-     *     const setting = await prisma.setting.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends settingCreateManyArgs>(
-      args?: SelectSubset<T, settingCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Setting.
-     * @param {settingDeleteArgs} args - Arguments to delete one Setting.
-     * @example
-     * // Delete one Setting
-     * const Setting = await prisma.setting.delete({
-     *   where: {
-     *     // ... filter to delete one Setting
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends settingDeleteArgs>(
-      args: SelectSubset<T, settingDeleteArgs>
-    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
-
-    /**
-     * Update one Setting.
-     * @param {settingUpdateArgs} args - Arguments to update one Setting.
-     * @example
-     * // Update one Setting
-     * const setting = await prisma.setting.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends settingUpdateArgs>(
-      args: SelectSubset<T, settingUpdateArgs>
-    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
-
-    /**
-     * Delete zero or more Settings.
-     * @param {settingDeleteManyArgs} args - Arguments to filter Settings to delete.
-     * @example
-     * // Delete a few Settings
-     * const { count } = await prisma.setting.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends settingDeleteManyArgs>(
-      args?: SelectSubset<T, settingDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {settingUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Settings
-     * const setting = await prisma.setting.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends settingUpdateManyArgs>(
-      args: SelectSubset<T, settingUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Setting.
-     * @param {settingUpsertArgs} args - Arguments to update or create a Setting.
-     * @example
-     * // Update or create a Setting
-     * const setting = await prisma.setting.upsert({
-     *   create: {
-     *     // ... data to create a Setting
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Setting we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends settingUpsertArgs>(
-      args: SelectSubset<T, settingUpsertArgs>
-    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
-
-    /**
-     * Find one Setting that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {settingFindUniqueOrThrowArgs} args - Arguments to find a Setting
-     * @example
-     * // Get one Setting
-     * const setting = await prisma.setting.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends settingFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, settingFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
-
-    /**
-     * Find the first Setting that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {settingFindFirstOrThrowArgs} args - Arguments to find a Setting
-     * @example
-     * // Get one Setting
-     * const setting = await prisma.setting.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends settingFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, settingFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__settingClient<setting>, Prisma__settingClient<settingGetPayload<T>>>
-
-    /**
-     * Count the number of Settings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {settingCountArgs} args - Arguments to filter Settings to count.
-     * @example
-     * // Count the number of Settings
-     * const count = await prisma.setting.count({
-     *   where: {
-     *     // ... the filter for the Settings we want to count
-     *   }
-     * })
-    **/
-    count<T extends settingCountArgs>(
-      args?: Subset<T, settingCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], SettingCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Setting.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SettingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends SettingAggregateArgs>(args: Subset<T, SettingAggregateArgs>): PrismaPromise<GetSettingAggregateType<T>>
-
-    /**
-     * Group by Setting.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SettingGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends SettingGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SettingGroupByArgs['orderBy'] }
-        : { orderBy?: SettingGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, SettingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSettingGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for setting.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__settingClient<T, Null = never> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * setting base type for findUnique actions
-   */
-  export type settingFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * Filter, which setting to fetch.
-     * 
-    **/
-    where: settingWhereUniqueInput
-  }
-
-  /**
-   * setting: findUnique
-   */
-  export interface settingFindUniqueArgs extends settingFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * setting base type for findFirst actions
-   */
-  export type settingFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * Filter, which setting to fetch.
-     * 
-    **/
-    where?: settingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of settings to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<settingOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for settings.
-     * 
-    **/
-    cursor?: settingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` settings from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` settings.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of settings.
-     * 
-    **/
-    distinct?: Enumerable<SettingScalarFieldEnum>
-  }
-
-  /**
-   * setting: findFirst
-   */
-  export interface settingFindFirstArgs extends settingFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * setting findMany
-   */
-  export type settingFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * Filter, which settings to fetch.
-     * 
-    **/
-    where?: settingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of settings to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<settingOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing settings.
-     * 
-    **/
-    cursor?: settingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` settings from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` settings.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<SettingScalarFieldEnum>
-  }
-
-
-  /**
-   * setting create
-   */
-  export type settingCreateArgs = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * The data needed to create a setting.
-     * 
-    **/
-    data: XOR<settingCreateInput, settingUncheckedCreateInput>
-  }
-
-
-  /**
-   * setting createMany
-   */
-  export type settingCreateManyArgs = {
-    /**
-     * The data used to create many settings.
-     * 
-    **/
-    data: Enumerable<settingCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * setting update
-   */
-  export type settingUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * The data needed to update a setting.
-     * 
-    **/
-    data: XOR<settingUpdateInput, settingUncheckedUpdateInput>
-    /**
-     * Choose, which setting to update.
-     * 
-    **/
-    where: settingWhereUniqueInput
-  }
-
-
-  /**
-   * setting updateMany
-   */
-  export type settingUpdateManyArgs = {
-    /**
-     * The data used to update settings.
-     * 
-    **/
-    data: XOR<settingUpdateManyMutationInput, settingUncheckedUpdateManyInput>
-    /**
-     * Filter which settings to update
-     * 
-    **/
-    where?: settingWhereInput
-  }
-
-
-  /**
-   * setting upsert
-   */
-  export type settingUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * The filter to search for the setting to update in case it exists.
-     * 
-    **/
-    where: settingWhereUniqueInput
-    /**
-     * In case the setting found by the `where` argument doesn't exist, create a new setting with this data.
-     * 
-    **/
-    create: XOR<settingCreateInput, settingUncheckedCreateInput>
-    /**
-     * In case the setting was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<settingUpdateInput, settingUncheckedUpdateInput>
-  }
-
-
-  /**
-   * setting delete
-   */
-  export type settingDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-    /**
-     * Filter which setting to delete.
-     * 
-    **/
-    where: settingWhereUniqueInput
-  }
-
-
-  /**
-   * setting deleteMany
-   */
-  export type settingDeleteManyArgs = {
-    /**
-     * Filter which settings to delete
-     * 
-    **/
-    where?: settingWhereInput
-  }
-
-
-  /**
-   * setting: findUniqueOrThrow
-   */
-  export type settingFindUniqueOrThrowArgs = settingFindUniqueArgsBase
-      
-
-  /**
-   * setting: findFirstOrThrow
-   */
-  export type settingFindFirstOrThrowArgs = settingFindFirstArgsBase
-      
-
-  /**
-   * setting without action
-   */
-  export type settingArgs = {
-    /**
-     * Select specific fields to fetch from the setting
-     * 
-    **/
-    select?: settingSelect | null
-  }
-
-
-
-  /**
    * Model smaller_match
    */
 
@@ -10665,12 +10665,12 @@ export namespace Prisma {
     victory?: boolean
     victory_time?: boolean
     visibility?: boolean
-    smaller_player?: boolean | smaller_playerFindManyArgs
+    players?: boolean | smaller_playerFindManyArgs
     _count?: boolean | Smaller_matchCountOutputTypeArgs
   }
 
   export type smaller_matchInclude = {
-    smaller_player?: boolean | smaller_playerFindManyArgs
+    players?: boolean | smaller_playerFindManyArgs
     _count?: boolean | Smaller_matchCountOutputTypeArgs
   }
 
@@ -10685,13 +10685,13 @@ export namespace Prisma {
     ?'include' extends U
     ? smaller_match  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'smaller_player' ? Array < smaller_playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'players' ? Array < smaller_playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
         P extends '_count' ? Smaller_matchCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'smaller_player' ? Array < smaller_playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'players' ? Array < smaller_playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
         P extends '_count' ? Smaller_matchCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof smaller_match ? smaller_match[P] : never
   } 
     : smaller_match
@@ -11067,7 +11067,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    smaller_player<T extends smaller_playerFindManyArgs = {}>(args?: Subset<T, smaller_playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<smaller_player>| Null>, PrismaPromise<Array<smaller_playerGetPayload<T>>| Null>>;
+    players<T extends smaller_playerFindManyArgs = {}>(args?: Subset<T, smaller_playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<smaller_player>| Null>, PrismaPromise<Array<smaller_playerGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -11664,13 +11664,13 @@ export namespace Prisma {
     team?: boolean
     color?: boolean
     won?: boolean
-    smaller_match?: boolean | smaller_matchArgs
-    smaller_profile?: boolean | smaller_profileArgs
+    match?: boolean | smaller_matchArgs
+    profile?: boolean | smaller_profileArgs
   }
 
   export type smaller_playerInclude = {
-    smaller_match?: boolean | smaller_matchArgs
-    smaller_profile?: boolean | smaller_profileArgs
+    match?: boolean | smaller_matchArgs
+    profile?: boolean | smaller_profileArgs
   }
 
   export type smaller_playerGetPayload<
@@ -11684,14 +11684,14 @@ export namespace Prisma {
     ?'include' extends U
     ? smaller_player  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'smaller_match' ? smaller_matchGetPayload<Exclude<S['include'], undefined | null>[P]> :
-        P extends 'smaller_profile' ? smaller_profileGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
+        P extends 'match' ? smaller_matchGetPayload<Exclude<S['include'], undefined | null>[P]> :
+        P extends 'profile' ? smaller_profileGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'smaller_match' ? smaller_matchGetPayload<Exclude<S['select'], undefined | null>[P]> :
-        P extends 'smaller_profile' ? smaller_profileGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof smaller_player ? smaller_player[P] : never
+        P extends 'match' ? smaller_matchGetPayload<Exclude<S['select'], undefined | null>[P]> :
+        P extends 'profile' ? smaller_profileGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof smaller_player ? smaller_player[P] : never
   } 
     : smaller_player
   : smaller_player
@@ -12066,9 +12066,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    smaller_match<T extends smaller_matchArgs = {}>(args?: Subset<T, smaller_matchArgs>): CheckSelect<T, Prisma__smaller_matchClient<smaller_match | Null>, Prisma__smaller_matchClient<smaller_matchGetPayload<T> | Null>>;
+    match<T extends smaller_matchArgs = {}>(args?: Subset<T, smaller_matchArgs>): CheckSelect<T, Prisma__smaller_matchClient<smaller_match | Null>, Prisma__smaller_matchClient<smaller_matchGetPayload<T> | Null>>;
 
-    smaller_profile<T extends smaller_profileArgs = {}>(args?: Subset<T, smaller_profileArgs>): CheckSelect<T, Prisma__smaller_profileClient<smaller_profile | Null>, Prisma__smaller_profileClient<smaller_profileGetPayload<T> | Null>>;
+    profile<T extends smaller_profileArgs = {}>(args?: Subset<T, smaller_profileArgs>): CheckSelect<T, Prisma__smaller_profileClient<smaller_profile | Null>, Prisma__smaller_profileClient<smaller_profileGetPayload<T> | Null>>;
 
     private get _document();
     /**
@@ -12653,12 +12653,12 @@ export namespace Prisma {
     country?: boolean
     avatarhash?: boolean
     last_match_fetched_time?: boolean
-    smaller_player?: boolean | smaller_playerFindManyArgs
+    players?: boolean | smaller_playerFindManyArgs
     _count?: boolean | Smaller_profileCountOutputTypeArgs
   }
 
   export type smaller_profileInclude = {
-    smaller_player?: boolean | smaller_playerFindManyArgs
+    players?: boolean | smaller_playerFindManyArgs
     _count?: boolean | Smaller_profileCountOutputTypeArgs
   }
 
@@ -12673,13 +12673,13 @@ export namespace Prisma {
     ?'include' extends U
     ? smaller_profile  & {
     [P in TrueKeys<S['include']>]:
-        P extends 'smaller_player' ? Array < smaller_playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
+        P extends 'players' ? Array < smaller_playerGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
         P extends '_count' ? Smaller_profileCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'smaller_player' ? Array < smaller_playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
+        P extends 'players' ? Array < smaller_playerGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
         P extends '_count' ? Smaller_profileCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof smaller_profile ? smaller_profile[P] : never
   } 
     : smaller_profile
@@ -13055,7 +13055,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    smaller_player<T extends smaller_playerFindManyArgs = {}>(args?: Subset<T, smaller_playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<smaller_player>| Null>, PrismaPromise<Array<smaller_playerGetPayload<T>>| Null>>;
+    players<T extends smaller_playerFindManyArgs = {}>(args?: Subset<T, smaller_playerFindManyArgs>): CheckSelect<T, PrismaPromise<Array<smaller_player>| Null>, PrismaPromise<Array<smaller_playerGetPayload<T>>| Null>>;
 
     private get _document();
     /**
@@ -13653,35 +13653,6 @@ export namespace Prisma {
    */
 
 
-  export type api_keyWhereInput = {
-    AND?: Enumerable<api_keyWhereInput>
-    OR?: Enumerable<api_keyWhereInput>
-    NOT?: Enumerable<api_keyWhereInput>
-    api_key?: StringFilter | string
-  }
-
-  export type api_keyOrderByWithRelationInput = {
-    api_key?: SortOrder
-  }
-
-  export type api_keyWhereUniqueInput = {
-    api_key?: string
-  }
-
-  export type api_keyOrderByWithAggregationInput = {
-    api_key?: SortOrder
-    _count?: api_keyCountOrderByAggregateInput
-    _max?: api_keyMaxOrderByAggregateInput
-    _min?: api_keyMinOrderByAggregateInput
-  }
-
-  export type api_keyScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<api_keyScalarWhereWithAggregatesInput>
-    OR?: Enumerable<api_keyScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<api_keyScalarWhereWithAggregatesInput>
-    api_key?: StringWithAggregatesFilter | string
-  }
-
   export type leaderboard_rowWhereInput = {
     AND?: Enumerable<leaderboard_rowWhereInput>
     OR?: Enumerable<leaderboard_rowWhereInput>
@@ -13796,8 +13767,8 @@ export namespace Prisma {
     leaderboard_id?: IntNullableFilter | number | null
     privacy?: IntNullableFilter | number | null
     creator_profile_id?: IntNullableFilter | number | null
-    profile?: XOR<ProfileRelationFilter, profileWhereInput> | null
-    player?: PlayerListRelationFilter
+    creator_profile?: XOR<ProfileRelationFilter, profileWhereInput> | null
+    players?: PlayerListRelationFilter
   }
 
   export type matchOrderByWithRelationInput = {
@@ -13834,8 +13805,8 @@ export namespace Prisma {
     leaderboard_id?: SortOrder
     privacy?: SortOrder
     creator_profile_id?: SortOrder
-    profile?: profileOrderByWithRelationInput
-    player?: playerOrderByRelationAggregateInput
+    creator_profile?: profileOrderByWithRelationInput
+    players?: playerOrderByRelationAggregateInput
   }
 
   export type matchWhereUniqueInput = {
@@ -13920,84 +13891,6 @@ export namespace Prisma {
     leaderboard_id?: IntNullableWithAggregatesFilter | number | null
     privacy?: IntNullableWithAggregatesFilter | number | null
     creator_profile_id?: IntNullableWithAggregatesFilter | number | null
-  }
-
-  export type match_pendingWhereInput = {
-    AND?: Enumerable<match_pendingWhereInput>
-    OR?: Enumerable<match_pendingWhereInput>
-    NOT?: Enumerable<match_pendingWhereInput>
-    profile_id?: IntFilter | number
-    priority?: IntFilter | number
-  }
-
-  export type match_pendingOrderByWithRelationInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type match_pendingWhereUniqueInput = {
-    profile_id?: number
-  }
-
-  export type match_pendingOrderByWithAggregationInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-    _count?: match_pendingCountOrderByAggregateInput
-    _avg?: match_pendingAvgOrderByAggregateInput
-    _max?: match_pendingMaxOrderByAggregateInput
-    _min?: match_pendingMinOrderByAggregateInput
-    _sum?: match_pendingSumOrderByAggregateInput
-  }
-
-  export type match_pendingScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<match_pendingScalarWhereWithAggregatesInput>
-    OR?: Enumerable<match_pendingScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<match_pendingScalarWhereWithAggregatesInput>
-    profile_id?: IntWithAggregatesFilter | number
-    priority?: IntWithAggregatesFilter | number
-  }
-
-  export type match_rawWhereInput = {
-    AND?: Enumerable<match_rawWhereInput>
-    OR?: Enumerable<match_rawWhereInput>
-    NOT?: Enumerable<match_rawWhereInput>
-    match_id?: IntFilter | number
-    json?: StringFilter | string
-    version?: IntNullableFilter | number | null
-    error?: BoolNullableFilter | boolean | null
-  }
-
-  export type match_rawOrderByWithRelationInput = {
-    match_id?: SortOrder
-    json?: SortOrder
-    version?: SortOrder
-    error?: SortOrder
-  }
-
-  export type match_rawWhereUniqueInput = {
-    match_id?: number
-  }
-
-  export type match_rawOrderByWithAggregationInput = {
-    match_id?: SortOrder
-    json?: SortOrder
-    version?: SortOrder
-    error?: SortOrder
-    _count?: match_rawCountOrderByAggregateInput
-    _avg?: match_rawAvgOrderByAggregateInput
-    _max?: match_rawMaxOrderByAggregateInput
-    _min?: match_rawMinOrderByAggregateInput
-    _sum?: match_rawSumOrderByAggregateInput
-  }
-
-  export type match_rawScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<match_rawScalarWhereWithAggregatesInput>
-    OR?: Enumerable<match_rawScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<match_rawScalarWhereWithAggregatesInput>
-    match_id?: IntWithAggregatesFilter | number
-    json?: StringWithAggregatesFilter | string
-    version?: IntNullableWithAggregatesFilter | number | null
-    error?: BoolNullableWithAggregatesFilter | boolean | null
   }
 
   export type playerWhereInput = {
@@ -14085,8 +13978,8 @@ export namespace Prisma {
     last_match_fetched_time?: DateTimeNullableFilter | Date | string | null
     last_refresh?: DateTimeNullableFilter | Date | string | null
     leaderboard_row?: Leaderboard_rowListRelationFilter
-    match?: MatchListRelationFilter
-    player?: PlayerListRelationFilter
+    created_matches?: MatchListRelationFilter
+    players?: PlayerListRelationFilter
   }
 
   export type profileOrderByWithRelationInput = {
@@ -14100,8 +13993,8 @@ export namespace Prisma {
     last_match_fetched_time?: SortOrder
     last_refresh?: SortOrder
     leaderboard_row?: leaderboard_rowOrderByRelationAggregateInput
-    match?: matchOrderByRelationAggregateInput
-    player?: playerOrderByRelationAggregateInput
+    created_matches?: matchOrderByRelationAggregateInput
+    players?: playerOrderByRelationAggregateInput
   }
 
   export type profileWhereUniqueInput = {
@@ -14138,6 +14031,150 @@ export namespace Prisma {
     avatarhash?: StringNullableWithAggregatesFilter | string | null
     last_match_fetched_time?: DateTimeNullableWithAggregatesFilter | Date | string | null
     last_refresh?: DateTimeNullableWithAggregatesFilter | Date | string | null
+  }
+
+  export type match_pendingWhereInput = {
+    AND?: Enumerable<match_pendingWhereInput>
+    OR?: Enumerable<match_pendingWhereInput>
+    NOT?: Enumerable<match_pendingWhereInput>
+    profile_id?: IntFilter | number
+    priority?: IntFilter | number
+  }
+
+  export type match_pendingOrderByWithRelationInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type match_pendingWhereUniqueInput = {
+    profile_id?: number
+  }
+
+  export type match_pendingOrderByWithAggregationInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+    _count?: match_pendingCountOrderByAggregateInput
+    _avg?: match_pendingAvgOrderByAggregateInput
+    _max?: match_pendingMaxOrderByAggregateInput
+    _min?: match_pendingMinOrderByAggregateInput
+    _sum?: match_pendingSumOrderByAggregateInput
+  }
+
+  export type match_pendingScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<match_pendingScalarWhereWithAggregatesInput>
+    OR?: Enumerable<match_pendingScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<match_pendingScalarWhereWithAggregatesInput>
+    profile_id?: IntWithAggregatesFilter | number
+    priority?: IntWithAggregatesFilter | number
+  }
+
+  export type api_keyWhereInput = {
+    AND?: Enumerable<api_keyWhereInput>
+    OR?: Enumerable<api_keyWhereInput>
+    NOT?: Enumerable<api_keyWhereInput>
+    api_key?: StringFilter | string
+  }
+
+  export type api_keyOrderByWithRelationInput = {
+    api_key?: SortOrder
+  }
+
+  export type api_keyWhereUniqueInput = {
+    api_key?: string
+  }
+
+  export type api_keyOrderByWithAggregationInput = {
+    api_key?: SortOrder
+    _count?: api_keyCountOrderByAggregateInput
+    _max?: api_keyMaxOrderByAggregateInput
+    _min?: api_keyMinOrderByAggregateInput
+  }
+
+  export type api_keyScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<api_keyScalarWhereWithAggregatesInput>
+    OR?: Enumerable<api_keyScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<api_keyScalarWhereWithAggregatesInput>
+    api_key?: StringWithAggregatesFilter | string
+  }
+
+  export type settingWhereInput = {
+    AND?: Enumerable<settingWhereInput>
+    OR?: Enumerable<settingWhereInput>
+    NOT?: Enumerable<settingWhereInput>
+    component?: StringFilter | string
+    key?: StringFilter | string
+    value?: StringFilter | string
+  }
+
+  export type settingOrderByWithRelationInput = {
+    component?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type settingWhereUniqueInput = {
+    component_key?: settingComponentKeyCompoundUniqueInput
+  }
+
+  export type settingOrderByWithAggregationInput = {
+    component?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+    _count?: settingCountOrderByAggregateInput
+    _max?: settingMaxOrderByAggregateInput
+    _min?: settingMinOrderByAggregateInput
+  }
+
+  export type settingScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<settingScalarWhereWithAggregatesInput>
+    OR?: Enumerable<settingScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<settingScalarWhereWithAggregatesInput>
+    component?: StringWithAggregatesFilter | string
+    key?: StringWithAggregatesFilter | string
+    value?: StringWithAggregatesFilter | string
+  }
+
+  export type match_rawWhereInput = {
+    AND?: Enumerable<match_rawWhereInput>
+    OR?: Enumerable<match_rawWhereInput>
+    NOT?: Enumerable<match_rawWhereInput>
+    match_id?: IntFilter | number
+    json?: StringFilter | string
+    version?: IntNullableFilter | number | null
+    error?: BoolNullableFilter | boolean | null
+  }
+
+  export type match_rawOrderByWithRelationInput = {
+    match_id?: SortOrder
+    json?: SortOrder
+    version?: SortOrder
+    error?: SortOrder
+  }
+
+  export type match_rawWhereUniqueInput = {
+    match_id?: number
+  }
+
+  export type match_rawOrderByWithAggregationInput = {
+    match_id?: SortOrder
+    json?: SortOrder
+    version?: SortOrder
+    error?: SortOrder
+    _count?: match_rawCountOrderByAggregateInput
+    _avg?: match_rawAvgOrderByAggregateInput
+    _max?: match_rawMaxOrderByAggregateInput
+    _min?: match_rawMinOrderByAggregateInput
+    _sum?: match_rawSumOrderByAggregateInput
+  }
+
+  export type match_rawScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<match_rawScalarWhereWithAggregatesInput>
+    OR?: Enumerable<match_rawScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<match_rawScalarWhereWithAggregatesInput>
+    match_id?: IntWithAggregatesFilter | number
+    json?: StringWithAggregatesFilter | string
+    version?: IntNullableWithAggregatesFilter | number | null
+    error?: BoolNullableWithAggregatesFilter | boolean | null
   }
 
   export type ratingWhereInput = {
@@ -14191,43 +14228,6 @@ export namespace Prisma {
     rating_diff?: IntNullableWithAggregatesFilter | number | null
   }
 
-  export type settingWhereInput = {
-    AND?: Enumerable<settingWhereInput>
-    OR?: Enumerable<settingWhereInput>
-    NOT?: Enumerable<settingWhereInput>
-    component?: StringFilter | string
-    key?: StringFilter | string
-    value?: StringFilter | string
-  }
-
-  export type settingOrderByWithRelationInput = {
-    component?: SortOrder
-    key?: SortOrder
-    value?: SortOrder
-  }
-
-  export type settingWhereUniqueInput = {
-    component_key?: settingComponentKeyCompoundUniqueInput
-  }
-
-  export type settingOrderByWithAggregationInput = {
-    component?: SortOrder
-    key?: SortOrder
-    value?: SortOrder
-    _count?: settingCountOrderByAggregateInput
-    _max?: settingMaxOrderByAggregateInput
-    _min?: settingMinOrderByAggregateInput
-  }
-
-  export type settingScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<settingScalarWhereWithAggregatesInput>
-    OR?: Enumerable<settingScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<settingScalarWhereWithAggregatesInput>
-    component?: StringWithAggregatesFilter | string
-    key?: StringWithAggregatesFilter | string
-    value?: StringWithAggregatesFilter | string
-  }
-
   export type smaller_matchWhereInput = {
     AND?: Enumerable<smaller_matchWhereInput>
     OR?: Enumerable<smaller_matchWhereInput>
@@ -14269,7 +14269,7 @@ export namespace Prisma {
     victory?: IntNullableFilter | number | null
     victory_time?: IntNullableFilter | number | null
     visibility?: IntNullableFilter | number | null
-    smaller_player?: Smaller_playerListRelationFilter
+    players?: Smaller_playerListRelationFilter
   }
 
   export type smaller_matchOrderByWithRelationInput = {
@@ -14310,7 +14310,7 @@ export namespace Prisma {
     victory?: SortOrder
     victory_time?: SortOrder
     visibility?: SortOrder
-    smaller_player?: smaller_playerOrderByRelationAggregateInput
+    players?: smaller_playerOrderByRelationAggregateInput
   }
 
   export type smaller_matchWhereUniqueInput = {
@@ -14416,8 +14416,8 @@ export namespace Prisma {
     team?: IntNullableFilter | number | null
     color?: IntNullableFilter | number | null
     won?: BoolNullableFilter | boolean | null
-    smaller_match?: XOR<Smaller_matchRelationFilter, smaller_matchWhereInput>
-    smaller_profile?: XOR<Smaller_profileRelationFilter, smaller_profileWhereInput>
+    match?: XOR<Smaller_matchRelationFilter, smaller_matchWhereInput>
+    profile?: XOR<Smaller_profileRelationFilter, smaller_profileWhereInput>
   }
 
   export type smaller_playerOrderByWithRelationInput = {
@@ -14428,8 +14428,8 @@ export namespace Prisma {
     team?: SortOrder
     color?: SortOrder
     won?: SortOrder
-    smaller_match?: smaller_matchOrderByWithRelationInput
-    smaller_profile?: smaller_profileOrderByWithRelationInput
+    match?: smaller_matchOrderByWithRelationInput
+    profile?: smaller_profileOrderByWithRelationInput
   }
 
   export type smaller_playerWhereUniqueInput = {
@@ -14476,7 +14476,7 @@ export namespace Prisma {
     country?: StringNullableFilter | string | null
     avatarhash?: StringNullableFilter | string | null
     last_match_fetched_time?: DateTimeNullableFilter | Date | string | null
-    smaller_player?: Smaller_playerListRelationFilter
+    players?: Smaller_playerListRelationFilter
   }
 
   export type smaller_profileOrderByWithRelationInput = {
@@ -14488,7 +14488,7 @@ export namespace Prisma {
     country?: SortOrder
     avatarhash?: SortOrder
     last_match_fetched_time?: SortOrder
-    smaller_player?: smaller_playerOrderByRelationAggregateInput
+    players?: smaller_playerOrderByRelationAggregateInput
   }
 
   export type smaller_profileWhereUniqueInput = {
@@ -14525,34 +14525,6 @@ export namespace Prisma {
     last_match_fetched_time?: DateTimeNullableWithAggregatesFilter | Date | string | null
   }
 
-  export type api_keyCreateInput = {
-    api_key: string
-  }
-
-  export type api_keyUncheckedCreateInput = {
-    api_key: string
-  }
-
-  export type api_keyUpdateInput = {
-    api_key?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type api_keyUncheckedUpdateInput = {
-    api_key?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type api_keyCreateManyInput = {
-    api_key: string
-  }
-
-  export type api_keyUpdateManyMutationInput = {
-    api_key?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type api_keyUncheckedUpdateManyInput = {
-    api_key?: StringFieldUpdateOperationsInput | string
-  }
-
   export type leaderboard_rowCreateInput = {
     leaderboard_id: number
     name: string
@@ -14563,7 +14535,7 @@ export namespace Prisma {
     losses?: number | null
     streak?: number | null
     wins?: number | null
-    updated_at: Date | string
+    updated_at?: Date | string
     rank_country?: number | null
     profile: profileCreateNestedOneWithoutLeaderboard_rowInput
   }
@@ -14579,7 +14551,7 @@ export namespace Prisma {
     losses?: number | null
     streak?: number | null
     wins?: number | null
-    updated_at: Date | string
+    updated_at?: Date | string
     rank_country?: number | null
   }
 
@@ -14624,7 +14596,7 @@ export namespace Prisma {
     losses?: number | null
     streak?: number | null
     wins?: number | null
-    updated_at: Date | string
+    updated_at?: Date | string
     rank_country?: number | null
   }
 
@@ -14690,8 +14662,8 @@ export namespace Prisma {
     internal_leaderboard_id?: number | null
     leaderboard_id?: number | null
     privacy?: number | null
-    profile?: profileCreateNestedOneWithoutMatchInput
-    player?: playerCreateNestedManyWithoutMatchInput
+    creator_profile?: profileCreateNestedOneWithoutCreated_matchesInput
+    players?: playerCreateNestedManyWithoutMatchInput
   }
 
   export type matchUncheckedCreateInput = {
@@ -14728,7 +14700,7 @@ export namespace Prisma {
     leaderboard_id?: number | null
     privacy?: number | null
     creator_profile_id?: number | null
-    player?: playerUncheckedCreateNestedManyWithoutMatchInput
+    players?: playerUncheckedCreateNestedManyWithoutMatchInput
   }
 
   export type matchUpdateInput = {
@@ -14764,8 +14736,8 @@ export namespace Prisma {
     internal_leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     privacy?: NullableIntFieldUpdateOperationsInput | number | null
-    profile?: profileUpdateOneWithoutMatchNestedInput
-    player?: playerUpdateManyWithoutMatchNestedInput
+    creator_profile?: profileUpdateOneWithoutCreated_matchesNestedInput
+    players?: playerUpdateManyWithoutMatchNestedInput
   }
 
   export type matchUncheckedUpdateInput = {
@@ -14802,7 +14774,7 @@ export namespace Prisma {
     leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     privacy?: NullableIntFieldUpdateOperationsInput | number | null
     creator_profile_id?: NullableIntFieldUpdateOperationsInput | number | null
-    player?: playerUncheckedUpdateManyWithoutMatchNestedInput
+    players?: playerUncheckedUpdateManyWithoutMatchNestedInput
   }
 
   export type matchCreateManyInput = {
@@ -14912,90 +14884,6 @@ export namespace Prisma {
     creator_profile_id?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type match_pendingCreateInput = {
-    profile_id: number
-    priority: number
-  }
-
-  export type match_pendingUncheckedCreateInput = {
-    profile_id: number
-    priority: number
-  }
-
-  export type match_pendingUpdateInput = {
-    profile_id?: IntFieldUpdateOperationsInput | number
-    priority?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type match_pendingUncheckedUpdateInput = {
-    profile_id?: IntFieldUpdateOperationsInput | number
-    priority?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type match_pendingCreateManyInput = {
-    profile_id: number
-    priority: number
-  }
-
-  export type match_pendingUpdateManyMutationInput = {
-    profile_id?: IntFieldUpdateOperationsInput | number
-    priority?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type match_pendingUncheckedUpdateManyInput = {
-    profile_id?: IntFieldUpdateOperationsInput | number
-    priority?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type match_rawCreateInput = {
-    match_id: number
-    json: string
-    version?: number | null
-    error?: boolean | null
-  }
-
-  export type match_rawUncheckedCreateInput = {
-    match_id: number
-    json: string
-    version?: number | null
-    error?: boolean | null
-  }
-
-  export type match_rawUpdateInput = {
-    match_id?: IntFieldUpdateOperationsInput | number
-    json?: StringFieldUpdateOperationsInput | string
-    version?: NullableIntFieldUpdateOperationsInput | number | null
-    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
-  }
-
-  export type match_rawUncheckedUpdateInput = {
-    match_id?: IntFieldUpdateOperationsInput | number
-    json?: StringFieldUpdateOperationsInput | string
-    version?: NullableIntFieldUpdateOperationsInput | number | null
-    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
-  }
-
-  export type match_rawCreateManyInput = {
-    match_id: number
-    json: string
-    version?: number | null
-    error?: boolean | null
-  }
-
-  export type match_rawUpdateManyMutationInput = {
-    match_id?: IntFieldUpdateOperationsInput | number
-    json?: StringFieldUpdateOperationsInput | string
-    version?: NullableIntFieldUpdateOperationsInput | number | null
-    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
-  }
-
-  export type match_rawUncheckedUpdateManyInput = {
-    match_id?: IntFieldUpdateOperationsInput | number
-    json?: StringFieldUpdateOperationsInput | string
-    version?: NullableIntFieldUpdateOperationsInput | number | null
-    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
-  }
-
   export type playerCreateInput = {
     civ?: number | null
     slot: number
@@ -15005,8 +14893,8 @@ export namespace Prisma {
     status: number
     won?: boolean | null
     replay?: boolean | null
-    match: matchCreateNestedOneWithoutPlayerInput
-    profile: profileCreateNestedOneWithoutPlayerInput
+    match: matchCreateNestedOneWithoutPlayersInput
+    profile: profileCreateNestedOneWithoutPlayersInput
   }
 
   export type playerUncheckedCreateInput = {
@@ -15031,8 +14919,8 @@ export namespace Prisma {
     status?: IntFieldUpdateOperationsInput | number
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replay?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    match?: matchUpdateOneRequiredWithoutPlayerNestedInput
-    profile?: profileUpdateOneRequiredWithoutPlayerNestedInput
+    match?: matchUpdateOneRequiredWithoutPlayersNestedInput
+    profile?: profileUpdateOneRequiredWithoutPlayersNestedInput
   }
 
   export type playerUncheckedUpdateInput = {
@@ -15096,8 +14984,8 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
     leaderboard_row?: leaderboard_rowCreateNestedManyWithoutProfileInput
-    match?: matchCreateNestedManyWithoutProfileInput
-    player?: playerCreateNestedManyWithoutProfileInput
+    created_matches?: matchCreateNestedManyWithoutCreator_profileInput
+    players?: playerCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateInput = {
@@ -15111,8 +14999,8 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
     leaderboard_row?: leaderboard_rowUncheckedCreateNestedManyWithoutProfileInput
-    match?: matchUncheckedCreateNestedManyWithoutProfileInput
-    player?: playerUncheckedCreateNestedManyWithoutProfileInput
+    created_matches?: matchUncheckedCreateNestedManyWithoutCreator_profileInput
+    players?: playerUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileUpdateInput = {
@@ -15126,8 +15014,8 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     leaderboard_row?: leaderboard_rowUpdateManyWithoutProfileNestedInput
-    match?: matchUpdateManyWithoutProfileNestedInput
-    player?: playerUpdateManyWithoutProfileNestedInput
+    created_matches?: matchUpdateManyWithoutCreator_profileNestedInput
+    players?: playerUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateInput = {
@@ -15141,8 +15029,8 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     leaderboard_row?: leaderboard_rowUncheckedUpdateManyWithoutProfileNestedInput
-    match?: matchUncheckedUpdateManyWithoutProfileNestedInput
-    player?: playerUncheckedUpdateManyWithoutProfileNestedInput
+    created_matches?: matchUncheckedUpdateManyWithoutCreator_profileNestedInput
+    players?: playerUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type profileCreateManyInput = {
@@ -15179,6 +15067,160 @@ export namespace Prisma {
     avatarhash?: NullableStringFieldUpdateOperationsInput | string | null
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type match_pendingCreateInput = {
+    profile_id: number
+    priority: number
+  }
+
+  export type match_pendingUncheckedCreateInput = {
+    profile_id: number
+    priority: number
+  }
+
+  export type match_pendingUpdateInput = {
+    profile_id?: IntFieldUpdateOperationsInput | number
+    priority?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type match_pendingUncheckedUpdateInput = {
+    profile_id?: IntFieldUpdateOperationsInput | number
+    priority?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type match_pendingCreateManyInput = {
+    profile_id: number
+    priority: number
+  }
+
+  export type match_pendingUpdateManyMutationInput = {
+    profile_id?: IntFieldUpdateOperationsInput | number
+    priority?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type match_pendingUncheckedUpdateManyInput = {
+    profile_id?: IntFieldUpdateOperationsInput | number
+    priority?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type api_keyCreateInput = {
+    api_key: string
+  }
+
+  export type api_keyUncheckedCreateInput = {
+    api_key: string
+  }
+
+  export type api_keyUpdateInput = {
+    api_key?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type api_keyUncheckedUpdateInput = {
+    api_key?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type api_keyCreateManyInput = {
+    api_key: string
+  }
+
+  export type api_keyUpdateManyMutationInput = {
+    api_key?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type api_keyUncheckedUpdateManyInput = {
+    api_key?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type settingCreateInput = {
+    component: string
+    key: string
+    value: string
+  }
+
+  export type settingUncheckedCreateInput = {
+    component: string
+    key: string
+    value: string
+  }
+
+  export type settingUpdateInput = {
+    component?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type settingUncheckedUpdateInput = {
+    component?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type settingCreateManyInput = {
+    component: string
+    key: string
+    value: string
+  }
+
+  export type settingUpdateManyMutationInput = {
+    component?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type settingUncheckedUpdateManyInput = {
+    component?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type match_rawCreateInput = {
+    match_id: number
+    json: string
+    version?: number | null
+    error?: boolean | null
+  }
+
+  export type match_rawUncheckedCreateInput = {
+    match_id: number
+    json: string
+    version?: number | null
+    error?: boolean | null
+  }
+
+  export type match_rawUpdateInput = {
+    match_id?: IntFieldUpdateOperationsInput | number
+    json?: StringFieldUpdateOperationsInput | string
+    version?: NullableIntFieldUpdateOperationsInput | number | null
+    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
+  }
+
+  export type match_rawUncheckedUpdateInput = {
+    match_id?: IntFieldUpdateOperationsInput | number
+    json?: StringFieldUpdateOperationsInput | string
+    version?: NullableIntFieldUpdateOperationsInput | number | null
+    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
+  }
+
+  export type match_rawCreateManyInput = {
+    match_id: number
+    json: string
+    version?: number | null
+    error?: boolean | null
+  }
+
+  export type match_rawUpdateManyMutationInput = {
+    match_id?: IntFieldUpdateOperationsInput | number
+    json?: StringFieldUpdateOperationsInput | string
+    version?: NullableIntFieldUpdateOperationsInput | number | null
+    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
+  }
+
+  export type match_rawUncheckedUpdateManyInput = {
+    match_id?: IntFieldUpdateOperationsInput | number
+    json?: StringFieldUpdateOperationsInput | string
+    version?: NullableIntFieldUpdateOperationsInput | number | null
+    error?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type ratingCreateInput = {
@@ -15244,48 +15286,6 @@ export namespace Prisma {
     rating_diff?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type settingCreateInput = {
-    component: string
-    key: string
-    value: string
-  }
-
-  export type settingUncheckedCreateInput = {
-    component: string
-    key: string
-    value: string
-  }
-
-  export type settingUpdateInput = {
-    component?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type settingUncheckedUpdateInput = {
-    component?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type settingCreateManyInput = {
-    component: string
-    key: string
-    value: string
-  }
-
-  export type settingUpdateManyMutationInput = {
-    component?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type settingUncheckedUpdateManyInput = {
-    component?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
-  }
-
   export type smaller_matchCreateInput = {
     match_id: number
     name?: string | null
@@ -15324,7 +15324,7 @@ export namespace Prisma {
     victory?: number | null
     victory_time?: number | null
     visibility?: number | null
-    smaller_player?: smaller_playerCreateNestedManyWithoutSmaller_matchInput
+    players?: smaller_playerCreateNestedManyWithoutMatchInput
   }
 
   export type smaller_matchUncheckedCreateInput = {
@@ -15365,7 +15365,7 @@ export namespace Prisma {
     victory?: number | null
     victory_time?: number | null
     visibility?: number | null
-    smaller_player?: smaller_playerUncheckedCreateNestedManyWithoutSmaller_matchInput
+    players?: smaller_playerUncheckedCreateNestedManyWithoutMatchInput
   }
 
   export type smaller_matchUpdateInput = {
@@ -15406,7 +15406,7 @@ export namespace Prisma {
     victory?: NullableIntFieldUpdateOperationsInput | number | null
     victory_time?: NullableIntFieldUpdateOperationsInput | number | null
     visibility?: NullableIntFieldUpdateOperationsInput | number | null
-    smaller_player?: smaller_playerUpdateManyWithoutSmaller_matchNestedInput
+    players?: smaller_playerUpdateManyWithoutMatchNestedInput
   }
 
   export type smaller_matchUncheckedUpdateInput = {
@@ -15447,7 +15447,7 @@ export namespace Prisma {
     victory?: NullableIntFieldUpdateOperationsInput | number | null
     victory_time?: NullableIntFieldUpdateOperationsInput | number | null
     visibility?: NullableIntFieldUpdateOperationsInput | number | null
-    smaller_player?: smaller_playerUncheckedUpdateManyWithoutSmaller_matchNestedInput
+    players?: smaller_playerUncheckedUpdateManyWithoutMatchNestedInput
   }
 
   export type smaller_matchCreateManyInput = {
@@ -15576,8 +15576,8 @@ export namespace Prisma {
     team?: number | null
     color?: number | null
     won?: boolean | null
-    smaller_match: smaller_matchCreateNestedOneWithoutSmaller_playerInput
-    smaller_profile: smaller_profileCreateNestedOneWithoutSmaller_playerInput
+    match: smaller_matchCreateNestedOneWithoutPlayersInput
+    profile: smaller_profileCreateNestedOneWithoutPlayersInput
   }
 
   export type smaller_playerUncheckedCreateInput = {
@@ -15596,8 +15596,8 @@ export namespace Prisma {
     team?: NullableIntFieldUpdateOperationsInput | number | null
     color?: NullableIntFieldUpdateOperationsInput | number | null
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    smaller_match?: smaller_matchUpdateOneRequiredWithoutSmaller_playerNestedInput
-    smaller_profile?: smaller_profileUpdateOneRequiredWithoutSmaller_playerNestedInput
+    match?: smaller_matchUpdateOneRequiredWithoutPlayersNestedInput
+    profile?: smaller_profileUpdateOneRequiredWithoutPlayersNestedInput
   }
 
   export type smaller_playerUncheckedUpdateInput = {
@@ -15647,7 +15647,7 @@ export namespace Prisma {
     country?: string | null
     avatarhash?: string | null
     last_match_fetched_time?: Date | string | null
-    smaller_player?: smaller_playerCreateNestedManyWithoutSmaller_profileInput
+    players?: smaller_playerCreateNestedManyWithoutProfileInput
   }
 
   export type smaller_profileUncheckedCreateInput = {
@@ -15659,7 +15659,7 @@ export namespace Prisma {
     country?: string | null
     avatarhash?: string | null
     last_match_fetched_time?: Date | string | null
-    smaller_player?: smaller_playerUncheckedCreateNestedManyWithoutSmaller_profileInput
+    players?: smaller_playerUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type smaller_profileUpdateInput = {
@@ -15671,7 +15671,7 @@ export namespace Prisma {
     country?: NullableStringFieldUpdateOperationsInput | string | null
     avatarhash?: NullableStringFieldUpdateOperationsInput | string | null
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    smaller_player?: smaller_playerUpdateManyWithoutSmaller_profileNestedInput
+    players?: smaller_playerUpdateManyWithoutProfileNestedInput
   }
 
   export type smaller_profileUncheckedUpdateInput = {
@@ -15683,7 +15683,7 @@ export namespace Prisma {
     country?: NullableStringFieldUpdateOperationsInput | string | null
     avatarhash?: NullableStringFieldUpdateOperationsInput | string | null
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    smaller_player?: smaller_playerUncheckedUpdateManyWithoutSmaller_profileNestedInput
+    players?: smaller_playerUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type smaller_profileCreateManyInput = {
@@ -15719,6 +15719,17 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type IntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
+  }
+
   export type StringFilter = {
     equals?: string
     in?: Enumerable<string>
@@ -15732,47 +15743,6 @@ export namespace Prisma {
     endsWith?: string
     mode?: QueryMode
     not?: NestedStringFilter | string
-  }
-
-  export type api_keyCountOrderByAggregateInput = {
-    api_key?: SortOrder
-  }
-
-  export type api_keyMaxOrderByAggregateInput = {
-    api_key?: SortOrder
-  }
-
-  export type api_keyMinOrderByAggregateInput = {
-    api_key?: SortOrder
-  }
-
-  export type StringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
-  export type IntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
   }
 
   export type IntNullableFilter = {
@@ -15901,6 +15871,24 @@ export namespace Prisma {
     _sum?: NestedIntFilter
     _min?: NestedIntFilter
     _max?: NestedIntFilter
+  }
+
+  export type StringWithAggregatesFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter | string
+    _count?: NestedIntFilter
+    _min?: NestedStringFilter
+    _max?: NestedStringFilter
   }
 
   export type IntNullableWithAggregatesFilter = {
@@ -16151,62 +16139,6 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter
   }
 
-  export type match_pendingCountOrderByAggregateInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type match_pendingAvgOrderByAggregateInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type match_pendingMaxOrderByAggregateInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type match_pendingMinOrderByAggregateInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type match_pendingSumOrderByAggregateInput = {
-    profile_id?: SortOrder
-    priority?: SortOrder
-  }
-
-  export type match_rawCountOrderByAggregateInput = {
-    match_id?: SortOrder
-    json?: SortOrder
-    version?: SortOrder
-    error?: SortOrder
-  }
-
-  export type match_rawAvgOrderByAggregateInput = {
-    match_id?: SortOrder
-    version?: SortOrder
-  }
-
-  export type match_rawMaxOrderByAggregateInput = {
-    match_id?: SortOrder
-    json?: SortOrder
-    version?: SortOrder
-    error?: SortOrder
-  }
-
-  export type match_rawMinOrderByAggregateInput = {
-    match_id?: SortOrder
-    json?: SortOrder
-    version?: SortOrder
-    error?: SortOrder
-  }
-
-  export type match_rawSumOrderByAggregateInput = {
-    match_id?: SortOrder
-    version?: SortOrder
-  }
-
   export type MatchRelationFilter = {
     is?: matchWhereInput
     isNot?: matchWhereInput
@@ -16343,6 +16275,97 @@ export namespace Prisma {
     profile_id?: SortOrder
   }
 
+  export type match_pendingCountOrderByAggregateInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type match_pendingAvgOrderByAggregateInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type match_pendingMaxOrderByAggregateInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type match_pendingMinOrderByAggregateInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type match_pendingSumOrderByAggregateInput = {
+    profile_id?: SortOrder
+    priority?: SortOrder
+  }
+
+  export type api_keyCountOrderByAggregateInput = {
+    api_key?: SortOrder
+  }
+
+  export type api_keyMaxOrderByAggregateInput = {
+    api_key?: SortOrder
+  }
+
+  export type api_keyMinOrderByAggregateInput = {
+    api_key?: SortOrder
+  }
+
+  export type settingComponentKeyCompoundUniqueInput = {
+    component: string
+    key: string
+  }
+
+  export type settingCountOrderByAggregateInput = {
+    component?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type settingMaxOrderByAggregateInput = {
+    component?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type settingMinOrderByAggregateInput = {
+    component?: SortOrder
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type match_rawCountOrderByAggregateInput = {
+    match_id?: SortOrder
+    json?: SortOrder
+    version?: SortOrder
+    error?: SortOrder
+  }
+
+  export type match_rawAvgOrderByAggregateInput = {
+    match_id?: SortOrder
+    version?: SortOrder
+  }
+
+  export type match_rawMaxOrderByAggregateInput = {
+    match_id?: SortOrder
+    json?: SortOrder
+    version?: SortOrder
+    error?: SortOrder
+  }
+
+  export type match_rawMinOrderByAggregateInput = {
+    match_id?: SortOrder
+    json?: SortOrder
+    version?: SortOrder
+    error?: SortOrder
+  }
+
+  export type match_rawSumOrderByAggregateInput = {
+    match_id?: SortOrder
+    version?: SortOrder
+  }
+
   export type ratingLeaderboard_idProfile_idGamesCompoundUniqueInput = {
     leaderboard_id: number
     profile_id: number
@@ -16390,29 +16413,6 @@ export namespace Prisma {
     rating?: SortOrder
     leaderboard_id?: SortOrder
     rating_diff?: SortOrder
-  }
-
-  export type settingComponentKeyCompoundUniqueInput = {
-    component: string
-    key: string
-  }
-
-  export type settingCountOrderByAggregateInput = {
-    component?: SortOrder
-    key?: SortOrder
-    value?: SortOrder
-  }
-
-  export type settingMaxOrderByAggregateInput = {
-    component?: SortOrder
-    key?: SortOrder
-    value?: SortOrder
-  }
-
-  export type settingMinOrderByAggregateInput = {
-    component?: SortOrder
-    key?: SortOrder
-    value?: SortOrder
   }
 
   export type Smaller_playerListRelationFilter = {
@@ -16696,10 +16696,6 @@ export namespace Prisma {
     profile_id?: SortOrder
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type profileCreateNestedOneWithoutLeaderboard_rowInput = {
     create?: XOR<profileCreateWithoutLeaderboard_rowInput, profileUncheckedCreateWithoutLeaderboard_rowInput>
     connectOrCreate?: profileCreateOrConnectWithoutLeaderboard_rowInput
@@ -16712,6 +16708,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -16738,9 +16738,9 @@ export namespace Prisma {
     update?: XOR<profileUpdateWithoutLeaderboard_rowInput, profileUncheckedUpdateWithoutLeaderboard_rowInput>
   }
 
-  export type profileCreateNestedOneWithoutMatchInput = {
-    create?: XOR<profileCreateWithoutMatchInput, profileUncheckedCreateWithoutMatchInput>
-    connectOrCreate?: profileCreateOrConnectWithoutMatchInput
+  export type profileCreateNestedOneWithoutCreated_matchesInput = {
+    create?: XOR<profileCreateWithoutCreated_matchesInput, profileUncheckedCreateWithoutCreated_matchesInput>
+    connectOrCreate?: profileCreateOrConnectWithoutCreated_matchesInput
     connect?: profileWhereUniqueInput
   }
 
@@ -16766,14 +16766,14 @@ export namespace Prisma {
     set?: boolean | null
   }
 
-  export type profileUpdateOneWithoutMatchNestedInput = {
-    create?: XOR<profileCreateWithoutMatchInput, profileUncheckedCreateWithoutMatchInput>
-    connectOrCreate?: profileCreateOrConnectWithoutMatchInput
-    upsert?: profileUpsertWithoutMatchInput
+  export type profileUpdateOneWithoutCreated_matchesNestedInput = {
+    create?: XOR<profileCreateWithoutCreated_matchesInput, profileUncheckedCreateWithoutCreated_matchesInput>
+    connectOrCreate?: profileCreateOrConnectWithoutCreated_matchesInput
+    upsert?: profileUpsertWithoutCreated_matchesInput
     disconnect?: boolean
     delete?: boolean
     connect?: profileWhereUniqueInput
-    update?: XOR<profileUpdateWithoutMatchInput, profileUncheckedUpdateWithoutMatchInput>
+    update?: XOR<profileUpdateWithoutCreated_matchesInput, profileUncheckedUpdateWithoutCreated_matchesInput>
   }
 
   export type playerUpdateManyWithoutMatchNestedInput = {
@@ -16804,32 +16804,32 @@ export namespace Prisma {
     deleteMany?: Enumerable<playerScalarWhereInput>
   }
 
-  export type matchCreateNestedOneWithoutPlayerInput = {
-    create?: XOR<matchCreateWithoutPlayerInput, matchUncheckedCreateWithoutPlayerInput>
-    connectOrCreate?: matchCreateOrConnectWithoutPlayerInput
+  export type matchCreateNestedOneWithoutPlayersInput = {
+    create?: XOR<matchCreateWithoutPlayersInput, matchUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: matchCreateOrConnectWithoutPlayersInput
     connect?: matchWhereUniqueInput
   }
 
-  export type profileCreateNestedOneWithoutPlayerInput = {
-    create?: XOR<profileCreateWithoutPlayerInput, profileUncheckedCreateWithoutPlayerInput>
-    connectOrCreate?: profileCreateOrConnectWithoutPlayerInput
+  export type profileCreateNestedOneWithoutPlayersInput = {
+    create?: XOR<profileCreateWithoutPlayersInput, profileUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: profileCreateOrConnectWithoutPlayersInput
     connect?: profileWhereUniqueInput
   }
 
-  export type matchUpdateOneRequiredWithoutPlayerNestedInput = {
-    create?: XOR<matchCreateWithoutPlayerInput, matchUncheckedCreateWithoutPlayerInput>
-    connectOrCreate?: matchCreateOrConnectWithoutPlayerInput
-    upsert?: matchUpsertWithoutPlayerInput
+  export type matchUpdateOneRequiredWithoutPlayersNestedInput = {
+    create?: XOR<matchCreateWithoutPlayersInput, matchUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: matchCreateOrConnectWithoutPlayersInput
+    upsert?: matchUpsertWithoutPlayersInput
     connect?: matchWhereUniqueInput
-    update?: XOR<matchUpdateWithoutPlayerInput, matchUncheckedUpdateWithoutPlayerInput>
+    update?: XOR<matchUpdateWithoutPlayersInput, matchUncheckedUpdateWithoutPlayersInput>
   }
 
-  export type profileUpdateOneRequiredWithoutPlayerNestedInput = {
-    create?: XOR<profileCreateWithoutPlayerInput, profileUncheckedCreateWithoutPlayerInput>
-    connectOrCreate?: profileCreateOrConnectWithoutPlayerInput
-    upsert?: profileUpsertWithoutPlayerInput
+  export type profileUpdateOneRequiredWithoutPlayersNestedInput = {
+    create?: XOR<profileCreateWithoutPlayersInput, profileUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: profileCreateOrConnectWithoutPlayersInput
+    upsert?: profileUpsertWithoutPlayersInput
     connect?: profileWhereUniqueInput
-    update?: XOR<profileUpdateWithoutPlayerInput, profileUncheckedUpdateWithoutPlayerInput>
+    update?: XOR<profileUpdateWithoutPlayersInput, profileUncheckedUpdateWithoutPlayersInput>
   }
 
   export type leaderboard_rowCreateNestedManyWithoutProfileInput = {
@@ -16839,10 +16839,10 @@ export namespace Prisma {
     connect?: Enumerable<leaderboard_rowWhereUniqueInput>
   }
 
-  export type matchCreateNestedManyWithoutProfileInput = {
-    create?: XOR<Enumerable<matchCreateWithoutProfileInput>, Enumerable<matchUncheckedCreateWithoutProfileInput>>
-    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutProfileInput>
-    createMany?: matchCreateManyProfileInputEnvelope
+  export type matchCreateNestedManyWithoutCreator_profileInput = {
+    create?: XOR<Enumerable<matchCreateWithoutCreator_profileInput>, Enumerable<matchUncheckedCreateWithoutCreator_profileInput>>
+    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutCreator_profileInput>
+    createMany?: matchCreateManyCreator_profileInputEnvelope
     connect?: Enumerable<matchWhereUniqueInput>
   }
 
@@ -16860,10 +16860,10 @@ export namespace Prisma {
     connect?: Enumerable<leaderboard_rowWhereUniqueInput>
   }
 
-  export type matchUncheckedCreateNestedManyWithoutProfileInput = {
-    create?: XOR<Enumerable<matchCreateWithoutProfileInput>, Enumerable<matchUncheckedCreateWithoutProfileInput>>
-    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutProfileInput>
-    createMany?: matchCreateManyProfileInputEnvelope
+  export type matchUncheckedCreateNestedManyWithoutCreator_profileInput = {
+    create?: XOR<Enumerable<matchCreateWithoutCreator_profileInput>, Enumerable<matchUncheckedCreateWithoutCreator_profileInput>>
+    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutCreator_profileInput>
+    createMany?: matchCreateManyCreator_profileInputEnvelope
     connect?: Enumerable<matchWhereUniqueInput>
   }
 
@@ -16888,17 +16888,17 @@ export namespace Prisma {
     deleteMany?: Enumerable<leaderboard_rowScalarWhereInput>
   }
 
-  export type matchUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<Enumerable<matchCreateWithoutProfileInput>, Enumerable<matchUncheckedCreateWithoutProfileInput>>
-    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutProfileInput>
-    upsert?: Enumerable<matchUpsertWithWhereUniqueWithoutProfileInput>
-    createMany?: matchCreateManyProfileInputEnvelope
+  export type matchUpdateManyWithoutCreator_profileNestedInput = {
+    create?: XOR<Enumerable<matchCreateWithoutCreator_profileInput>, Enumerable<matchUncheckedCreateWithoutCreator_profileInput>>
+    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutCreator_profileInput>
+    upsert?: Enumerable<matchUpsertWithWhereUniqueWithoutCreator_profileInput>
+    createMany?: matchCreateManyCreator_profileInputEnvelope
     set?: Enumerable<matchWhereUniqueInput>
     disconnect?: Enumerable<matchWhereUniqueInput>
     delete?: Enumerable<matchWhereUniqueInput>
     connect?: Enumerable<matchWhereUniqueInput>
-    update?: Enumerable<matchUpdateWithWhereUniqueWithoutProfileInput>
-    updateMany?: Enumerable<matchUpdateManyWithWhereWithoutProfileInput>
+    update?: Enumerable<matchUpdateWithWhereUniqueWithoutCreator_profileInput>
+    updateMany?: Enumerable<matchUpdateManyWithWhereWithoutCreator_profileInput>
     deleteMany?: Enumerable<matchScalarWhereInput>
   }
 
@@ -16930,17 +16930,17 @@ export namespace Prisma {
     deleteMany?: Enumerable<leaderboard_rowScalarWhereInput>
   }
 
-  export type matchUncheckedUpdateManyWithoutProfileNestedInput = {
-    create?: XOR<Enumerable<matchCreateWithoutProfileInput>, Enumerable<matchUncheckedCreateWithoutProfileInput>>
-    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutProfileInput>
-    upsert?: Enumerable<matchUpsertWithWhereUniqueWithoutProfileInput>
-    createMany?: matchCreateManyProfileInputEnvelope
+  export type matchUncheckedUpdateManyWithoutCreator_profileNestedInput = {
+    create?: XOR<Enumerable<matchCreateWithoutCreator_profileInput>, Enumerable<matchUncheckedCreateWithoutCreator_profileInput>>
+    connectOrCreate?: Enumerable<matchCreateOrConnectWithoutCreator_profileInput>
+    upsert?: Enumerable<matchUpsertWithWhereUniqueWithoutCreator_profileInput>
+    createMany?: matchCreateManyCreator_profileInputEnvelope
     set?: Enumerable<matchWhereUniqueInput>
     disconnect?: Enumerable<matchWhereUniqueInput>
     delete?: Enumerable<matchWhereUniqueInput>
     connect?: Enumerable<matchWhereUniqueInput>
-    update?: Enumerable<matchUpdateWithWhereUniqueWithoutProfileInput>
-    updateMany?: Enumerable<matchUpdateManyWithWhereWithoutProfileInput>
+    update?: Enumerable<matchUpdateWithWhereUniqueWithoutCreator_profileInput>
+    updateMany?: Enumerable<matchUpdateManyWithWhereWithoutCreator_profileInput>
     deleteMany?: Enumerable<matchScalarWhereInput>
   }
 
@@ -16958,116 +16958,127 @@ export namespace Prisma {
     deleteMany?: Enumerable<playerScalarWhereInput>
   }
 
-  export type smaller_playerCreateNestedManyWithoutSmaller_matchInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_matchInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_matchInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_matchInput>
-    createMany?: smaller_playerCreateManySmaller_matchInputEnvelope
+  export type smaller_playerCreateNestedManyWithoutMatchInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutMatchInput>, Enumerable<smaller_playerUncheckedCreateWithoutMatchInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutMatchInput>
+    createMany?: smaller_playerCreateManyMatchInputEnvelope
     connect?: Enumerable<smaller_playerWhereUniqueInput>
   }
 
-  export type smaller_playerUncheckedCreateNestedManyWithoutSmaller_matchInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_matchInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_matchInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_matchInput>
-    createMany?: smaller_playerCreateManySmaller_matchInputEnvelope
+  export type smaller_playerUncheckedCreateNestedManyWithoutMatchInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutMatchInput>, Enumerable<smaller_playerUncheckedCreateWithoutMatchInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutMatchInput>
+    createMany?: smaller_playerCreateManyMatchInputEnvelope
     connect?: Enumerable<smaller_playerWhereUniqueInput>
   }
 
-  export type smaller_playerUpdateManyWithoutSmaller_matchNestedInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_matchInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_matchInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_matchInput>
-    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutSmaller_matchInput>
-    createMany?: smaller_playerCreateManySmaller_matchInputEnvelope
+  export type smaller_playerUpdateManyWithoutMatchNestedInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutMatchInput>, Enumerable<smaller_playerUncheckedCreateWithoutMatchInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutMatchInput>
+    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutMatchInput>
+    createMany?: smaller_playerCreateManyMatchInputEnvelope
     set?: Enumerable<smaller_playerWhereUniqueInput>
     disconnect?: Enumerable<smaller_playerWhereUniqueInput>
     delete?: Enumerable<smaller_playerWhereUniqueInput>
     connect?: Enumerable<smaller_playerWhereUniqueInput>
-    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutSmaller_matchInput>
-    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutSmaller_matchInput>
+    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutMatchInput>
+    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutMatchInput>
     deleteMany?: Enumerable<smaller_playerScalarWhereInput>
   }
 
-  export type smaller_playerUncheckedUpdateManyWithoutSmaller_matchNestedInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_matchInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_matchInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_matchInput>
-    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutSmaller_matchInput>
-    createMany?: smaller_playerCreateManySmaller_matchInputEnvelope
+  export type smaller_playerUncheckedUpdateManyWithoutMatchNestedInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutMatchInput>, Enumerable<smaller_playerUncheckedCreateWithoutMatchInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutMatchInput>
+    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutMatchInput>
+    createMany?: smaller_playerCreateManyMatchInputEnvelope
     set?: Enumerable<smaller_playerWhereUniqueInput>
     disconnect?: Enumerable<smaller_playerWhereUniqueInput>
     delete?: Enumerable<smaller_playerWhereUniqueInput>
     connect?: Enumerable<smaller_playerWhereUniqueInput>
-    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutSmaller_matchInput>
-    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutSmaller_matchInput>
+    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutMatchInput>
+    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutMatchInput>
     deleteMany?: Enumerable<smaller_playerScalarWhereInput>
   }
 
-  export type smaller_matchCreateNestedOneWithoutSmaller_playerInput = {
-    create?: XOR<smaller_matchCreateWithoutSmaller_playerInput, smaller_matchUncheckedCreateWithoutSmaller_playerInput>
-    connectOrCreate?: smaller_matchCreateOrConnectWithoutSmaller_playerInput
+  export type smaller_matchCreateNestedOneWithoutPlayersInput = {
+    create?: XOR<smaller_matchCreateWithoutPlayersInput, smaller_matchUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: smaller_matchCreateOrConnectWithoutPlayersInput
     connect?: smaller_matchWhereUniqueInput
   }
 
-  export type smaller_profileCreateNestedOneWithoutSmaller_playerInput = {
-    create?: XOR<smaller_profileCreateWithoutSmaller_playerInput, smaller_profileUncheckedCreateWithoutSmaller_playerInput>
-    connectOrCreate?: smaller_profileCreateOrConnectWithoutSmaller_playerInput
+  export type smaller_profileCreateNestedOneWithoutPlayersInput = {
+    create?: XOR<smaller_profileCreateWithoutPlayersInput, smaller_profileUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: smaller_profileCreateOrConnectWithoutPlayersInput
     connect?: smaller_profileWhereUniqueInput
   }
 
-  export type smaller_matchUpdateOneRequiredWithoutSmaller_playerNestedInput = {
-    create?: XOR<smaller_matchCreateWithoutSmaller_playerInput, smaller_matchUncheckedCreateWithoutSmaller_playerInput>
-    connectOrCreate?: smaller_matchCreateOrConnectWithoutSmaller_playerInput
-    upsert?: smaller_matchUpsertWithoutSmaller_playerInput
+  export type smaller_matchUpdateOneRequiredWithoutPlayersNestedInput = {
+    create?: XOR<smaller_matchCreateWithoutPlayersInput, smaller_matchUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: smaller_matchCreateOrConnectWithoutPlayersInput
+    upsert?: smaller_matchUpsertWithoutPlayersInput
     connect?: smaller_matchWhereUniqueInput
-    update?: XOR<smaller_matchUpdateWithoutSmaller_playerInput, smaller_matchUncheckedUpdateWithoutSmaller_playerInput>
+    update?: XOR<smaller_matchUpdateWithoutPlayersInput, smaller_matchUncheckedUpdateWithoutPlayersInput>
   }
 
-  export type smaller_profileUpdateOneRequiredWithoutSmaller_playerNestedInput = {
-    create?: XOR<smaller_profileCreateWithoutSmaller_playerInput, smaller_profileUncheckedCreateWithoutSmaller_playerInput>
-    connectOrCreate?: smaller_profileCreateOrConnectWithoutSmaller_playerInput
-    upsert?: smaller_profileUpsertWithoutSmaller_playerInput
+  export type smaller_profileUpdateOneRequiredWithoutPlayersNestedInput = {
+    create?: XOR<smaller_profileCreateWithoutPlayersInput, smaller_profileUncheckedCreateWithoutPlayersInput>
+    connectOrCreate?: smaller_profileCreateOrConnectWithoutPlayersInput
+    upsert?: smaller_profileUpsertWithoutPlayersInput
     connect?: smaller_profileWhereUniqueInput
-    update?: XOR<smaller_profileUpdateWithoutSmaller_playerInput, smaller_profileUncheckedUpdateWithoutSmaller_playerInput>
+    update?: XOR<smaller_profileUpdateWithoutPlayersInput, smaller_profileUncheckedUpdateWithoutPlayersInput>
   }
 
-  export type smaller_playerCreateNestedManyWithoutSmaller_profileInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_profileInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_profileInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_profileInput>
-    createMany?: smaller_playerCreateManySmaller_profileInputEnvelope
+  export type smaller_playerCreateNestedManyWithoutProfileInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutProfileInput>, Enumerable<smaller_playerUncheckedCreateWithoutProfileInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutProfileInput>
+    createMany?: smaller_playerCreateManyProfileInputEnvelope
     connect?: Enumerable<smaller_playerWhereUniqueInput>
   }
 
-  export type smaller_playerUncheckedCreateNestedManyWithoutSmaller_profileInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_profileInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_profileInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_profileInput>
-    createMany?: smaller_playerCreateManySmaller_profileInputEnvelope
+  export type smaller_playerUncheckedCreateNestedManyWithoutProfileInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutProfileInput>, Enumerable<smaller_playerUncheckedCreateWithoutProfileInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutProfileInput>
+    createMany?: smaller_playerCreateManyProfileInputEnvelope
     connect?: Enumerable<smaller_playerWhereUniqueInput>
   }
 
-  export type smaller_playerUpdateManyWithoutSmaller_profileNestedInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_profileInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_profileInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_profileInput>
-    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutSmaller_profileInput>
-    createMany?: smaller_playerCreateManySmaller_profileInputEnvelope
+  export type smaller_playerUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutProfileInput>, Enumerable<smaller_playerUncheckedCreateWithoutProfileInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutProfileInput>
+    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutProfileInput>
+    createMany?: smaller_playerCreateManyProfileInputEnvelope
     set?: Enumerable<smaller_playerWhereUniqueInput>
     disconnect?: Enumerable<smaller_playerWhereUniqueInput>
     delete?: Enumerable<smaller_playerWhereUniqueInput>
     connect?: Enumerable<smaller_playerWhereUniqueInput>
-    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutSmaller_profileInput>
-    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutSmaller_profileInput>
+    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutProfileInput>
+    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutProfileInput>
     deleteMany?: Enumerable<smaller_playerScalarWhereInput>
   }
 
-  export type smaller_playerUncheckedUpdateManyWithoutSmaller_profileNestedInput = {
-    create?: XOR<Enumerable<smaller_playerCreateWithoutSmaller_profileInput>, Enumerable<smaller_playerUncheckedCreateWithoutSmaller_profileInput>>
-    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutSmaller_profileInput>
-    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutSmaller_profileInput>
-    createMany?: smaller_playerCreateManySmaller_profileInputEnvelope
+  export type smaller_playerUncheckedUpdateManyWithoutProfileNestedInput = {
+    create?: XOR<Enumerable<smaller_playerCreateWithoutProfileInput>, Enumerable<smaller_playerUncheckedCreateWithoutProfileInput>>
+    connectOrCreate?: Enumerable<smaller_playerCreateOrConnectWithoutProfileInput>
+    upsert?: Enumerable<smaller_playerUpsertWithWhereUniqueWithoutProfileInput>
+    createMany?: smaller_playerCreateManyProfileInputEnvelope
     set?: Enumerable<smaller_playerWhereUniqueInput>
     disconnect?: Enumerable<smaller_playerWhereUniqueInput>
     delete?: Enumerable<smaller_playerWhereUniqueInput>
     connect?: Enumerable<smaller_playerWhereUniqueInput>
-    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutSmaller_profileInput>
-    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutSmaller_profileInput>
+    update?: Enumerable<smaller_playerUpdateWithWhereUniqueWithoutProfileInput>
+    updateMany?: Enumerable<smaller_playerUpdateManyWithWhereWithoutProfileInput>
     deleteMany?: Enumerable<smaller_playerScalarWhereInput>
+  }
+
+  export type NestedIntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
   }
 
   export type NestedStringFilter = {
@@ -17082,34 +17093,6 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringFilter | string
-  }
-
-  export type NestedStringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
-  export type NestedIntFilter = {
-    equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
   }
 
   export type NestedIntNullableFilter = {
@@ -17170,6 +17153,23 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedFloatFilter | number
+  }
+
+  export type NestedStringWithAggregatesFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringWithAggregatesFilter | string
+    _count?: NestedIntFilter
+    _min?: NestedStringFilter
+    _max?: NestedStringFilter
   }
 
   export type NestedIntNullableWithAggregatesFilter = {
@@ -17281,8 +17281,8 @@ export namespace Prisma {
     avatarhash?: string | null
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
-    match?: matchCreateNestedManyWithoutProfileInput
-    player?: playerCreateNestedManyWithoutProfileInput
+    created_matches?: matchCreateNestedManyWithoutCreator_profileInput
+    players?: playerCreateNestedManyWithoutProfileInput
   }
 
   export type profileUncheckedCreateWithoutLeaderboard_rowInput = {
@@ -17295,8 +17295,8 @@ export namespace Prisma {
     avatarhash?: string | null
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
-    match?: matchUncheckedCreateNestedManyWithoutProfileInput
-    player?: playerUncheckedCreateNestedManyWithoutProfileInput
+    created_matches?: matchUncheckedCreateNestedManyWithoutCreator_profileInput
+    players?: playerUncheckedCreateNestedManyWithoutProfileInput
   }
 
   export type profileCreateOrConnectWithoutLeaderboard_rowInput = {
@@ -17319,8 +17319,8 @@ export namespace Prisma {
     avatarhash?: NullableStringFieldUpdateOperationsInput | string | null
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    match?: matchUpdateManyWithoutProfileNestedInput
-    player?: playerUpdateManyWithoutProfileNestedInput
+    created_matches?: matchUpdateManyWithoutCreator_profileNestedInput
+    players?: playerUpdateManyWithoutProfileNestedInput
   }
 
   export type profileUncheckedUpdateWithoutLeaderboard_rowInput = {
@@ -17333,11 +17333,11 @@ export namespace Prisma {
     avatarhash?: NullableStringFieldUpdateOperationsInput | string | null
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    match?: matchUncheckedUpdateManyWithoutProfileNestedInput
-    player?: playerUncheckedUpdateManyWithoutProfileNestedInput
+    created_matches?: matchUncheckedUpdateManyWithoutCreator_profileNestedInput
+    players?: playerUncheckedUpdateManyWithoutProfileNestedInput
   }
 
-  export type profileCreateWithoutMatchInput = {
+  export type profileCreateWithoutCreated_matchesInput = {
     profile_id: number
     steam_id?: string | null
     name?: string | null
@@ -17348,10 +17348,10 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
     leaderboard_row?: leaderboard_rowCreateNestedManyWithoutProfileInput
-    player?: playerCreateNestedManyWithoutProfileInput
+    players?: playerCreateNestedManyWithoutProfileInput
   }
 
-  export type profileUncheckedCreateWithoutMatchInput = {
+  export type profileUncheckedCreateWithoutCreated_matchesInput = {
     profile_id: number
     steam_id?: string | null
     name?: string | null
@@ -17362,12 +17362,12 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
     leaderboard_row?: leaderboard_rowUncheckedCreateNestedManyWithoutProfileInput
-    player?: playerUncheckedCreateNestedManyWithoutProfileInput
+    players?: playerUncheckedCreateNestedManyWithoutProfileInput
   }
 
-  export type profileCreateOrConnectWithoutMatchInput = {
+  export type profileCreateOrConnectWithoutCreated_matchesInput = {
     where: profileWhereUniqueInput
-    create: XOR<profileCreateWithoutMatchInput, profileUncheckedCreateWithoutMatchInput>
+    create: XOR<profileCreateWithoutCreated_matchesInput, profileUncheckedCreateWithoutCreated_matchesInput>
   }
 
   export type playerCreateWithoutMatchInput = {
@@ -17379,7 +17379,7 @@ export namespace Prisma {
     status: number
     won?: boolean | null
     replay?: boolean | null
-    profile: profileCreateNestedOneWithoutPlayerInput
+    profile: profileCreateNestedOneWithoutPlayersInput
   }
 
   export type playerUncheckedCreateWithoutMatchInput = {
@@ -17404,12 +17404,12 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type profileUpsertWithoutMatchInput = {
-    update: XOR<profileUpdateWithoutMatchInput, profileUncheckedUpdateWithoutMatchInput>
-    create: XOR<profileCreateWithoutMatchInput, profileUncheckedCreateWithoutMatchInput>
+  export type profileUpsertWithoutCreated_matchesInput = {
+    update: XOR<profileUpdateWithoutCreated_matchesInput, profileUncheckedUpdateWithoutCreated_matchesInput>
+    create: XOR<profileCreateWithoutCreated_matchesInput, profileUncheckedCreateWithoutCreated_matchesInput>
   }
 
-  export type profileUpdateWithoutMatchInput = {
+  export type profileUpdateWithoutCreated_matchesInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     steam_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17420,10 +17420,10 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     leaderboard_row?: leaderboard_rowUpdateManyWithoutProfileNestedInput
-    player?: playerUpdateManyWithoutProfileNestedInput
+    players?: playerUpdateManyWithoutProfileNestedInput
   }
 
-  export type profileUncheckedUpdateWithoutMatchInput = {
+  export type profileUncheckedUpdateWithoutCreated_matchesInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     steam_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17434,7 +17434,7 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     leaderboard_row?: leaderboard_rowUncheckedUpdateManyWithoutProfileNestedInput
-    player?: playerUncheckedUpdateManyWithoutProfileNestedInput
+    players?: playerUncheckedUpdateManyWithoutProfileNestedInput
   }
 
   export type playerUpsertWithWhereUniqueWithoutMatchInput = {
@@ -17450,7 +17450,7 @@ export namespace Prisma {
 
   export type playerUpdateManyWithWhereWithoutMatchInput = {
     where: playerScalarWhereInput
-    data: XOR<playerUpdateManyMutationInput, playerUncheckedUpdateManyWithoutPlayerInput>
+    data: XOR<playerUpdateManyMutationInput, playerUncheckedUpdateManyWithoutPlayersInput>
   }
 
   export type playerScalarWhereInput = {
@@ -17469,7 +17469,7 @@ export namespace Prisma {
     replay?: BoolNullableFilter | boolean | null
   }
 
-  export type matchCreateWithoutPlayerInput = {
+  export type matchCreateWithoutPlayersInput = {
     match_id: number
     name?: string | null
     server?: string | null
@@ -17502,10 +17502,10 @@ export namespace Prisma {
     internal_leaderboard_id?: number | null
     leaderboard_id?: number | null
     privacy?: number | null
-    profile?: profileCreateNestedOneWithoutMatchInput
+    creator_profile?: profileCreateNestedOneWithoutCreated_matchesInput
   }
 
-  export type matchUncheckedCreateWithoutPlayerInput = {
+  export type matchUncheckedCreateWithoutPlayersInput = {
     match_id: number
     name?: string | null
     server?: string | null
@@ -17541,12 +17541,12 @@ export namespace Prisma {
     creator_profile_id?: number | null
   }
 
-  export type matchCreateOrConnectWithoutPlayerInput = {
+  export type matchCreateOrConnectWithoutPlayersInput = {
     where: matchWhereUniqueInput
-    create: XOR<matchCreateWithoutPlayerInput, matchUncheckedCreateWithoutPlayerInput>
+    create: XOR<matchCreateWithoutPlayersInput, matchUncheckedCreateWithoutPlayersInput>
   }
 
-  export type profileCreateWithoutPlayerInput = {
+  export type profileCreateWithoutPlayersInput = {
     profile_id: number
     steam_id?: string | null
     name?: string | null
@@ -17557,10 +17557,10 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
     leaderboard_row?: leaderboard_rowCreateNestedManyWithoutProfileInput
-    match?: matchCreateNestedManyWithoutProfileInput
+    created_matches?: matchCreateNestedManyWithoutCreator_profileInput
   }
 
-  export type profileUncheckedCreateWithoutPlayerInput = {
+  export type profileUncheckedCreateWithoutPlayersInput = {
     profile_id: number
     steam_id?: string | null
     name?: string | null
@@ -17571,20 +17571,20 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
     last_refresh?: Date | string | null
     leaderboard_row?: leaderboard_rowUncheckedCreateNestedManyWithoutProfileInput
-    match?: matchUncheckedCreateNestedManyWithoutProfileInput
+    created_matches?: matchUncheckedCreateNestedManyWithoutCreator_profileInput
   }
 
-  export type profileCreateOrConnectWithoutPlayerInput = {
+  export type profileCreateOrConnectWithoutPlayersInput = {
     where: profileWhereUniqueInput
-    create: XOR<profileCreateWithoutPlayerInput, profileUncheckedCreateWithoutPlayerInput>
+    create: XOR<profileCreateWithoutPlayersInput, profileUncheckedCreateWithoutPlayersInput>
   }
 
-  export type matchUpsertWithoutPlayerInput = {
-    update: XOR<matchUpdateWithoutPlayerInput, matchUncheckedUpdateWithoutPlayerInput>
-    create: XOR<matchCreateWithoutPlayerInput, matchUncheckedCreateWithoutPlayerInput>
+  export type matchUpsertWithoutPlayersInput = {
+    update: XOR<matchUpdateWithoutPlayersInput, matchUncheckedUpdateWithoutPlayersInput>
+    create: XOR<matchCreateWithoutPlayersInput, matchUncheckedCreateWithoutPlayersInput>
   }
 
-  export type matchUpdateWithoutPlayerInput = {
+  export type matchUpdateWithoutPlayersInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     server?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17617,10 +17617,10 @@ export namespace Prisma {
     internal_leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     privacy?: NullableIntFieldUpdateOperationsInput | number | null
-    profile?: profileUpdateOneWithoutMatchNestedInput
+    creator_profile?: profileUpdateOneWithoutCreated_matchesNestedInput
   }
 
-  export type matchUncheckedUpdateWithoutPlayerInput = {
+  export type matchUncheckedUpdateWithoutPlayersInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     server?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17656,12 +17656,12 @@ export namespace Prisma {
     creator_profile_id?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type profileUpsertWithoutPlayerInput = {
-    update: XOR<profileUpdateWithoutPlayerInput, profileUncheckedUpdateWithoutPlayerInput>
-    create: XOR<profileCreateWithoutPlayerInput, profileUncheckedCreateWithoutPlayerInput>
+  export type profileUpsertWithoutPlayersInput = {
+    update: XOR<profileUpdateWithoutPlayersInput, profileUncheckedUpdateWithoutPlayersInput>
+    create: XOR<profileCreateWithoutPlayersInput, profileUncheckedCreateWithoutPlayersInput>
   }
 
-  export type profileUpdateWithoutPlayerInput = {
+  export type profileUpdateWithoutPlayersInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     steam_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17672,10 +17672,10 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     leaderboard_row?: leaderboard_rowUpdateManyWithoutProfileNestedInput
-    match?: matchUpdateManyWithoutProfileNestedInput
+    created_matches?: matchUpdateManyWithoutCreator_profileNestedInput
   }
 
-  export type profileUncheckedUpdateWithoutPlayerInput = {
+  export type profileUncheckedUpdateWithoutPlayersInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     steam_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17686,7 +17686,7 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     last_refresh?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     leaderboard_row?: leaderboard_rowUncheckedUpdateManyWithoutProfileNestedInput
-    match?: matchUncheckedUpdateManyWithoutProfileNestedInput
+    created_matches?: matchUncheckedUpdateManyWithoutCreator_profileNestedInput
   }
 
   export type leaderboard_rowCreateWithoutProfileInput = {
@@ -17699,7 +17699,7 @@ export namespace Prisma {
     losses?: number | null
     streak?: number | null
     wins?: number | null
-    updated_at: Date | string
+    updated_at?: Date | string
     rank_country?: number | null
   }
 
@@ -17713,7 +17713,7 @@ export namespace Prisma {
     losses?: number | null
     streak?: number | null
     wins?: number | null
-    updated_at: Date | string
+    updated_at?: Date | string
     rank_country?: number | null
   }
 
@@ -17727,7 +17727,7 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type matchCreateWithoutProfileInput = {
+  export type matchCreateWithoutCreator_profileInput = {
     match_id: number
     name?: string | null
     server?: string | null
@@ -17760,10 +17760,10 @@ export namespace Prisma {
     internal_leaderboard_id?: number | null
     leaderboard_id?: number | null
     privacy?: number | null
-    player?: playerCreateNestedManyWithoutMatchInput
+    players?: playerCreateNestedManyWithoutMatchInput
   }
 
-  export type matchUncheckedCreateWithoutProfileInput = {
+  export type matchUncheckedCreateWithoutCreator_profileInput = {
     match_id: number
     name?: string | null
     server?: string | null
@@ -17796,16 +17796,16 @@ export namespace Prisma {
     internal_leaderboard_id?: number | null
     leaderboard_id?: number | null
     privacy?: number | null
-    player?: playerUncheckedCreateNestedManyWithoutMatchInput
+    players?: playerUncheckedCreateNestedManyWithoutMatchInput
   }
 
-  export type matchCreateOrConnectWithoutProfileInput = {
+  export type matchCreateOrConnectWithoutCreator_profileInput = {
     where: matchWhereUniqueInput
-    create: XOR<matchCreateWithoutProfileInput, matchUncheckedCreateWithoutProfileInput>
+    create: XOR<matchCreateWithoutCreator_profileInput, matchUncheckedCreateWithoutCreator_profileInput>
   }
 
-  export type matchCreateManyProfileInputEnvelope = {
-    data: Enumerable<matchCreateManyProfileInput>
+  export type matchCreateManyCreator_profileInputEnvelope = {
+    data: Enumerable<matchCreateManyCreator_profileInput>
     skipDuplicates?: boolean
   }
 
@@ -17818,7 +17818,7 @@ export namespace Prisma {
     status: number
     won?: boolean | null
     replay?: boolean | null
-    match: matchCreateNestedOneWithoutPlayerInput
+    match: matchCreateNestedOneWithoutPlayersInput
   }
 
   export type playerUncheckedCreateWithoutProfileInput = {
@@ -17877,20 +17877,20 @@ export namespace Prisma {
     rank_country?: IntNullableFilter | number | null
   }
 
-  export type matchUpsertWithWhereUniqueWithoutProfileInput = {
+  export type matchUpsertWithWhereUniqueWithoutCreator_profileInput = {
     where: matchWhereUniqueInput
-    update: XOR<matchUpdateWithoutProfileInput, matchUncheckedUpdateWithoutProfileInput>
-    create: XOR<matchCreateWithoutProfileInput, matchUncheckedCreateWithoutProfileInput>
+    update: XOR<matchUpdateWithoutCreator_profileInput, matchUncheckedUpdateWithoutCreator_profileInput>
+    create: XOR<matchCreateWithoutCreator_profileInput, matchUncheckedCreateWithoutCreator_profileInput>
   }
 
-  export type matchUpdateWithWhereUniqueWithoutProfileInput = {
+  export type matchUpdateWithWhereUniqueWithoutCreator_profileInput = {
     where: matchWhereUniqueInput
-    data: XOR<matchUpdateWithoutProfileInput, matchUncheckedUpdateWithoutProfileInput>
+    data: XOR<matchUpdateWithoutCreator_profileInput, matchUncheckedUpdateWithoutCreator_profileInput>
   }
 
-  export type matchUpdateManyWithWhereWithoutProfileInput = {
+  export type matchUpdateManyWithWhereWithoutCreator_profileInput = {
     where: matchScalarWhereInput
-    data: XOR<matchUpdateManyMutationInput, matchUncheckedUpdateManyWithoutMatchInput>
+    data: XOR<matchUpdateManyMutationInput, matchUncheckedUpdateManyWithoutCreated_matchesInput>
   }
 
   export type matchScalarWhereInput = {
@@ -17945,19 +17945,19 @@ export namespace Prisma {
 
   export type playerUpdateManyWithWhereWithoutProfileInput = {
     where: playerScalarWhereInput
-    data: XOR<playerUpdateManyMutationInput, playerUncheckedUpdateManyWithoutPlayerInput>
+    data: XOR<playerUpdateManyMutationInput, playerUncheckedUpdateManyWithoutPlayersInput>
   }
 
-  export type smaller_playerCreateWithoutSmaller_matchInput = {
+  export type smaller_playerCreateWithoutMatchInput = {
     slot: number
     civ?: number | null
     team?: number | null
     color?: number | null
     won?: boolean | null
-    smaller_profile: smaller_profileCreateNestedOneWithoutSmaller_playerInput
+    profile: smaller_profileCreateNestedOneWithoutPlayersInput
   }
 
-  export type smaller_playerUncheckedCreateWithoutSmaller_matchInput = {
+  export type smaller_playerUncheckedCreateWithoutMatchInput = {
     profile_id: number
     slot: number
     civ?: number | null
@@ -17966,30 +17966,30 @@ export namespace Prisma {
     won?: boolean | null
   }
 
-  export type smaller_playerCreateOrConnectWithoutSmaller_matchInput = {
+  export type smaller_playerCreateOrConnectWithoutMatchInput = {
     where: smaller_playerWhereUniqueInput
-    create: XOR<smaller_playerCreateWithoutSmaller_matchInput, smaller_playerUncheckedCreateWithoutSmaller_matchInput>
+    create: XOR<smaller_playerCreateWithoutMatchInput, smaller_playerUncheckedCreateWithoutMatchInput>
   }
 
-  export type smaller_playerCreateManySmaller_matchInputEnvelope = {
-    data: Enumerable<smaller_playerCreateManySmaller_matchInput>
+  export type smaller_playerCreateManyMatchInputEnvelope = {
+    data: Enumerable<smaller_playerCreateManyMatchInput>
     skipDuplicates?: boolean
   }
 
-  export type smaller_playerUpsertWithWhereUniqueWithoutSmaller_matchInput = {
+  export type smaller_playerUpsertWithWhereUniqueWithoutMatchInput = {
     where: smaller_playerWhereUniqueInput
-    update: XOR<smaller_playerUpdateWithoutSmaller_matchInput, smaller_playerUncheckedUpdateWithoutSmaller_matchInput>
-    create: XOR<smaller_playerCreateWithoutSmaller_matchInput, smaller_playerUncheckedCreateWithoutSmaller_matchInput>
+    update: XOR<smaller_playerUpdateWithoutMatchInput, smaller_playerUncheckedUpdateWithoutMatchInput>
+    create: XOR<smaller_playerCreateWithoutMatchInput, smaller_playerUncheckedCreateWithoutMatchInput>
   }
 
-  export type smaller_playerUpdateWithWhereUniqueWithoutSmaller_matchInput = {
+  export type smaller_playerUpdateWithWhereUniqueWithoutMatchInput = {
     where: smaller_playerWhereUniqueInput
-    data: XOR<smaller_playerUpdateWithoutSmaller_matchInput, smaller_playerUncheckedUpdateWithoutSmaller_matchInput>
+    data: XOR<smaller_playerUpdateWithoutMatchInput, smaller_playerUncheckedUpdateWithoutMatchInput>
   }
 
-  export type smaller_playerUpdateManyWithWhereWithoutSmaller_matchInput = {
+  export type smaller_playerUpdateManyWithWhereWithoutMatchInput = {
     where: smaller_playerScalarWhereInput
-    data: XOR<smaller_playerUpdateManyMutationInput, smaller_playerUncheckedUpdateManyWithoutSmaller_playerInput>
+    data: XOR<smaller_playerUpdateManyMutationInput, smaller_playerUncheckedUpdateManyWithoutPlayersInput>
   }
 
   export type smaller_playerScalarWhereInput = {
@@ -18005,7 +18005,7 @@ export namespace Prisma {
     won?: BoolNullableFilter | boolean | null
   }
 
-  export type smaller_matchCreateWithoutSmaller_playerInput = {
+  export type smaller_matchCreateWithoutPlayersInput = {
     match_id: number
     name?: string | null
     started?: number | null
@@ -18045,7 +18045,7 @@ export namespace Prisma {
     visibility?: number | null
   }
 
-  export type smaller_matchUncheckedCreateWithoutSmaller_playerInput = {
+  export type smaller_matchUncheckedCreateWithoutPlayersInput = {
     match_id: number
     name?: string | null
     started?: number | null
@@ -18085,12 +18085,12 @@ export namespace Prisma {
     visibility?: number | null
   }
 
-  export type smaller_matchCreateOrConnectWithoutSmaller_playerInput = {
+  export type smaller_matchCreateOrConnectWithoutPlayersInput = {
     where: smaller_matchWhereUniqueInput
-    create: XOR<smaller_matchCreateWithoutSmaller_playerInput, smaller_matchUncheckedCreateWithoutSmaller_playerInput>
+    create: XOR<smaller_matchCreateWithoutPlayersInput, smaller_matchUncheckedCreateWithoutPlayersInput>
   }
 
-  export type smaller_profileCreateWithoutSmaller_playerInput = {
+  export type smaller_profileCreateWithoutPlayersInput = {
     profile_id: number
     steam_id?: string | null
     name?: string | null
@@ -18101,7 +18101,7 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
   }
 
-  export type smaller_profileUncheckedCreateWithoutSmaller_playerInput = {
+  export type smaller_profileUncheckedCreateWithoutPlayersInput = {
     profile_id: number
     steam_id?: string | null
     name?: string | null
@@ -18112,17 +18112,17 @@ export namespace Prisma {
     last_match_fetched_time?: Date | string | null
   }
 
-  export type smaller_profileCreateOrConnectWithoutSmaller_playerInput = {
+  export type smaller_profileCreateOrConnectWithoutPlayersInput = {
     where: smaller_profileWhereUniqueInput
-    create: XOR<smaller_profileCreateWithoutSmaller_playerInput, smaller_profileUncheckedCreateWithoutSmaller_playerInput>
+    create: XOR<smaller_profileCreateWithoutPlayersInput, smaller_profileUncheckedCreateWithoutPlayersInput>
   }
 
-  export type smaller_matchUpsertWithoutSmaller_playerInput = {
-    update: XOR<smaller_matchUpdateWithoutSmaller_playerInput, smaller_matchUncheckedUpdateWithoutSmaller_playerInput>
-    create: XOR<smaller_matchCreateWithoutSmaller_playerInput, smaller_matchUncheckedCreateWithoutSmaller_playerInput>
+  export type smaller_matchUpsertWithoutPlayersInput = {
+    update: XOR<smaller_matchUpdateWithoutPlayersInput, smaller_matchUncheckedUpdateWithoutPlayersInput>
+    create: XOR<smaller_matchCreateWithoutPlayersInput, smaller_matchUncheckedCreateWithoutPlayersInput>
   }
 
-  export type smaller_matchUpdateWithoutSmaller_playerInput = {
+  export type smaller_matchUpdateWithoutPlayersInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     started?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18162,7 +18162,7 @@ export namespace Prisma {
     visibility?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type smaller_matchUncheckedUpdateWithoutSmaller_playerInput = {
+  export type smaller_matchUncheckedUpdateWithoutPlayersInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     started?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18202,12 +18202,12 @@ export namespace Prisma {
     visibility?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type smaller_profileUpsertWithoutSmaller_playerInput = {
-    update: XOR<smaller_profileUpdateWithoutSmaller_playerInput, smaller_profileUncheckedUpdateWithoutSmaller_playerInput>
-    create: XOR<smaller_profileCreateWithoutSmaller_playerInput, smaller_profileUncheckedCreateWithoutSmaller_playerInput>
+  export type smaller_profileUpsertWithoutPlayersInput = {
+    update: XOR<smaller_profileUpdateWithoutPlayersInput, smaller_profileUncheckedUpdateWithoutPlayersInput>
+    create: XOR<smaller_profileCreateWithoutPlayersInput, smaller_profileUncheckedCreateWithoutPlayersInput>
   }
 
-  export type smaller_profileUpdateWithoutSmaller_playerInput = {
+  export type smaller_profileUpdateWithoutPlayersInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     steam_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18218,7 +18218,7 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type smaller_profileUncheckedUpdateWithoutSmaller_playerInput = {
+  export type smaller_profileUncheckedUpdateWithoutPlayersInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     steam_id?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18229,16 +18229,16 @@ export namespace Prisma {
     last_match_fetched_time?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type smaller_playerCreateWithoutSmaller_profileInput = {
+  export type smaller_playerCreateWithoutProfileInput = {
     slot: number
     civ?: number | null
     team?: number | null
     color?: number | null
     won?: boolean | null
-    smaller_match: smaller_matchCreateNestedOneWithoutSmaller_playerInput
+    match: smaller_matchCreateNestedOneWithoutPlayersInput
   }
 
-  export type smaller_playerUncheckedCreateWithoutSmaller_profileInput = {
+  export type smaller_playerUncheckedCreateWithoutProfileInput = {
     match_id: number
     slot: number
     civ?: number | null
@@ -18247,30 +18247,30 @@ export namespace Prisma {
     won?: boolean | null
   }
 
-  export type smaller_playerCreateOrConnectWithoutSmaller_profileInput = {
+  export type smaller_playerCreateOrConnectWithoutProfileInput = {
     where: smaller_playerWhereUniqueInput
-    create: XOR<smaller_playerCreateWithoutSmaller_profileInput, smaller_playerUncheckedCreateWithoutSmaller_profileInput>
+    create: XOR<smaller_playerCreateWithoutProfileInput, smaller_playerUncheckedCreateWithoutProfileInput>
   }
 
-  export type smaller_playerCreateManySmaller_profileInputEnvelope = {
-    data: Enumerable<smaller_playerCreateManySmaller_profileInput>
+  export type smaller_playerCreateManyProfileInputEnvelope = {
+    data: Enumerable<smaller_playerCreateManyProfileInput>
     skipDuplicates?: boolean
   }
 
-  export type smaller_playerUpsertWithWhereUniqueWithoutSmaller_profileInput = {
+  export type smaller_playerUpsertWithWhereUniqueWithoutProfileInput = {
     where: smaller_playerWhereUniqueInput
-    update: XOR<smaller_playerUpdateWithoutSmaller_profileInput, smaller_playerUncheckedUpdateWithoutSmaller_profileInput>
-    create: XOR<smaller_playerCreateWithoutSmaller_profileInput, smaller_playerUncheckedCreateWithoutSmaller_profileInput>
+    update: XOR<smaller_playerUpdateWithoutProfileInput, smaller_playerUncheckedUpdateWithoutProfileInput>
+    create: XOR<smaller_playerCreateWithoutProfileInput, smaller_playerUncheckedCreateWithoutProfileInput>
   }
 
-  export type smaller_playerUpdateWithWhereUniqueWithoutSmaller_profileInput = {
+  export type smaller_playerUpdateWithWhereUniqueWithoutProfileInput = {
     where: smaller_playerWhereUniqueInput
-    data: XOR<smaller_playerUpdateWithoutSmaller_profileInput, smaller_playerUncheckedUpdateWithoutSmaller_profileInput>
+    data: XOR<smaller_playerUpdateWithoutProfileInput, smaller_playerUncheckedUpdateWithoutProfileInput>
   }
 
-  export type smaller_playerUpdateManyWithWhereWithoutSmaller_profileInput = {
+  export type smaller_playerUpdateManyWithWhereWithoutProfileInput = {
     where: smaller_playerScalarWhereInput
-    data: XOR<smaller_playerUpdateManyMutationInput, smaller_playerUncheckedUpdateManyWithoutSmaller_playerInput>
+    data: XOR<smaller_playerUpdateManyMutationInput, smaller_playerUncheckedUpdateManyWithoutPlayersInput>
   }
 
   export type playerCreateManyMatchInput = {
@@ -18294,7 +18294,7 @@ export namespace Prisma {
     status?: IntFieldUpdateOperationsInput | number
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replay?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    profile?: profileUpdateOneRequiredWithoutPlayerNestedInput
+    profile?: profileUpdateOneRequiredWithoutPlayersNestedInput
   }
 
   export type playerUncheckedUpdateWithoutMatchInput = {
@@ -18309,7 +18309,7 @@ export namespace Prisma {
     replay?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
-  export type playerUncheckedUpdateManyWithoutPlayerInput = {
+  export type playerUncheckedUpdateManyWithoutPlayersInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     civ?: NullableIntFieldUpdateOperationsInput | number | null
     slot?: IntFieldUpdateOperationsInput | number
@@ -18331,11 +18331,11 @@ export namespace Prisma {
     losses?: number | null
     streak?: number | null
     wins?: number | null
-    updated_at: Date | string
+    updated_at?: Date | string
     rank_country?: number | null
   }
 
-  export type matchCreateManyProfileInput = {
+  export type matchCreateManyCreator_profileInput = {
     match_id: number
     name?: string | null
     server?: string | null
@@ -18424,7 +18424,7 @@ export namespace Prisma {
     rank_country?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
-  export type matchUpdateWithoutProfileInput = {
+  export type matchUpdateWithoutCreator_profileInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     server?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18457,10 +18457,10 @@ export namespace Prisma {
     internal_leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     privacy?: NullableIntFieldUpdateOperationsInput | number | null
-    player?: playerUpdateManyWithoutMatchNestedInput
+    players?: playerUpdateManyWithoutMatchNestedInput
   }
 
-  export type matchUncheckedUpdateWithoutProfileInput = {
+  export type matchUncheckedUpdateWithoutCreator_profileInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     server?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18493,10 +18493,10 @@ export namespace Prisma {
     internal_leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     leaderboard_id?: NullableIntFieldUpdateOperationsInput | number | null
     privacy?: NullableIntFieldUpdateOperationsInput | number | null
-    player?: playerUncheckedUpdateManyWithoutMatchNestedInput
+    players?: playerUncheckedUpdateManyWithoutMatchNestedInput
   }
 
-  export type matchUncheckedUpdateManyWithoutMatchInput = {
+  export type matchUncheckedUpdateManyWithoutCreated_matchesInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     name?: NullableStringFieldUpdateOperationsInput | string | null
     server?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18540,7 +18540,7 @@ export namespace Prisma {
     status?: IntFieldUpdateOperationsInput | number
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
     replay?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    match?: matchUpdateOneRequiredWithoutPlayerNestedInput
+    match?: matchUpdateOneRequiredWithoutPlayersNestedInput
   }
 
   export type playerUncheckedUpdateWithoutProfileInput = {
@@ -18555,7 +18555,7 @@ export namespace Prisma {
     replay?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
-  export type smaller_playerCreateManySmaller_matchInput = {
+  export type smaller_playerCreateManyMatchInput = {
     profile_id: number
     slot: number
     civ?: number | null
@@ -18564,16 +18564,16 @@ export namespace Prisma {
     won?: boolean | null
   }
 
-  export type smaller_playerUpdateWithoutSmaller_matchInput = {
+  export type smaller_playerUpdateWithoutMatchInput = {
     slot?: IntFieldUpdateOperationsInput | number
     civ?: NullableIntFieldUpdateOperationsInput | number | null
     team?: NullableIntFieldUpdateOperationsInput | number | null
     color?: NullableIntFieldUpdateOperationsInput | number | null
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    smaller_profile?: smaller_profileUpdateOneRequiredWithoutSmaller_playerNestedInput
+    profile?: smaller_profileUpdateOneRequiredWithoutPlayersNestedInput
   }
 
-  export type smaller_playerUncheckedUpdateWithoutSmaller_matchInput = {
+  export type smaller_playerUncheckedUpdateWithoutMatchInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     slot?: IntFieldUpdateOperationsInput | number
     civ?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18582,7 +18582,7 @@ export namespace Prisma {
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
-  export type smaller_playerUncheckedUpdateManyWithoutSmaller_playerInput = {
+  export type smaller_playerUncheckedUpdateManyWithoutPlayersInput = {
     profile_id?: IntFieldUpdateOperationsInput | number
     slot?: IntFieldUpdateOperationsInput | number
     civ?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18591,7 +18591,7 @@ export namespace Prisma {
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
-  export type smaller_playerCreateManySmaller_profileInput = {
+  export type smaller_playerCreateManyProfileInput = {
     match_id: number
     slot: number
     civ?: number | null
@@ -18600,16 +18600,16 @@ export namespace Prisma {
     won?: boolean | null
   }
 
-  export type smaller_playerUpdateWithoutSmaller_profileInput = {
+  export type smaller_playerUpdateWithoutProfileInput = {
     slot?: IntFieldUpdateOperationsInput | number
     civ?: NullableIntFieldUpdateOperationsInput | number | null
     team?: NullableIntFieldUpdateOperationsInput | number | null
     color?: NullableIntFieldUpdateOperationsInput | number | null
     won?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    smaller_match?: smaller_matchUpdateOneRequiredWithoutSmaller_playerNestedInput
+    match?: smaller_matchUpdateOneRequiredWithoutPlayersNestedInput
   }
 
-  export type smaller_playerUncheckedUpdateWithoutSmaller_profileInput = {
+  export type smaller_playerUncheckedUpdateWithoutProfileInput = {
     match_id?: IntFieldUpdateOperationsInput | number
     slot?: IntFieldUpdateOperationsInput | number
     civ?: NullableIntFieldUpdateOperationsInput | number | null

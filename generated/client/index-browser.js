@@ -275,15 +275,15 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 
 exports.Prisma.ModelName = makeEnum({
-  api_key: 'api_key',
   leaderboard_row: 'leaderboard_row',
   match: 'match',
-  match_pending: 'match_pending',
-  match_raw: 'match_raw',
   player: 'player',
   profile: 'profile',
-  rating: 'rating',
+  match_pending: 'match_pending',
+  api_key: 'api_key',
   setting: 'setting',
+  match_raw: 'match_raw',
+  rating: 'rating',
   smaller_match: 'smaller_match',
   smaller_player: 'smaller_player',
   smaller_profile: 'smaller_profile'
