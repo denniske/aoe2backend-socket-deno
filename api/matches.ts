@@ -26,7 +26,7 @@ export function matchController() {
 
     server.router.get('/api/matches', async (req, h) => {
 
-        console.log('/api/matches');
+        console.log(req.url?.href);
 
         // console.log('searchParams', req.searchParams.get('profile_ids'));
 
@@ -169,10 +169,22 @@ export function matchController() {
             matches: matches2.map(conv),
         };
 
+
+
         console.log('/api/matches', matches2.length);
 
-        return h.response(JSON.stringify((data), bigIntStringifer))
-            .header('content-type', 'application/json');
+        // 'access-control-allow-origin', '*');
+        // request.response.headers.append(
+        //     'access-control-allow-headers',
+        //     'Origin, X-Requested-With, Content-Type, Accept, Range',
+        // );
+
+        return h
+            .response(JSON.stringify((data), bigIntStringifer))
+            .header('content-type', 'application/json')
+            .header('access-control-allow-origin', '*')
+            // .header('access-control-allow-headers', 'Origin, X-Requested-With, Content-Type, Accept, Range')
+            ;
 
 
 
