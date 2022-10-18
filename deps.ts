@@ -1,5 +1,5 @@
-import {config} from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
+import { config } from "https://deno.land/std@0.160.0/dotenv/mod.ts";
 
-export function loadEnv() {
-    config({ export: true });
+export async function loadEnv() {
+    await config({ export: true });
 }

@@ -2,7 +2,7 @@ import {loadEnv} from "./deps.ts";
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
 import { PrismaClient } from './generated/client/deno/edge.ts'
 
-loadEnv();
+await loadEnv();
 
 const prisma = new PrismaClient({
     datasources: { db: { url: Deno.env.get('DATA_PROXY_URL') as string } },
