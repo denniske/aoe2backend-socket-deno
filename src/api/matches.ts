@@ -12,10 +12,6 @@ import {getTranslation} from "../helper/translation.ts";
 
 const PER_PAGE = 20;
 
-// function getTranslation() {
-//     return null;
-// }
-
 export async function apiMatches(req: ServerRequest, toolkit: Toolkit) {
 
     const language = req.searchParams.get('language') ?? 'en';
@@ -28,9 +24,6 @@ export async function apiMatches(req: ServerRequest, toolkit: Toolkit) {
 
     const start = (page - 1) * PER_PAGE + 1;
     const count = PER_PAGE;
-
-    // console.log('leaderboardIds', leaderboardIds);
-    // console.log('leaderboardIdList', leaderboardIdList);
 
     let matches = await prisma.$queryRaw<RootObject[]>`
         SELECT

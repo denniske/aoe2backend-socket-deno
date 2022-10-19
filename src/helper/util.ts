@@ -12,7 +12,7 @@ import {Toolkit} from "https://deno.land/x/pogo@v0.6.0/main.ts";
 // }
 
 export function parseISONullable(value: string) {
-    return value ? parseISO(value, {}) : null;
+    return value ? new Date(Date.parse(value)) : null;
 }
 
 const playerColors = [
