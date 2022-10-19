@@ -1,4 +1,6 @@
 import parseISO from 'https://deno.land/x/date_fns@v2.22.1/parseISO/index.js';
+import {Toolkit} from "https://deno.land/x/pogo@v0.6.0/main.ts";
+
 
 // const res = parseISO('2010-03-14', {});
 
@@ -10,7 +12,7 @@ import parseISO from 'https://deno.land/x/date_fns@v2.22.1/parseISO/index.js';
 // }
 
 export function parseISONullable(value: string) {
-    return value ? parseISO(value) : null;
+    return value ? parseISO(value, {}) : null;
 }
 
 const playerColors = [
@@ -26,4 +28,19 @@ const playerColors = [
 
 export function getPlayerBackgroundColor(playerPosition: number) {
     return playerColors[playerPosition - 1];
+}
+
+export function bigIntStringifer(_key: string, value: any) {
+    if (typeof value === 'bigint') {
+        return Number(value);
+    }
+    return value;
+}
+
+export function sendResponse(toolkit: Toolkit, data: any) {
+    return toolkit
+        .response(JSON.stringify((data), bigIntStringifer))
+        .header('content-type', 'application/json')
+        .header('access-control-allow-origin', '*')
+    // res.send(JSON.stringify(decamelizeKeys(data), bigIntStringifer));
 }
