@@ -349,9 +349,6 @@ export async function apiPlayerRatinghistory(req: ServerRequest, toolkit: Toolki
 }
 
 export async function apiProfile(req: ServerRequest, toolkit: Toolkit) {
-
-    console.log('apiProfile');
-
     const start = parseInt(req.searchParams.get('start') ?? '1');
     const count = parseInt(req.searchParams.get('count') ?? '10');
     const steamId = req.searchParams.get('steam_id') || null;
@@ -364,7 +361,6 @@ export async function apiProfile(req: ServerRequest, toolkit: Toolkit) {
 
     let profiles = [];
     if (search != null) {
-        console.log('apiProfile1b');
         profiles = await prisma.$queryRaw`
             SELECT p.profile_id, p.name, country, SUM(wins+losses) as games
             FROM profile as p
@@ -398,7 +394,6 @@ export async function apiProfile(req: ServerRequest, toolkit: Toolkit) {
             LIMIT ${count}
         ` as any;
     }
-    console.log('apiProfile2');
 
     return sendResponse(toolkit, {
         start: start,
