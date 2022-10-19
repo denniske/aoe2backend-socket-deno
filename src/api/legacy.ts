@@ -3,7 +3,6 @@ import ServerRequest from "https://deno.land/x/pogo@v0.6.0/lib/request.ts";
 import {Toolkit} from "https://deno.land/x/pogo@v0.6.0/main.ts";
 import {getProfiles} from "../service/profile.ts";
 import {prisma} from "../db.ts";
-import {getLeaderboardIdFromEnum} from "../helper/leaderboards.ts";
 import {redis} from "../redis.ts";
 import {groupBy, sortBy} from "https://raw.githubusercontent.com/lodash/lodash/4.17.21-es/lodash.js";
 import {Prisma} from "../../generated/client/deno/edge.ts";
@@ -14,7 +13,6 @@ import {getFlag} from "../helper/flags.ts";
 const PER_PAGE = 20;
 
 export async function apiProfiles(req: ServerRequest, toolkit: Toolkit) {
-
     const page = parseInt(req.searchParams.get('page') ?? '1');
     const steamId = req.searchParams.get('steam_id') || null;
     const profileId = parseIntNullable(req.searchParams.get('profile_id')) || null;
@@ -347,6 +345,9 @@ export async function apiPlayerRatinghistory(req: ServerRequest, toolkit: Toolki
 }
 
 export async function apiProfile(req: ServerRequest, toolkit: Toolkit) {
+
+    console.log('apiProfile');
+
     const start = parseInt(req.searchParams.get('start') ?? '1');
     const count = parseInt(req.searchParams.get('count') ?? '10');
     const steamId = req.searchParams.get('steam_id') || null;
@@ -359,6 +360,7 @@ export async function apiProfile(req: ServerRequest, toolkit: Toolkit) {
 
     let profiles = [];
     if (search != null) {
+        console.log('apiProfile1b');
         profiles = await prisma.$queryRaw`
             SELECT p.profile_id, p.name, country, SUM(wins+losses) as games
             FROM profile as p
@@ -392,6 +394,7 @@ export async function apiProfile(req: ServerRequest, toolkit: Toolkit) {
             LIMIT ${count}
         ` as any;
     }
+    console.log('apiProfile2');
 
     return sendResponse(toolkit, {
         start: start,

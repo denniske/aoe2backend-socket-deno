@@ -3,8 +3,12 @@ import {loadEnv} from "./deps.ts";
 
 await loadEnv();
 
+// console.log('Connecting to redis...');
+
 export const redis = await connect({
     hostname: Deno.env.get('REDIS_HOST') as string,
     password: Deno.env.get('REDIS_PASSWORD') as string,
     port: Deno.env.get('REDIS_PORT') as string,
 });
+
+// console.log('Connected to redis');

@@ -310,7 +310,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/dennis/Projects/prisma-deno-deploy/generated/client",
+      "value": "/Users/dennis/Projects/aoe2backend-legacy-deno/generated/client",
       "fromEnvVar": null
     },
     "config": {
