@@ -23,28 +23,23 @@ function wrapper(handler: (req: ServerRequest, toolkit: Toolkit) => Promise<any>
         console.log('-----------');
         const start = new Date();
 
-        const res = await handler(req, toolkit);
+        let statusCode = null;
+        try {
+            const res = await handler(req, toolkit);
 
+            statusCode = res.statusCode;
 
-        // const ip1 = req.host;
-        // const ip2 = req.connection.remoteAddress;
-        // const ip3 = req.headers['x-forwarded-for'];
-        // console.log(req.host);
+            const durationInMs = new Date().getTime() - start.getTime();
+            const paddedDurationInMs = durationInMs.toString().padStart(5, ' ');
 
-        // console.log('-----------');
-        // console.log(res.status);
-        // console.log(req.method);
-        // console.log(req.url.href);
-        // console.log(req.raw);
+            console.log(`${statusCode} ${paddedDurationInMs}ms ${req.method} ${req.url.href}`);
+            return res;
+        } catch (e) {
+            const durationInMs = new Date().getTime() - start.getTime();
+            const paddedDurationInMs = durationInMs.toString().padStart(5, ' ');
 
-        const statusCode = res.status;
-
-        const durationInMs = new Date().getTime() - start.getTime();
-        const paddedDurationInMs = durationInMs.toString().padStart(5, ' ');
-
-        console.log(`${statusCode} ${paddedDurationInMs}ms ${req.method} ${req.url.href}`);
-
-        return res;
+            console.log(`${statusCode} ${paddedDurationInMs}ms ${req.method} ${req.url.href}`, e);
+        }
     };
 }
 
