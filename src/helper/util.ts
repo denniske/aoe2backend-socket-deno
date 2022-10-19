@@ -15,6 +15,19 @@ export function parseISONullable(value: string) {
     return value ? new Date(Date.parse(value)) : null;
 }
 
+export function parseIntNullable(value?: string | null) {
+    return value ? parseInt(value) : null;
+}
+
+export function getUnixTime(date: Date) {
+    const timestampInMs = date.getTime();
+    return Math.floor(date.getTime() / 1000);
+}
+
+export function fromUnixTime(timestamp: number) {
+    return new Date(timestamp * 1000);
+}
+
 const playerColors = [
     '#405BFF',
     '#FF0000',
