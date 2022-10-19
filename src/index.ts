@@ -20,25 +20,24 @@ await loadEnv();
 
 function wrapper(handler: (req: ServerRequest, toolkit: Toolkit) => Promise<any>) {
     return async (req: ServerRequest, toolkit: Toolkit) => {
-        console.log('-----------');
         const start = new Date();
 
-        let statusCode = null;
         try {
             const res = await handler(req, toolkit);
 
-            statusCode = res.statusCode;
+            // This breaks app?
+            // statusCode = res.status;
 
             const durationInMs = new Date().getTime() - start.getTime();
             const paddedDurationInMs = durationInMs.toString().padStart(5, ' ');
 
-            console.log(`${statusCode} ${paddedDurationInMs}ms ${req.method} ${req.url.href}`);
+            console.log(`200 ${paddedDurationInMs}ms ${req.method} ${req.url.href}`);
             return res;
         } catch (e) {
             const durationInMs = new Date().getTime() - start.getTime();
             const paddedDurationInMs = durationInMs.toString().padStart(5, ' ');
 
-            console.log(`${statusCode} ${paddedDurationInMs}ms ${req.method} ${req.url.href}`, e);
+            console.log(`500 ${paddedDurationInMs}ms ${req.method} ${req.url.href}`, e);
         }
     };
 }
