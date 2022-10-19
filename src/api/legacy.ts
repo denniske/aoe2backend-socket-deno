@@ -133,6 +133,10 @@ export async function apiReady(req: ServerRequest, toolkit: Toolkit) {
     return sendResponse(toolkit, 'Ready.');
 }
 
+export async function apiError(req: ServerRequest, toolkit: Toolkit) {
+    throw new Error('Test error');
+}
+
 /*
 
 Endpoint

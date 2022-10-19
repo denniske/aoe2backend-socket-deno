@@ -9,7 +9,7 @@ import {
     apiPlayerRatinghistory,
     apiPlayerMatches,
     apiNightbotRank,
-    apiNightbotMatch,
+    apiNightbotMatch, apiError,
 } from "./api/legacy.ts";
 import ServerRequest from "https://deno.land/x/pogo@v0.6.0/lib/request.ts";
 import {Toolkit} from "https://deno.land/x/pogo@v0.6.0/main.ts";
@@ -53,6 +53,7 @@ function wrapper(handler: (req: ServerRequest, toolkit: Toolkit) => Promise<any>
 // server.router.get('/api/nightbot/match', apiNightbotMatch);
 
 server.router.get('/ready', wrapper(apiReady));
+server.router.get('/error', wrapper(apiError));
 server.router.get('/api/match', wrapper(apiMatch));
 server.router.get('/api/matches', wrapper(apiMatches));
 server.router.get('/api/leaderboard', wrapper(apiLeaderboard));
