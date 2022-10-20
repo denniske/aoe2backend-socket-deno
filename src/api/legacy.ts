@@ -234,7 +234,6 @@ Example Request
  */
 
 export async function apiLeaderboard(req: ServerRequest, toolkit: Toolkit) {
-    console.trace('apiLeaderboard');
     const start = parseInt(req.searchParams.get('start') ?? '1');
     const count = parseInt(req.searchParams.get('count') ?? '10');
     const leaderboardId = parseInt(req.searchParams.get('leaderboard_id')!);
@@ -527,6 +526,7 @@ Example Responses
  */
 
 export async function apiNightbotRank(req: ServerRequest, toolkit: Toolkit) {
+    console.trace('apiNightbotRank');
     const leaderboardId = parseInt(req.searchParams.get('leaderboard_id') ?? '3');
     const language = 'en'; //req.searchParams.get('language') ?? 'en';
     const flag = (req.searchParams.get('flag') ?? 'true') === 'true';
