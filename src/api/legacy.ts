@@ -234,6 +234,7 @@ Example Request
  */
 
 export async function apiLeaderboard(req: ServerRequest, toolkit: Toolkit) {
+    console.trace('apiLeaderboard');
     const start = parseInt(req.searchParams.get('start') ?? '1');
     const count = parseInt(req.searchParams.get('count') ?? '10');
     const leaderboardId = parseInt(req.searchParams.get('leaderboard_id')!);
