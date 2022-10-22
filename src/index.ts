@@ -17,7 +17,8 @@ serve(async (req: Request) => {
 
             // const body = req.body.;
             // console.log('apiIngest', body);
-            const json = await parseBodyAsJson(req);
+
+            const json = await req.json(); //await parseBodyAsJson(req);
 
             channel.postMessage(json);
             return new Response("ingested");
