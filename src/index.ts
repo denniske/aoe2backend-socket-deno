@@ -10,7 +10,7 @@ serve(async (req: Request) => {
         const path = url.pathname;
 
         if (path.startsWith('/api/lobbies')) {
-            const lobbies = await redis.get('lobbies');
+            const lobbies = await redis.get('lobbies2');
             return sendResponse(lobbies);
         }
 
