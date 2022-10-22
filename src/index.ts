@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
 import {readAll} from "https://deno.land/std@0.159.0/streams/conversion.ts";
 
-serve((req: Request) => {
+serve(async (req: Request) => {
     const upgrade = req.headers.get("upgrade") || "";
     if (upgrade.toLowerCase() != "websocket") {
 
@@ -17,7 +17,7 @@ serve((req: Request) => {
 
             // const body = req.body.;
             // console.log('apiIngest', body);
-            const json = parseBodyAsJson(req);
+            const json = await parseBodyAsJson(req);
 
             channel.postMessage(json);
             return new Response("ingested");
