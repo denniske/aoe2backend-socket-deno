@@ -1,30 +1,27 @@
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
-import {readAll} from "https://deno.land/std@0.159.0/streams/conversion.ts";
+import {redis} from "./redis.ts";
+import {sendResponse} from "./helper/util.ts";
 
 serve(async (req: Request) => {
     const upgrade = req.headers.get("upgrade") || "";
     if (upgrade.toLowerCase() != "websocket") {
-
         const url = new URL(req.url);
-
         console.log('url', url);
-
         const path = url.pathname;
+
+        if (path.startsWith('/api/lobbies')) {
+            const lobbies = await redis.get('lobbies');
+            return sendResponse(lobbies);
+        }
 
         if (path.startsWith('/api/room/lobbies/ingest')) {
             const channel = new BroadcastChannel("lobbies");
 
-
-            // const body = req.body.;
-            // console.log('apiIngest', body);
-
-            const json = await req.json(); //await parseBodyAsJson(req);
+            const json = await req.json();
 
             channel.postMessage(JSON.stringify(json));
             return new Response("ingested");
         }
-
-
 
         return new Response("request isn't trying to upgrade to websocket.");
     }
@@ -45,24 +42,3 @@ serve(async (req: Request) => {
     };
     return response;
 });
-
-
-// async function parseBodyAsJson(req: Request) {
-//     const decoder = new TextDecoder();
-//     const body = decoder.decode(await readAll(req.body.getReader()));
-//     return JSON.parse(body);
-// }
-
-// let str = '';
-// const reader = request.body!.getReader();
-// while(true) {
-//     const {value: chunk, done} = await reader.read();
-//     const chunkStr = new TextDecoder().decode(chunk);
-//     str += chunkStr;
-//     if (done) break;
-// }
-//
-// // console.log('value', bodyIntArray);
-// // const bodyJSON = new TextDecoder().decode(bodyIntArray);
-// // console.log(bodyJSON);
-// const newLobbies = JSON.parse(str);

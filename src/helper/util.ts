@@ -58,10 +58,11 @@ export function bigIntStringifer(_key: string, value: any) {
     return value;
 }
 
-export function sendResponse(toolkit: Toolkit, data: any) {
-    return toolkit
-        .response(JSON.stringify((data), bigIntStringifer))
-        .header('content-type', 'application/json')
-        .header('access-control-allow-origin', '*')
-    // res.send(JSON.stringify(decamelizeKeys(data), bigIntStringifer));
+export function sendResponse(data: any) {
+    return new Response(JSON.stringify((data), bigIntStringifer), {
+        headers: {
+            'content-type': 'application/json',
+            'access-control-allow-origin': '*',
+        },
+    });
 }
