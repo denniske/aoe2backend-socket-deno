@@ -12,6 +12,10 @@ import {Toolkit} from "https://deno.land/x/pogo@v0.6.0/main.ts";
 // }
 
 export function parseISONullable(value: string) {
+    // console.log('parseISONullable ----');
+    // console.log('parseISONullable', value);
+    // console.log('parseISONullable', new Date(Date.parse(value)));
+
     return value ? new Date(Date.parse(value)) : null;
 }
 
@@ -20,6 +24,10 @@ export function parseIntNullable(value?: string | null) {
 }
 
 export function getUnixTime(date: Date) {
+    // console.log('getUnixTime ----');
+    // console.log('getUnixTime', date);
+    // console.log('getUnixTime', Math.floor(date.getTime() / 1000));
+
     const timestampInMs = date.getTime();
     return Math.floor(date.getTime() / 1000);
 }
