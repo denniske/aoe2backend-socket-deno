@@ -20,7 +20,7 @@ serve(async (req: Request) => {
 
             const json = await req.json(); //await parseBodyAsJson(req);
 
-            channel.postMessage(json);
+            channel.postMessage(JSON.stringify(json));
             return new Response("ingested");
         }
 
@@ -47,11 +47,11 @@ serve(async (req: Request) => {
 });
 
 
-async function parseBodyAsJson(req: Request) {
-    const decoder = new TextDecoder();
-    const body = decoder.decode(await readAll(req.body.getReader()));
-    return JSON.parse(body);
-}
+// async function parseBodyAsJson(req: Request) {
+//     const decoder = new TextDecoder();
+//     const body = decoder.decode(await readAll(req.body.getReader()));
+//     return JSON.parse(body);
+// }
 
 // let str = '';
 // const reader = request.body!.getReader();
