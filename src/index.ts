@@ -48,7 +48,7 @@ serve((req: Request) => {
 
 async function parseBodyAsJson(req: Request) {
     const decoder = new TextDecoder();
-    const body = decoder.decode(await readAll(req.body));
+    const body = decoder.decode(await readAll(req.body.getReader()));
     return JSON.parse(body);
 }
 
