@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
+import {readAll} from "https://deno.land/std@0.159.0/streams/conversion.ts";
 
 serve((req: Request) => {
     const upgrade = req.headers.get("upgrade") || "";
@@ -12,7 +13,13 @@ serve((req: Request) => {
 
         if (path.startsWith('/api/room/lobbies/ingest')) {
             const channel = new BroadcastChannel("lobbies");
-            channel.postMessage('lobbies ingested');
+
+
+            // const body = req.body.;
+            // console.log('apiIngest', body);
+            const json = parseBodyAsJson(req);
+
+            channel.postMessage(json);
             return new Response("ingested");
         }
 
@@ -37,3 +44,24 @@ serve((req: Request) => {
     };
     return response;
 });
+
+
+async function parseBodyAsJson(req: Request) {
+    const decoder = new TextDecoder();
+    const body = decoder.decode(await readAll(req.body));
+    return JSON.parse(body);
+}
+
+// let str = '';
+// const reader = request.body!.getReader();
+// while(true) {
+//     const {value: chunk, done} = await reader.read();
+//     const chunkStr = new TextDecoder().decode(chunk);
+//     str += chunkStr;
+//     if (done) break;
+// }
+//
+// // console.log('value', bodyIntArray);
+// // const bodyJSON = new TextDecoder().decode(bodyIntArray);
+// // console.log(bodyJSON);
+// const newLobbies = JSON.parse(str);
