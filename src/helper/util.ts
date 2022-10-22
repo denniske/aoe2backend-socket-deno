@@ -59,7 +59,8 @@ export function bigIntStringifer(_key: string, value: any) {
 }
 
 export function sendResponse(data: any) {
-    return new Response(JSON.stringify((data), bigIntStringifer), {
+    // return new Response(JSON.stringify((data), bigIntStringifer), {
+    return new Response(data, {
         headers: {
             'content-type': 'application/json',
             'access-control-allow-origin': '*',
