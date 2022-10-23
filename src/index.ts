@@ -40,7 +40,7 @@ serve(async (req: Request) => {
     socket.onopen = async () => {
         console.log("socket opened");
 
-        const { streamEventId, events } = JSON.parse(await redis.get('lobbies2') as string);
+        let { streamEventId, events } = JSON.parse(await redis.get('lobbies2') as string);
 
         console.log(streamEventId, events.length);
 
@@ -51,6 +51,8 @@ serve(async (req: Request) => {
                 block: 1000
             })
             console.log(msg);
+            const messages = msg[0].messages;
+            streamEventId = messages[messages.length-1].xid;
         }
     };
 
