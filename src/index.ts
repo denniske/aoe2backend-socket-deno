@@ -47,10 +47,10 @@ serve(async (req: Request) => {
         socket.send(JSON.stringify(events));
 
         // while (true) {
-        //     const msg = await redis.xread(['stream-lobbies', streamEventId], {
-        //         block: 1000
-        //     })
-        //     console.log(msg);
+            const msg = await redis.xread(['stream-lobbies', streamEventId], {
+                block: 1000
+            })
+            console.log(msg);
         // }
     };
 
