@@ -57,7 +57,9 @@ serve(async (req: Request) => {
     const channel = new BroadcastChannel("lobbies");
     channel.onmessage = (e) => {
         console.log("channel message:", e.data);
-        socket.send(e.data);
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(e.data);
+        }
     };
     return response;
 });
