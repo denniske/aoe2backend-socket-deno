@@ -76,6 +76,9 @@ serve(async (req: Request) => {
 
             const sub = await redis.subscribe('pubsub-match-started');
 
+            await sleep(3000);
+            socket.close();
+
             for await (const { channel, message } of sub.receive()) {
                 console.log('sub message', message);
 
@@ -114,3 +117,9 @@ serve(async (req: Request) => {
 
     return response;
 });
+
+export function sleep(ms: number) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
