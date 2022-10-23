@@ -38,7 +38,15 @@ serve(async (req: Request) => {
 
     const { socket, response } = Deno.upgradeWebSocket(req);
 
-    socket.onopen = () => console.log("socket opened");
+    socket.onopen = async () => {
+        console.log("socket opened");
+
+        const { streamEventId, lobbies } = JSON.parse(await redis.get('lobbies2') as string);
+
+        console.log(streamEventId, lobbies.length);
+
+
+    };
 
     let lastLobbiesDict: Record<string, any> = {};
     let lastPlayersDict: Record<string, any> = {};
@@ -90,12 +98,12 @@ serve(async (req: Request) => {
     socket.onerror = (e) => console.log("socket errored:", e);
     socket.onclose = () => console.log("socket closed");
 
-    const channel = new BroadcastChannel("lobbies");
-    channel.onmessage = (e) => {
-        console.log("channel message:", e.data);
-        if (socket.readyState === WebSocket.OPEN) {
-            socket.send(e.data);
-        }
-    };
+    // const channel = new BroadcastChannel("lobbies");
+    // channel.onmessage = (e) => {
+    //     console.log("channel message:", e.data);
+    //     if (socket.readyState === WebSocket.OPEN) {
+    //         socket.send(e.data);
+    //     }
+    // };
     return response;
 });
