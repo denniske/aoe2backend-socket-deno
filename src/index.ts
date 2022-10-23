@@ -69,6 +69,7 @@ serve(async (req: Request) => {
         };
     }
 
+
     if (path[2] === 'match-started') {
         socket.onopen = async () => {
             console.log("socket opened");
