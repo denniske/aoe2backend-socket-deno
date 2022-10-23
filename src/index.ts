@@ -23,14 +23,25 @@ serve(async (req: Request) => {
             return new Response("ingested");
         }
 
+        if (path.startsWith('/api/room/lobbyPlayers/ingest')) {
+            const channel = new BroadcastChannel("lobbies");
+
+            const json = await req.json();
+
+            channel.postMessage(JSON.stringify(json));
+            return new Response("ingested");
+        }
+
         return new Response("request isn't trying to upgrade to websocket.");
     }
 
     const { socket, response } = Deno.upgradeWebSocket(req);
     socket.onopen = () => console.log("socket opened");
     socket.onmessage = (e) => {
-        console.log("socket message:", e.data);
+        console.log("socket message:", JSON.parse(e.data));
+
         socket.send(new Date().toString());
+
     };
     socket.onerror = (e) => console.log("socket errored:", e);
     socket.onclose = () => console.log("socket closed");
