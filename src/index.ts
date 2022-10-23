@@ -69,6 +69,32 @@ serve(async (req: Request) => {
         };
     }
 
+    if (path[2] === 'ongoing-matches') {
+        socket.onopen = async () => {
+            console.log("socket opened");
+
+            let {streamEventId, events} = JSON.parse(await redis.get('ongoing-matches') as string);
+
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(events));
+            }
+
+            while (socket.readyState === WebSocket.OPEN) {
+                const msg = await redis.xread([{key: 'stream-ongoing-matches', xid: streamEventId}], {block: 5000})
+                if (msg.length !== 0) {
+                    const messages = msg[0].messages;
+                    streamEventId = messages[messages.length - 1].xid;
+                    const values = messages.map((message: any) => message.fieldValues.data);
+                    for (const value of values) {
+                        if (socket.readyState === WebSocket.OPEN) {
+                            socket.send(value);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
 
     if (path[2] === 'match-started') {
         socket.onopen = async () => {
