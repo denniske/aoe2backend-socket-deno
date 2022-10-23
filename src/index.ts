@@ -37,33 +37,49 @@ serve(async (req: Request) => {
 
     const url = new URL(req.url);
     console.log('url', url);
-    const path = url.pathname;
+    const path = url.pathname.split('/');
 
     const { socket, response } = Deno.upgradeWebSocket(req);
 
-    socket.onopen = async () => {
-        console.log("socket opened");
+    // e.g. /listen/lobbies
 
-        let { streamEventId, events } = JSON.parse(await redis.get('lobbies') as string);
+    if (path[2] === 'lobbies') {
+        socket.onopen = async () => {
+            console.log("socket opened");
 
-        if (socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify(events));
-        }
+            let {streamEventId, events} = JSON.parse(await redis.get('lobbies') as string);
 
-        while (socket.readyState === WebSocket.OPEN) {
-            const msg = await redis.xread([{key: 'stream-lobbies', xid: streamEventId}], { block: 5000 })
-            if (msg.length !== 0) {
-                const messages = msg[0].messages;
-                streamEventId = messages[messages.length - 1].xid;
-                const values = messages.map((message: any) => message.fieldValues.data);
-                for (const value of values) {
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(value);
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(events));
+            }
+
+            while (socket.readyState === WebSocket.OPEN) {
+                const msg = await redis.xread([{key: 'stream-lobbies', xid: streamEventId}], {block: 5000})
+                if (msg.length !== 0) {
+                    const messages = msg[0].messages;
+                    streamEventId = messages[messages.length - 1].xid;
+                    const values = messages.map((message: any) => message.fieldValues.data);
+                    for (const value of values) {
+                        if (socket.readyState === WebSocket.OPEN) {
+                            socket.send(value);
+                        }
                     }
                 }
             }
-        }
-    };
+        };
+    }
+
+    if (path[2] === 'match-started') {
+        socket.onopen = async () => {
+            console.log("socket opened");
+
+            const sub = await redis.subscribe('pubsub-match-started');
+
+            for await (const { channel, message } of sub.receive()) {
+                console.log('sub message', message);
+            }
+        };
+    }
 
 
     socket.onerror = (e) => console.log("socket errored:", e);
