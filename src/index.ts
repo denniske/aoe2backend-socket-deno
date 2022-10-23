@@ -56,9 +56,12 @@ serve(async (req: Request) => {
             streamEventId = messages[messages.length-1].xid;
             console.log('Last streamEventId', streamEventId);
 
-            const data = messages.map((message: any) => message.fieldValues);
-            console.log('data', data);
+            const values = messages.map((message: any) => message.fieldValues.data);
 
+            for (const value of values) {
+                socket.send(value);
+                console.log('value', value);
+            }
         }
     };
 
