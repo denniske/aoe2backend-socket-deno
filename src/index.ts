@@ -77,6 +77,12 @@ serve(async (req: Request) => {
 
             for await (const { channel, message } of sub.receive()) {
                 console.log('sub message', message);
+
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(message);
+                } else {
+                    break;
+                }
             }
         };
     }
