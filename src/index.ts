@@ -55,6 +55,10 @@ serve(async (req: Request) => {
             const messages = msg[0].messages;
             streamEventId = messages[messages.length-1].xid;
             console.log('Last streamEventId', streamEventId);
+
+            const data = messages.map((message: any) => message.fieldValues);
+            console.log('data', data);
+
         }
     };
 
