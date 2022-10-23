@@ -6,7 +6,7 @@ serve(async (req: Request) => {
     const upgrade = req.headers.get("upgrade") || "";
     if (upgrade.toLowerCase() != "websocket") {
         const url = new URL(req.url);
-        console.log('url', url);
+        // console.log('url', url);
         const path = url.pathname;
 
         if (path.startsWith('/api/lobbies')) {
@@ -36,13 +36,21 @@ serve(async (req: Request) => {
     }
 
     const { socket, response } = Deno.upgradeWebSocket(req);
+
     socket.onopen = () => console.log("socket opened");
+
     socket.onmessage = (e) => {
-        console.log("socket message:", JSON.parse(e.data));
+        // console.log("socket message:", e.data);
+        const data = JSON.parse(e.data);
+        console.log("socket message:", data);
 
-        socket.send(new Date().toString());
-
+        if (data.type === 'ping') {
+            socket.send(JSON.stringify({
+                type: 'pong',
+            }));
+        }
     };
+
     socket.onerror = (e) => console.log("socket errored:", e);
     socket.onclose = () => console.log("socket closed");
 
