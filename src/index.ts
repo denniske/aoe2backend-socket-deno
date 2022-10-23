@@ -40,11 +40,18 @@ serve(async (req: Request) => {
     socket.onopen = async () => {
         console.log("socket opened");
 
-        const { streamEventId, lobbies } = JSON.parse(await redis.get('lobbies2') as string);
+        const { streamEventId, events } = JSON.parse(await redis.get('lobbies2') as string);
 
-        console.log(streamEventId, lobbies.length);
+        console.log(streamEventId, events.length);
 
+        socket.send(JSON.stringify(events));
 
+        while (true) {
+            const msg = await redis.xread(['stream-lobbies', streamEventId], {
+                block: 1000
+            })
+            console.log(msg);
+        }
     };
 
     socket.onmessage = (e) => {
