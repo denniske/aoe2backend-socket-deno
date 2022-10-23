@@ -44,9 +44,10 @@ serve(async (req: Request) => {
 
         console.log(streamEventId, events.length);
 
+        if (socket.readyState !== WebSocket.OPEN) return;
         socket.send(JSON.stringify(events));
 
-        while (true) {
+        while (socket.readyState === WebSocket.OPEN) {
             const msg = await redis.xread([{key: 'stream-lobbies', xid: streamEventId}], {
                 block: 5000
             })
@@ -59,8 +60,9 @@ serve(async (req: Request) => {
             const values = messages.map((message: any) => message.fieldValues.data);
 
             for (const value of values) {
+                if (socket.readyState !== WebSocket.OPEN) return;
                 socket.send(value);
-                console.log('value', value);
+                // console.log('value', value);
             }
         }
     };
