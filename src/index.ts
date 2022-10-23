@@ -48,8 +48,9 @@ serve(async (req: Request) => {
 
         while (true) {
             const msg = await redis.xread([{key: 'stream-lobbies', xid: streamEventId}], {
-                block: 1000
+                block: 5000
             })
+            if (msg.length === 0) continue;
             console.log(msg);
             const messages = msg[0].messages;
             streamEventId = messages[messages.length-1].xid;
