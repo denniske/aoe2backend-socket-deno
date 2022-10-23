@@ -40,7 +40,7 @@ serve(async (req: Request) => {
     socket.onopen = async () => {
         console.log("socket opened");
 
-        let { streamEventId, events } = JSON.parse(await redis.get('lobbies2') as string);
+        let { streamEventId, events } = JSON.parse(await redis.get('lobbies') as string);
 
         console.log(streamEventId, events.length);
 
