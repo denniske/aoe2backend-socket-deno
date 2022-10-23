@@ -46,12 +46,12 @@ serve(async (req: Request) => {
 
         socket.send(JSON.stringify(events));
 
-        // while (true) {
-            const msg = await redis.xread(['stream-lobbies', streamEventId], {
+        while (true) {
+            const msg = await redis.xread([{key: 'stream-lobbies', xid: streamEventId}], {
                 block: 1000
             })
             console.log(msg);
-        // }
+        }
     };
 
     socket.onmessage = (e) => {
