@@ -13,12 +13,11 @@ serve(async (req: Request) => {
         // console.log('url', url);
         // const path = url.pathname;
 
-        if (url.pathname.startsWith('/api/ongoing-matches')) {
-            const start = new Date();
-            const lobbies = await redis.get('ongoing-matches');
-            console.log('HTTP TIME', new Date().getTime() - start.getTime());
-            return sendResponse(lobbies);
-        }
+        // if (url.pathname.startsWith('/api/ongoing-matches')) {
+        //     // const lobbies = await redis.get('ongoing-matches');
+        //     // return sendResponse(lobbies);
+        //     return await fetch('https://legacy.aoe2companion.com/kv/get?key=ongoing-matches');
+        // }
 
         // if (path.startsWith('/api/room/lobbies/ingest')) {
         //     const channel = new BroadcastChannel("lobbies");
@@ -49,7 +48,8 @@ serve(async (req: Request) => {
         socket.onopen = async () => {
             console.log("socket opened");
 
-            let {streamEventId, events} = JSON.parse(await redis.get('lobbies') as string);
+            const result = await fetch('https://legacy.aoe2companion.com/kv/get?key=lobbies');
+            let {streamEventId, events} = await result.json();
 
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify(events));
@@ -75,17 +75,12 @@ serve(async (req: Request) => {
         socket.onopen = async () => {
             console.log("socket opened");
 
-            let start = new Date();
-            const a = await redis.get('ongoing-matches') as string;
-            console.log('WSS TIME A', new Date().getTime() - start.getTime());
-
-            start = new Date();
-            let {streamEventId, events} = JSON.parse(a);
+            const result = await fetch('https://legacy.aoe2companion.com/kv/get?key=ongoing-matches');
+            let {streamEventId, events} = await result.json();
 
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify(events));
             }
-            console.log('WSS TIME B', new Date().getTime() - start.getTime());
 
             while (socket.readyState === WebSocket.OPEN) {
                 const msg = await redis.xread([{key: 'stream-ongoing-matches', xid: streamEventId}], {block: 5000})
