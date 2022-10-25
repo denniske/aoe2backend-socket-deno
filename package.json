@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "deno run --allow-net --allow-read --allow-env --watch src/index.ts"
+  },
   "dependencies": {
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
