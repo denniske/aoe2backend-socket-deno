@@ -9,6 +9,9 @@ serve(async (req: Request) => {
 
     const upgrade = req.headers.get("upgrade") || "";
     if (upgrade.toLowerCase() != "websocket") {
+
+        console.log('new release');
+
         // const url = new URL(req.url);
         // console.log('url', url);
         // const path = url.pathname;
